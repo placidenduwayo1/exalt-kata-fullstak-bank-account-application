@@ -91,6 +91,26 @@ Ainsi, on isole la logique du métier des dépendances aux différents framework
 
 L’architecture hexagonale, contrairement à l’architecture MVC, impose de développer & valider le domaine métier avant de travailler toute autre brique logicielle. Votre historique de commit `DEVRAIT` refléter cet ordre. Ce domaine `DOIT` être validé par des tests unitaires _(exemple Java : Junit5 + @parameterizedTest)_. Pour l’implémentation des tests, le candidat `PEUT` utiliser une approche [TDD](https://fr.wikipedia.org/wiki/Test_driven_development). 
 
+# Réalisation
+## Description
+- BankAccount est une application orientée microservices avec 3 microservices métiers et 3 microservices utilisataires
+- Les services métiers: **customer**, ***account*** et ***operation***
+    - chaque microservice métier est implementé dans une achitecture hexagonale
+    - les microcroservices métiers ***customer*** et ***account*** communiquent ainsi que les microcroservices métiers ***account*** et ***operation***
+- Les microservices utilitaires: ***config-server***, ***registration-server*** et ***gateway-service***
+    - config-server: pour externaliser et distribuer les configurations aux autres microservices
+    - registration-server: pour l'enregistrement des microservices dans un annuaire
+    - gateway-service: pour jouer le role de proxy entre le front et le back
+- Le frontend est une application en Angular
+
+## Modélisation conceptuelle
+![conception-modeling](./assets/exalt-bank-account-conception.png)
+
+## Architecure de l'application orientée microservice
+![application-archi](./assets/exalt-bank-account-archi.png)
+
+
+
  
 
 
