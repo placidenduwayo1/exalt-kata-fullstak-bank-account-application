@@ -5,30 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8761f674-56fe-4701-82ed-ebcdeda5676d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/entities/Address.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/entities/Customer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/entities/State.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/ports/input/InputCustomerService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/AddressDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/CustomerDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/CustomerModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/RequestDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/resources/bootstrap-integ.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/resources/bootstrap.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../assets/exalt-bank-account-conception.png" beforeDir="false" afterPath="$PROJECT_DIR$/../../assets/exalt-bank-account-conception.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/BusinessMicroserviceCustomerApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/BusinessMicroserviceCustomerApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/resources/bootstrap-dev.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/1/11035eac6af9c6b42e3ebe40911aabca1bcc1fb4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/b/8/b8c450c06c38750a5766f9992d271f53cef3a95b" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/9/c9be0616c7dbf3379d79a71db4e189d3f951e3d9" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/1/1/11035eac6af9c6b42e3ebe40911aabca1bcc1fb4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/b/8/b8c450c06c38750a5766f9992d271f53cef3a95b" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/c/9/c9be0616c7dbf3379d79a71db4e189d3f951e3d9" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/resources/bootstrap-dev.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/resources/bootstrap-dev.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices-configuration-server/src/main/resources/application-dev.properties" beforeDir="false" afterPath="$PROJECT_DIR$/microservices-configuration-server/src/main/resources/application-dev.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -1,0 +1,22 @@
+services:
+
+#-------------- database instance-------------------
+  #postgreslq
+  postgresql-db:
+    image: postgres:latest
+    container_name: postgresql-db
+    ports:
+      - "5432:5432"
+    networks:
+      - appli-stack
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin123
+    restart: no
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+
+networks:
+  appli-stack:
+volumes:
+  postgres_db:
