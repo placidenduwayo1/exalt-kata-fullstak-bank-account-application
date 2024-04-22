@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BusinessMicroserviceCustomerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BusinessMicroserviceCustomerApplication.class, args);
+		new SpringApplication(BusinessMicroserviceCustomerApplication.class)
+				.run(args);
 	}
 
 }

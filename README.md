@@ -114,6 +114,7 @@ L'application orientée microservice **BankAccount** est dimensionnée comme sui
 
 ## Backend
 - 3 microservices métiers (business microservices)
+- chaque microservice métier mappe une base données ***PostgreSQL*** déployée dans  un container ***docker***
 - 3 microservices utilitaires (utils microservices)
 
 ### Microservices métiers
