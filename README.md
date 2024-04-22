@@ -105,7 +105,7 @@ L’architecture hexagonale, contrairement à l’architecture MVC, impose de d�
 - Le frontend est une application en Angular
 
 ## Modélisation conceptuelle
-
+![modeling](./assets/exalt-bank-account-conception.png)
 
 ## Architecure de l'application orientée microservice
 ![application-archi](./assets/exalt-bank-account-archi.png)
