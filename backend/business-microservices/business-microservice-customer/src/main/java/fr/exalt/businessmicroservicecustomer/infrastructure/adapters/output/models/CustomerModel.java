@@ -3,11 +3,13 @@ package fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mod
 import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "customers")
 public class CustomerModel {
