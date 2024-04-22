@@ -93,10 +93,11 @@ L’architecture hexagonale, contrairement à l’architecture MVC, impose de d�
 
 # Réalisation
 ## Description
-- BankAccount est une application orientée microservices avec 3 microservices métiers et 3 microservices utilisataires
-- Les services métiers: **customer**, ***account*** et ***operation***
+- **BankAccount** est une application orientée microservices avec des microservices métiers et des microservices utilisataires
+- Les microservices métiers: **customer**, ***account*** et ***operation***
     - chaque microservice métier est implementé dans une achitecture hexagonale
     - les microcroservices métiers ***customer*** et ***account*** communiquent ainsi que les microcroservices métiers ***account*** et ***operation***
+    - chaque microservice métier possède sa propre base de données et peut évoluer différemment des autres microservices
 - Les microservices utilitaires: ***config-server***, ***registration-server*** et ***gateway-service***
     - config-server: pour externaliser et distribuer les configurations aux autres microservices
     - registration-server: pour l'enregistrement des microservices dans un annuaire
@@ -109,6 +110,26 @@ L’architecture hexagonale, contrairement à l’architecture MVC, impose de d�
 ## Architecure de l'application orientée microservice
 ![application-archi](./assets/exalt-bank-account-archi.png)
 
+L'application orientée microservice **BankAccount** est dimensionnée comme suit:
+
+## Backend
+- 3 microservices métiers (business microservices)
+- 3 microservices utilitaires (utils microservices)
+
+### Microservices métiers
+
+- ***business-microservice-customer***
+- ***business-microservice-account***
+- ***business-microservice-operation***
+
+### Microservices utilitaires
+
+- ***microservices-config-server***
+- ***microservices-registration-server***
+- ***gateway-service***
+
+## Frontend
+Le frontend est une application en Angular (V16) utilisant le pattern observeur de RxJs
 
 
  
