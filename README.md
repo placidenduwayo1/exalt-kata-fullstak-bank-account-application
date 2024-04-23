@@ -137,7 +137,8 @@ Pour accéder au microservices métiers backend on passe par la gateway : ***htt
 - ***business-microservice-customer***
     - [POST], [PUT]: ```http://localhost:8101/api-customer/customers```
     
-    ```payload:  {
+    payload:  
+    ```{
         "customerDto":{
             "firstname":"string value",
             "lastname":"string value",
@@ -151,7 +152,8 @@ Pour accéder au microservices métiers backend on passe par la gateway : ***htt
             "country":"string value"
         }
     }
-    ```  
+    ```
+    
   - [GET]: ```http://localhost:8101/api-customer/customers```  
   - [GET]: ```http://localhost:8101/api-customer/customers```
 
