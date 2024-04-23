@@ -117,6 +117,7 @@ L'application orientée microservice **BankAccount** est dimensionnée comme sui
 ## Backend
 - 3 microservices métiers (business microservices)
 - chaque microservice métier mappe une base données ***PostgreSQL*** déployée dans  un ***docker container***
+    - le fichier ***postgresql.yml*** sert de lancer le container docker de PostgreSQL: ```docker compose -f ./postgresql.yml up -d```
 - 2 microservices utilitaires (utils microservices)
 
 ### Microservices métiers
@@ -128,7 +129,8 @@ L'application orientée microservice **BankAccount** est dimensionnée comme sui
 ### Microservices utilitaires
 
 - ***microservices-config-server***
-    - cet utilitaire récupère les configurations depuis la branche ***feature/configurations*** et les distribuent aux autres microservices à leur démarrage
+    - cet utilitaire récupère les configurations dans le dossier ***configurations-center*** et les distribuent aux autres microservices à leur démarrage
+    - voir la configuration ***application-dev.properties*** du microservice **backend**/**utils-microservices**/***microservices-configuration-server***
 - ***gateway-service***
     - cet utilitaire route les requêtes http dans les deux sens entre le frontend et la backend
 
@@ -137,7 +139,6 @@ Pour accéder au microservices métiers backend on passe par la gateway : ```htt
 - ***business-microservice-customer***
     
     - [POST], [PUT]: ```http://localhost:8101/api-customer/customers```
-    
         payload:  
         ```{
             "customerDto":{
