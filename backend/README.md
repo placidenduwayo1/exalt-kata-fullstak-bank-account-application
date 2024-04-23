@@ -11,4 +11,4 @@
 - ***gateway-service***
 
 ## architecture
-![archi](./assets/exalt-bank-account-archi.png)
+![archi](../assets/exalt-bank-account-archi.png)
