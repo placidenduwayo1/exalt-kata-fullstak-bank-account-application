@@ -154,8 +154,8 @@ Pour accéder au microservices métiers backend on passe par la gateway : ***htt
             }
         }
         ```
-   - [GET]: ```http://localhost:8101/api-customer/customers```  
-   - [GET]: ```http://localhost:8101/api-customer/customers```
+   - [GET] : ```http://localhost:8101/api-customer/customers```  
+   - [GET] : ```http://localhost:8101/api-customer/customers```
 
 ## Frontend
 Le frontend est une application en Angular (V16) utilisant le pattern observeur de RxJs
