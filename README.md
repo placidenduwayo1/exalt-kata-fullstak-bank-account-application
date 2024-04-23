@@ -123,8 +123,11 @@ L'application orientée microservice **BankAccount** est dimensionnée comme sui
 ### Microservices métiers
 
 - ***business-microservice-customer***
+    - **backend/business-micorservices/business-microservice-customer**
 - ***business-microservice-account***
+    - **backend/business-micorservices/business-microservice-account**
 - ***business-microservice-operation***
+    - **backend/business-micorservices/business-microservice-operation**
 
 ### Microservices utilitaires
 
@@ -133,6 +136,8 @@ L'application orientée microservice **BankAccount** est dimensionnée comme sui
     - voir la configuration ***application-dev.properties*** du microservice **backend**/**utils-microservices**/***microservices-configuration-server***
 - ***gateway-service***
     - cet utilitaire route les requêtes http dans les deux sens entre le frontend et la backend
+    - voir la configuration ***bootstrap-dev.yml*** du microservice **backend**/**utils-microservices**/***gateway-service***
+    - au déploiement dans une image docker, on va utilise ***bootstrap-integ.yml***
 
 ### Les api exposeés par les microservices métiers
 Pour accéder au microservices métiers backend on passe par la gateway : ```http://localhost:8101```
