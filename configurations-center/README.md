@@ -1,0 +1,7 @@
+- Cette branche **feature/configurations** contient l'ensemble des fichiers de configurations des microservices suivants:
+    - ***gateway-service***
+    - ***microservices-registration-server***
+    - ***business-microservice-customer***
+    - ***business-microservice-account***
+    - **business-microservice-operation**
+- Le service de configurations ***microservices-configuration-server*** récupère les configurations des autres microservices depuis cette branche git et les distribue aux microservices à leur démarage

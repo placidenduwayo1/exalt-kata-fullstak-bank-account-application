@@ -133,7 +133,7 @@ L'application orientée microservice **BankAccount** est dimensionnée comme sui
     - cet utilitaire route les requêtes http dans les deux sens entre le frontend et la backend
 
 ### Les api exposeés par les microservices métiers
-Pour accéder au microservices métiers backend on passe par la gateway : ***http://localhost:8101***
+Pour accéder au microservices métiers backend on passe par la gateway : ```http://localhost:8101```
 - ***business-microservice-customer***
     
     - [POST], [PUT]: ```http://localhost:8101/api-customer/customers```
@@ -155,7 +155,7 @@ Pour accéder au microservices métiers backend on passe par la gateway : ***htt
         }
         ```
    - [GET] : ```http://localhost:8101/api-customer/customers```  
-   - [GET] : ```http://localhost:8101/api-customer/customers```
+   - [GET] : ```http://localhost:8101/api-customer/addresses```
 
 ## Frontend
 Le frontend est une application en Angular (V16) utilisant le pattern observeur de RxJs
