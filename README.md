@@ -131,12 +131,12 @@ L'application orientée microservice **BankAccount** est dimensionnée comme sui
 
 ### Microservices utilitaires
 
-- ***microservices-config-server***
+- ***microservices-config-server***: *backend/utils-microservices/microservices-configuration-server*
     - cet utilitaire récupère les configurations dans le dossier ***configurations-center*** et les distribuent aux autres microservices à leur démarrage
-    - voir la configuration ***application-dev.properties*** du microservice **backend**/**utils-microservices**/***microservices-configuration-server***
-- ***gateway-service***
+    - voir la configuration ***application-dev.properties*** du microservice 
+- ***gateway-service***: *backend/utils-microservices/gateway-service*
     - cet utilitaire route les requêtes http dans les deux sens entre le frontend et la backend
-    - voir la configuration ***bootstrap-dev.yml*** du microservice **backend**/**utils-microservices**/***gateway-service***
+    - voir la configuration ***bootstrap-dev.yml*** du microservice 
     - au déploiement dans une image docker, on va utilise ***bootstrap-integ.yml***
 
 ### Les api exposeés par les microservices métiers
