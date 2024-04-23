@@ -8,7 +8,7 @@ public class Address {
     private String city;
     private String country;
 
-    Address(AddressBuilder builder){
+    private Address(AddressBuilder builder){
         this.addressId = builder.addressId;
         this.streetNum = builder.streetNum;
         this.streetName = builder.streetName;

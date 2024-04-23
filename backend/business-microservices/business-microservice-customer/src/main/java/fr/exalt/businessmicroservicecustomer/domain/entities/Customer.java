@@ -8,7 +8,7 @@ public class Customer {
     private String createdAt;
     private Address address;
 
-    public Customer(CustomerBuilder builder) {
+    private Customer(CustomerBuilder builder) {
         this.customerId = builder.customerId;
         this.firstname = builder.firstname;
         this.lastname = builder.lastname;
