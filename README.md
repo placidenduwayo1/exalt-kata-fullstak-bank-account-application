@@ -123,11 +123,11 @@ L'application orientée microservice **BankAccount** est dimensionnée comme sui
 ### Microservices métiers
 
 - ***business-microservice-customer***
-    - **backend/business-micorservices/business-microservice-customer**
+    - *backend/business-micorservices/business-microservice-customer*
 - ***business-microservice-account***
-    - **backend/business-micorservices/business-microservice-account**
+    - *backend/business-micorservices/business-microservice-account*
 - ***business-microservice-operation***
-    - **backend/business-micorservices/business-microservice-operation**
+    - *backend/business-micorservices/business-microservice-operation*
 
 ### Microservices utilitaires
 
