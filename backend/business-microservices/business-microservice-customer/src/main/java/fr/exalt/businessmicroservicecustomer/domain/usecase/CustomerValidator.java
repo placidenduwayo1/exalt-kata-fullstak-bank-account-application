@@ -37,6 +37,4 @@ public class CustomerValidator {
         }
         return stateValid;
     }
-
-    //public static boolean customerAlreadyExists()
 }

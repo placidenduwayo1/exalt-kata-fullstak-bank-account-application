@@ -9,14 +9,11 @@ import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mapp
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.Request;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
-@Slf4j
 public class InputCustomerImpl implements InputCustomerService {
     private final OutputCustomerService outputCustomerService;
 
@@ -25,15 +22,10 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     @Override
-    public Request createCustomer(RequestDto requestDto) throws CustomerStateInvalidException, CustomerOneOrMoreFieldsInvalidException {
-        CustomerValidator.formatter(requestDto);
-        if (!CustomerValidator.isValidCustomerState(requestDto.getCustomerDto().getState())) {
-            throw new CustomerStateInvalidException(ExceptionMsg.CUSTOMER_STATE_INVALID);
-        }
+    public Request createCustomer(RequestDto requestDto) throws CustomerStateInvalidException,
+            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException {
 
-        if (CustomerValidator.invalidRequest(requestDto)) {
-            throw new CustomerOneOrMoreFieldsInvalidException(ExceptionMsg.CUSTOMER_FIELD_INVALID);
-        }
+        validateCustomer(requestDto);
         Address mappedAddress = MapperService.fromTo(requestDto.getAddressDto());
         mappedAddress.setAddressId(UUID.randomUUID().toString());
         Address savedAddress = getAddress(requestDto.getAddressDto());
@@ -45,8 +37,7 @@ public class InputCustomerImpl implements InputCustomerService {
         customer.setCreatedAt(Timestamp.from(Instant.now()).toString());
         Request request = outputCustomerService.createCustomer(customer, savedAddress);
         request.setAddress(savedAddress);
-        log.error(String.format("saved %s",request));
-
+        request.setCustomer(customer);
         return request;
     }
 
@@ -64,4 +55,55 @@ public class InputCustomerImpl implements InputCustomerService {
     public Address getAddress(AddressDto dto)  {
        return outputCustomerService.getAddress(dto);
     }
+
+    @Override
+    public Collection<Address> getAllAddresses() {
+        return outputCustomerService.getAllAddresses();
+    }
+
+    @Override
+    public Request updateCustomer(String customerId, RequestDto requestDto) throws CustomerStateInvalidException,
+            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException, CustomerNotFoundException {
+        validateCustomer(requestDto);
+
+        Customer customer = getCustomer(customerId);
+        Address address = getAddress(requestDto.getAddressDto());
+        if(address==null){
+            address= outputCustomerService.createAddress(MapperService.fromTo(requestDto.getAddressDto()));
+        }
+        customer.setAddress(address);
+        customer.setFirstname(requestDto.getCustomerDto().getFirstname());
+        customer.setLastname(requestDto.getCustomerDto().getLastname());
+        customer.setState(requestDto.getCustomerDto().getState());
+
+        Request request = outputCustomerService.updateCustomer(customer, address);
+        request.setCustomer(customer);
+        request.setAddress(address);
+        return request;
+
+    }
+
+    @Override
+    public Address updateAddress(String addressId, AddressDto addressDto) {
+
+        return null;
+    }
+
+    private void validateCustomer(RequestDto requestDto) throws CustomerStateInvalidException,
+            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException {
+
+        CustomerValidator.formatter(requestDto);
+
+        if (!CustomerValidator.isValidCustomerState(requestDto.getCustomerDto().getState())) {
+            throw new CustomerStateInvalidException(ExceptionMsg.CUSTOMER_STATE_INVALID);
+        }
+        if (CustomerValidator.invalidRequest(requestDto)) {
+            throw new CustomerOneOrMoreFieldsInvalidException(ExceptionMsg.CUSTOMER_FIELD_INVALID);
+        }
+        Customer savedCustomer = outputCustomerService.getCustomer(requestDto.getCustomerDto());
+        if(savedCustomer!=null){
+            throw new CustomerAlreadyExistsException(ExceptionMsg.CUSTOMER_ALREADY_EXISTS);
+        }
+    }
+
 }

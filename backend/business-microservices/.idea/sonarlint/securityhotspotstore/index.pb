@@ -53,3 +53,17 @@ xbusiness-microservice-customer/src/main/java/fr/exalt/businessmicroservicecusto
 ˆbusiness-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/input/CustomerController.java,0/a/0a047e4e199678120541f31f6d843b55aab2d9ef
 ³
 ‚business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/exceptions/AddressNotFoundException.java,2/8/28bf93c661af99570964e8d49d52b60e25674727
+¹
+ˆbusiness-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/exceptions/CustomerAlreadyExistsException.java,d/6/d67f42f5d82fbf4ca878bc02647aa9d8411560eb
+¸
+‡business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/input/ExceptionsHandler.java,7/c/7c2ea8d0ec3cff0741f2f01c22145356635f5cbd
+¶
+…business-microservice-account/src/main/java/fr/exalt/businessmicroserviceaccount/infrastructure/adapters/input/AccountController.java,e/5/e55ed951e04a4e8fee8a4b4caf8717c95e9c018e
+Ñ
+ business-microservice-operation/src/main/java/fr/exalt/businessmicroserviceoperation/businessmicroserviceoperation/BusinessMicroserviceOperationApplication.java,b/5/b5b409aba53a5ccc7206f30b41ec21b0e150538a
+¼
+‹business-microservice-operation/src/main/java/fr/exalt/businessmicroserviceoperation/infrastructure/adapters/input/OperationController.java,0/4/046144615fe0049cad06a2795635bfc5b6ce5002
+U
+%business-microservice-account/pom.xml,6/e/6e9f976a260e39cc429a586477149038360d67cd
+W
+'business-microservice-operation/pom.xml,5/1/5186e3c11f35713523368272af74aaf361167409

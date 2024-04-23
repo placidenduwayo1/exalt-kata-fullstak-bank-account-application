@@ -12,3 +12,8 @@ spring:
           uri: http://localhost:8102
           predicates:
             - Path=/api-customer/**
+
+        - id: business-microservice-account
+          uri: http://localhost:8103
+          predicates:
+            - Path=/api-account/**

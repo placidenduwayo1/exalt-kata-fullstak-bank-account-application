@@ -92,16 +92,18 @@ Ainsi, on isole la logique du métier des dépendances aux différents framework
 L’architecture hexagonale, contrairement à l’architecture MVC, impose de développer & valider le domaine métier avant de travailler toute autre brique logicielle. Votre historique de commit `DEVRAIT` refléter cet ordre. Ce domaine `DOIT` être validé par des tests unitaires _(exemple Java : Junit5 + @parameterizedTest)_. Pour l’implémentation des tests, le candidat `PEUT` utiliser une approche [TDD](https://fr.wikipedia.org/wiki/Test_driven_development). 
 
 # Réalisation
+
 ## Description
+
 - **BankAccount** est une application orientée microservices avec des microservices métiers et des microservices utilisataires
-- Les microservices métiers: **customer**, ***account*** et ***operation***
+- Les microservices métiers: ***customer***, ***account*** et ***operation***
     - chaque microservice métier est implementé dans une achitecture hexagonale
-    - les microcroservices métiers ***customer*** et ***account*** communiquent ainsi que les microcroservices métiers ***account*** et ***operation***
-    - chaque microservice métier possède sa propre base de données et peut évoluer différemment des autres microservices
-- Les microservices utilitaires: ***config-server***, ***registration-server*** et ***gateway-service***
+    - les microcroservices métiers ***customer*** et ***account*** communiquent entre eux
+    - les microcroservices métiers ***account*** et ***operation*** communiquent aussi entre eux
+    - chaque microservice métier possède sa propre base de données et peut évoluer en environnement différent des autres microservices
+- Les microservices utilitaires: ***config-server*** et ***gateway-service***
     - config-server: pour externaliser et distribuer les configurations aux autres microservices
-    - registration-server: pour l'enregistrement des microservices dans un annuaire
-    - gateway-service: pour jouer le role de proxy entre le front et le back
+    - gateway-service: pour router dans les deux sens les requêtes entre le front et le back
 - Le frontend est une application en Angular
 
 ## Modélisation conceptuelle
@@ -114,8 +116,8 @@ L'application orientée microservice **BankAccount** est dimensionnée comme sui
 
 ## Backend
 - 3 microservices métiers (business microservices)
-- chaque microservice métier mappe une base données ***PostgreSQL*** déployée dans  un container ***docker***
-- 3 microservices utilitaires (utils microservices)
+- chaque microservice métier mappe une base données ***PostgreSQL*** déployée dans  un ***docker container***
+- 2 microservices utilitaires (utils microservices)
 
 ### Microservices métiers
 
@@ -126,8 +128,11 @@ L'application orientée microservice **BankAccount** est dimensionnée comme sui
 ### Microservices utilitaires
 
 - ***microservices-config-server***
-- ***microservices-registration-server***
+    - cet utilitaire récupère les configurations depuis la branche ***feature/configurations*** et les distribuent aux autres microservices à leur démarrage
 - ***gateway-service***
+    - cet utilitaire route les requêtes http dans les deux sens entre le frontend et la backend
+
+
 
 ## Frontend
 Le frontend est une application en Angular (V16) utilisant le pattern observeur de RxJs

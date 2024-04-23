@@ -1,6 +1,5 @@
 package fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models;
 
-import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;

@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: microservices-registration-server
-  main:
-    banner-mode: off
-  cloud:
-    config:
-      uri: http://localhost:8100
