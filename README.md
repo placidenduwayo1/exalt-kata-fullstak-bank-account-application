@@ -117,27 +117,33 @@ L'application orientée microservice **BankAccount** est dimensionnée comme sui
 ## Backend
 - 3 microservices métiers (business microservices)
 - chaque microservice métier mappe une base données ***PostgreSQL*** déployée dans  un ***docker container***
+    - le fichier ***postgresql.yml*** sert de lancer le container docker de PostgreSQL: ```docker compose -f ./postgresql.yml up -d```
 - 2 microservices utilitaires (utils microservices)
 
 ### Microservices métiers
 
 - ***business-microservice-customer***
+    - *backend/business-micorservices/business-microservice-customer*
 - ***business-microservice-account***
+    - *backend/business-micorservices/business-microservice-account*
 - ***business-microservice-operation***
+    - *backend/business-micorservices/business-microservice-operation*
 
 ### Microservices utilitaires
 
-- ***microservices-config-server***
-    - cet utilitaire récupère les configurations depuis la branche ***feature/configurations*** et les distribuent aux autres microservices à leur démarrage
-- ***gateway-service***
+- ***microservices-config-server***: *backend/utils-microservices/microservices-configuration-server*
+    - cet utilitaire récupère les configurations dans le dossier ***configurations-center*** et les distribuent aux autres microservices à leur démarrage
+    - voir la configuration ***application-dev.properties*** du microservice 
+- ***gateway-service***: *backend/utils-microservices/gateway-service*
     - cet utilitaire route les requêtes http dans les deux sens entre le frontend et la backend
+    - voir la configuration ***bootstrap-dev.yml*** du microservice 
+    - au déploiement dans une image docker, on va utilise ***bootstrap-integ.yml***
 
 ### Les api exposeés par les microservices métiers
 Pour accéder au microservices métiers backend on passe par la gateway : ```http://localhost:8101```
 - ***business-microservice-customer***
     
     - [POST], [PUT]: ```http://localhost:8101/api-customer/customers```
-    
         payload:  
         ```{
             "customerDto":{
