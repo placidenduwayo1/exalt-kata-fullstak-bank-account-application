@@ -1,33 +1,58 @@
 package fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.services;
 
+import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.CustomerNotFoundException;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.ExceptionMsg;
 import fr.exalt.businessmicroservicecustomer.domain.ports.output.OutputCustomerService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mapper.MapperService;
+import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
+import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressModel;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerModel;
+import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.Request;
+import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.repositories.AddressRepository;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class OutputCustomerServiceImpl implements OutputCustomerService {
     private final CustomerRepository customerRepository;
-    private final MapperService mapperService;
+    private final AddressRepository addressRepository;
     @Override
-    public Customer createCustomer(Customer customer) {
-        CustomerModel model = customerRepository.save(mapperService.to(customer));
-        return mapperService.to(model);
+    public Request createCustomer(Customer customer, Address address) {
+        AddressModel savedAddress = addressRepository.save(MapperService.fromTo(address));
+        CustomerModel customerModel = customerRepository.save(MapperService.fromTo(customer));
+        customerModel.setAddress(savedAddress);
+        return Request.builder()
+                .address(MapperService.fromTo(savedAddress))
+                .customer(MapperService.fromTo(customerModel))
+                .build();
+    }
+
+    @Override
+    public Address getAddress(AddressDto dto)  {
+       List<AddressModel> addresses = addressRepository.findByStreetNumAndStreetNameAndPoBoxAndCityAndCountry(
+               dto.getStreetNum(), dto.getStreetName(), dto.getPoBox(), dto.getCity(), dto.getCountry()
+       );
+       Address address =null;
+       if(!addresses.isEmpty()){
+           address = MapperService.fromTo(addresses.get(0));
+       }
+       return address;
     }
 
     @Override
     public Collection<Customer> getAllCustomers() {
         Collection<CustomerModel> models = customerRepository.findAll();
-        return models.stream().map(mapperService::to)
+        return models.stream()
+                .map(MapperService::fromTo)
                 .toList();
     }
 
@@ -35,6 +60,13 @@ public class OutputCustomerServiceImpl implements OutputCustomerService {
     public Customer getCustomer(String customerId) throws CustomerNotFoundException {
         CustomerModel model = customerRepository.findById(customerId).orElseThrow(
                 ()-> new CustomerNotFoundException(ExceptionMsg.CUSTOMER_NOT_FOUND));
-        return mapperService.to(model);
+        return MapperService.fromTo(model);
     }
+
+    @Override
+    public Address createAddress(Address address) {
+        AddressModel model= addressRepository.save(MapperService.fromTo(address));
+        return MapperService.fromTo(model);
+    }
+
 }

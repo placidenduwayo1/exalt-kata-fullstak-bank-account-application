@@ -6,16 +6,14 @@ public class Customer {
     private String lastname;
     private String state;
     private String createdAt;
-    private String addressId;
     private Address address;
 
     public Customer(CustomerBuilder builder) {
-        this.customerId = builder.addressId;
+        this.customerId = builder.customerId;
         this.firstname = builder.firstname;
         this.lastname = builder.lastname;
         this.state = builder.state;
         this.createdAt = builder.createdAt;
-        this.addressId = builder.addressId;
         this.address = builder.address;
     }
 
@@ -59,14 +57,6 @@ public class Customer {
         this.createdAt = createdAt;
     }
 
-    public String getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(String addressId) {
-        this.addressId = addressId;
-    }
-
     public Address getAddress() {
         return address;
     }
@@ -81,7 +71,6 @@ public class Customer {
         private String lastname;
         private String state;
         private String createdAt;
-        private String addressId;
         private Address address;
 
         public CustomerBuilder customerId(String customerId) {
@@ -109,11 +98,6 @@ public class Customer {
             return this;
         }
 
-        public CustomerBuilder addressId(String addressId) {
-            this.addressId = addressId;
-            return this;
-        }
-
         public CustomerBuilder address(Address address) {
             this.address = address;
             return this;
@@ -122,5 +106,17 @@ public class Customer {
         public Customer build(){
             return new Customer(this);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Customer [" +
+                "customer id='" + customerId + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", state='" + state + '\'' +
+                ", created at='" + createdAt + '\'' +
+                ", address=" + address +
+                '}';
     }
 }

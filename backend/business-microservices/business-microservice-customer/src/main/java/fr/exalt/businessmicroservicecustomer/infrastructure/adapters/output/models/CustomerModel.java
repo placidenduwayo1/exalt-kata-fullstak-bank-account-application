@@ -2,9 +2,7 @@ package fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mod
 
 import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 @AllArgsConstructor
@@ -12,6 +10,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Builder
 @Entity
 @Table(name = "customers")
+@Setter
+@Getter
 public class CustomerModel {
     @Id
     @GenericGenerator(name = "uuid")
@@ -20,7 +20,7 @@ public class CustomerModel {
     private String lastname;
     private String state;
     private String createdAt;
-    private String addressId;
-    @Transient
-    private Address address;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id")
+    private AddressModel address;
 }

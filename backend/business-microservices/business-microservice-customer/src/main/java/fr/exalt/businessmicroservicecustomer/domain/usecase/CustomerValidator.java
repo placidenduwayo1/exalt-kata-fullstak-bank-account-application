@@ -11,7 +11,6 @@ public class CustomerValidator {
         dto.getCustomerDto().setFirstname(dto.getCustomerDto().getFirstname().strip());
         dto.getCustomerDto().setLastname(dto.getCustomerDto().getLastname().strip());
         dto.getCustomerDto().setState(dto.getCustomerDto().getState().strip());
-        dto.getCustomerDto().setAddressId(dto.getCustomerDto().getAddressId().strip());
         dto.getAddressDto().setStreetName(dto.getAddressDto().getStreetName().strip());
         dto.getAddressDto().setCity(dto.getAddressDto().getCity().strip());
         dto.getAddressDto().setCountry(dto.getAddressDto().getCountry().strip());
@@ -21,7 +20,6 @@ public class CustomerValidator {
         return dto.getCustomerDto().getFirstname().isBlank()
                 || dto.getCustomerDto().getLastname().isBlank()
                 || dto.getCustomerDto().getState().isBlank()
-                || dto.getCustomerDto().getAddressId().isBlank()
                 || dto.getAddressDto().getStreetNum()<1
                 || dto.getAddressDto().getStreetName().isBlank()
                 || dto.getAddressDto().getPoBox()<1
@@ -39,4 +37,6 @@ public class CustomerValidator {
         }
         return stateValid;
     }
+
+    //public static boolean customerAlreadyExists()
 }

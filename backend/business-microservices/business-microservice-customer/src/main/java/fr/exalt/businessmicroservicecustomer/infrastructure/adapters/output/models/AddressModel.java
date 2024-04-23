@@ -1,18 +1,19 @@
 package fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "addresses")
+@Setter
+@Getter
 public class AddressModel {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GenericGenerator(name = "uuid")
     private String addressId;
     private int streetNum;
     private String streetName;

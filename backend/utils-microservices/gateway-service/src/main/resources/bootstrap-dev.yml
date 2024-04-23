@@ -6,3 +6,9 @@ spring:
   cloud:
     config:
       uri: http://localhost:8100
+    gateway:
+      routes:
+        - id: business-microservice-customer
+          uri: http://localhost:8102
+          predicates:
+            - Path=/api-customer/**

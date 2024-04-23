@@ -5,32 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8761f674-56fe-4701-82ed-ebcdeda5676d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../business-microservices/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/.idea/sonarlint/issuestore/9/2/92fc7f4d139b0bf4f2d6e17fdc61abb78e1ff372" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/.idea/sonarlint/securityhotspotstore/9/2/92fc7f4d139b0bf4f2d6e17fdc61abb78e1ff372" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/exceptions/CustomerNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/exceptions/CustomerOneOrMoreFieldsInvalidException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/exceptions/CustomerStateInvalidException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/exceptions/ExceptionMsg.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/ports/output/OutputCustomerService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/usecase/CustomerValidator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/usecase/InputCustomerImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/ExceptionsHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/mapper/MapperService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/AddressModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/repositories/AddressRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/repositories/CustomerRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/services/OutputCustomerServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/config/CustomerConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/exceptions/AddressNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/input/CustomerController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/Request.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/.idea/sonarlint/issuestore/0/a/0acd526b67a1914a2dbb319c6cf0ed38c25d8fca" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/.idea/sonarlint/issuestore/1/7/17b2a309a0803fb9c8e0654d6dcd45478ac1a89d" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/.idea/sonarlint/issuestore/1/7/17b2a309a0803fb9c8e0654d6dcd45478ac1a89d" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/.idea/sonarlint/issuestore/d/d/ddd3b123cad1aad03d27592ea1b6c61601fd35dd" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/.idea/sonarlint/issuestore/d/d/ddd3b123cad1aad03d27592ea1b6c61601fd35dd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../business-microservices/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/.idea/sonarlint/securityhotspotstore/0/a/0acd526b67a1914a2dbb319c6cf0ed38c25d8fca" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../business-microservices/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/entities/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/entities/Customer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/exceptions/ExceptionMsg.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/exceptions/ExceptionMsg.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/ports/input/InputCustomerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/ports/input/InputCustomerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/ports/output/OutputCustomerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/ports/output/OutputCustomerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/usecase/CustomerValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/usecase/CustomerValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/usecase/InputCustomerImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/domain/usecase/InputCustomerImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/ExceptionsHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/input/ExceptionsHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/mapper/MapperService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/mapper/MapperService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/AddressModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/AddressModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/CustomerDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/CustomerDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/CustomerModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/CustomerModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/resources/bootstrap-integ.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/resources/bootstrap-integ.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/resources/bootstrap.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/resources/bootstrap.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/repositories/AddressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/repositories/AddressRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/services/OutputCustomerServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/services/OutputCustomerServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/config/CustomerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../business-microservices/business-microservice-customer/src/main/java/fr/exalt/businessmicroservicecustomer/infrastructure/config/CustomerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/src/main/resources/bootstrap-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-service/src/main/resources/bootstrap-dev.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +89,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ms-config-server">
+  <component name="RunManager" selected="Spring Boot.gateway">
     <configuration name="gateway" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="gateway" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="fr.exalt.gatewayservice.GatewayServiceApplication" />
@@ -132,6 +136,7 @@
       <updated>1713790732815</updated>
       <workItem from="1713790733861" duration="1663000" />
       <workItem from="1713792645095" duration="1391000" />
+      <workItem from="1713854164004" duration="2572000" />
     </task>
     <servers />
   </component>

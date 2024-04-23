@@ -1,4 +1,4 @@
-package fr.exalt.businessmicroservicecustomer.infrastructure.adapters;
+package fr.exalt.businessmicroservicecustomer.infrastructure.adapters.input;
 
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.CustomerNotFoundException;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.CustomerOneOrMoreFieldsInvalidException;

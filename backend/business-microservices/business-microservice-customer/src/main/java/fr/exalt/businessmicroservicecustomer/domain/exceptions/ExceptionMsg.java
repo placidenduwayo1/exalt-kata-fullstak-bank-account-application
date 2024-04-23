@@ -6,4 +6,5 @@ public class ExceptionMsg {
     public static final String CUSTOMER_STATE_INVALID= "Customer State invalid Exception";
     public static final String CUSTOMER_FIELD_INVALID = "Customer Fields, one or more fields invalid Exception";
     public static final String CUSTOMER_NOT_FOUND = "Customer not found Exception";
+    public static final String ADDRESS_NOT_FOUND = "Address Not Found Exception";
 }
