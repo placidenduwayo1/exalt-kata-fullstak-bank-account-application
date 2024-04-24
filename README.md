@@ -2,7 +2,7 @@
 
 ## Description
 
-- **Bank Account** est une application orientée microservices avec des ***microservices métiers*** et des ***microservices utilisataires***
+- **Bank Account** est une **application orientée microservices** avec des ***microservices métiers*** et des ***microservices utilisataires***
 - Les microservices métiers: ***customer***, ***account*** et ***operation***
     - chaque microservice métier est implementé dans une ***achitecture hexagonale***
     - les microcroservices (***customer*** , ***account***) communiquent: c-à-d un **account** a besoin des données d'un **customer** pour être géré
@@ -13,10 +13,10 @@
     - *gateway-service*: pour router dans les deux sens les requêtes entre le front et le back
 - Le frontend est une ***application en Angular***
 
-## Modélisation conceptuelle
+## Conceptual model
 ![modeling](./assets/exalt-bank-account-conception.png)
 
-## Architecure de l'application orientée microservice
+## Architecure
 ![application-archi](./assets/exalt-bank-account-archi.png)
 
 L'application orientée microservice **Bank Account** est dimensionnée comme suit:
