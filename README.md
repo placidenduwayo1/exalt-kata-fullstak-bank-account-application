@@ -19,6 +19,7 @@
 
 ## Conceptual model
 ![modeling](./assets/exalt-bank-account-conception.png)
+![customer-post](./assets/customer-post.png)
 
 L'application orientée microservice **Bank Account** est dimensionnée comme suit:
 
@@ -56,8 +57,6 @@ Pour accéder au microservices métiers backend on passe par la gateway : ```htt
     - [POST], [PUT]: ```http://localhost:8101/api-customer/customers```
     - [GET] : ```http://localhost:8101/api-customer/customers```  
     - [GET] : ```http://localhost:8101/api-customer/addresses```
-
-![customer-post](./assets/customer-post.png)
 
 - ***business-microservice-account***
    - [POST], [PUT]: ```http://localhost:8101/api-account/accounts```  
