@@ -35,7 +35,10 @@ public class AccountValidators {
         return typeValid;
     }
 
-    public static boolean remoteCustomerUnreachable(String customerId) {
+    public static boolean remoteCustomerApiUnreachable(String customerId) {
         return customerId.strip().equals(ExceptionMsg.CUSTOMER_API_UNREACHABLE);
+    }
+    public static boolean remoteCustomerStateInvalid(String customerState){
+        return customerState.equals("archive");
     }
 }
