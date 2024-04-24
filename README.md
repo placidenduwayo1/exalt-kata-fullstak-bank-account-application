@@ -57,7 +57,8 @@ Pour accéder au microservices métiers backend on passe par la gateway : ```htt
     request payload -> ![customer-post](./assets/customer-post.png)    response -> ![customer-post-return](./assets/customer-post-return.png)
     - [GET] : ```http://localhost:8101/api-customer/customers```  
     - [GET] : ```http://localhost:8101/api-customer/addresses```
-
+    - [GET] : ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : récupère la liste des comptes du customer depuis le **remote account api**
+    ![customer-accout](./assets/customer-account.png)
 - ***business-microservice-account***
    - [POST] : ```http://localhost:8101/api-account/accounts```  
    request payload -> ![account-post](./assets/account-post.png)    response -> ![account-post-return](./assets/account-post-return.png)

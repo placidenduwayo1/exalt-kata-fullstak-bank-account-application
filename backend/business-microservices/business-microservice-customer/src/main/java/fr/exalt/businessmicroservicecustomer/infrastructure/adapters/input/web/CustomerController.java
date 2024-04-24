@@ -1,11 +1,9 @@
 package fr.exalt.businessmicroservicecustomer.infrastructure.adapters.input.web;
 
+import fr.exalt.businessmicroservicecustomer.domain.entities.Account;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
-import fr.exalt.businessmicroservicecustomer.domain.exceptions.CustomerAlreadyExistsException;
-import fr.exalt.businessmicroservicecustomer.domain.exceptions.CustomerNotFoundException;
-import fr.exalt.businessmicroservicecustomer.domain.exceptions.CustomerOneOrMoreFieldsInvalidException;
-import fr.exalt.businessmicroservicecustomer.domain.exceptions.CustomerStateInvalidException;
+import fr.exalt.businessmicroservicecustomer.domain.exceptions.*;
 import fr.exalt.businessmicroservicecustomer.domain.ports.input.InputCustomerService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
@@ -42,11 +40,16 @@ public class CustomerController {
         return inputCustomerService.updateCustomer(customerId, dto);
     }
     @PutMapping(value = "/addresses/{addressId}")
-    public Address updateAddress(@PathVariable(name = "addressId") String addressId, @RequestBody AddressDto addressDto){
+    public Address updateAddress(@PathVariable(name = "addressId") String addressId, @RequestBody AddressDto addressDto) throws
+            AddressFieldsInvalidException, AddressNotFoundException {
         return inputCustomerService.updateAddress(addressId, addressDto);
     }
     @GetMapping(value = "/customers/{customerId}")
     public Customer getCustomer(@PathVariable(name = "customerId") String customerId) throws CustomerNotFoundException {
         return inputCustomerService.getCustomer(customerId);
     }
-}
+    @GetMapping(value = "/customers/{customerId}/accounts")
+    public Collection<Account> loadRemoteAccountsOfGivenCustomer(@PathVariable(name = "customerId") String customerId){
+        return inputCustomerService.loadRemoteAccountsOfCustomer(customerId);
+    }
+ }

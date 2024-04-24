@@ -44,6 +44,13 @@ public class OutputAccountServiceImpl implements OutputAccountService {
         return MapperService.fromTo(model);
     }
 
+    @Override
+    public Collection<Account> getAccountOfGivenCustomer(String customerId) {
+        return accountRepository.findByCustomerId(customerId).stream()
+                .map(MapperService::fromTo)
+                .toList();
+    }
+
 
     @Override
     public Customer loadRemoteCustomer(String customerId) {

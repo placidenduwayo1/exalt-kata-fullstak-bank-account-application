@@ -39,6 +39,9 @@ public class InputAccountServiceImpl implements InputAccountService {
         Account account = MapperService.fromTo(accountDto);
         account.setAccountId(UUID.randomUUID().toString());
         account.setCreatedAt(Timestamp.from(Instant.now()).toString());
+        if(account.getType().equals("compte-epargne")){
+            account.setOverdraft(0);//un compte epargne ne possede pas de decouvert
+        }
         // passer le bean créé à l'adaptateur pour l'enregistrer en db
         Account saveAccount = outputAccountService.createAccount(account);
         saveAccount.setCustomer(customer);
@@ -47,17 +50,31 @@ public class InputAccountServiceImpl implements InputAccountService {
 
     @Override
     public Collection<Account> getAllAccounts() {
-       return outputAccountService.getAllAccounts().stream()
-               .map(account -> {
-                   Customer remoteCustomer = outputAccountService.loadRemoteCustomer(account.getCustomerId());
-                   account.setCustomer(remoteCustomer);
-                   return account;
-               }).toList();
+        Collection<Account>  accounts = outputAccountService.getAllAccounts();
+        return setCustomerToAccount(accounts);
     }
 
     @Override
     public Account getAccount(String accountId) throws AccountNotFoundException {
-        return outputAccountService.getAccount(accountId);
+        Account account = outputAccountService.getAccount(accountId);
+        Customer customer = outputAccountService.loadRemoteCustomer(account.getCustomerId());
+        account.setCustomer(customer);
+        return account;
     }
 
+    @Override
+    public Collection<Account> getAccountOfGivenCustomer(String customerId) {
+        Collection<Account> accounts = outputAccountService.getAccountOfGivenCustomer(customerId);
+        return setCustomerToAccount(accounts);
+    }
+
+    private Collection<Account> setCustomerToAccount(Collection<Account> accounts) {
+        return accounts.stream()
+                .map(account -> {
+                    Customer remoteCustomer = outputAccountService.loadRemoteCustomer(account.getCustomerId());
+                    account.setCustomer(remoteCustomer);
+                    return account;
+                })
+                .toList();
+    }
 }

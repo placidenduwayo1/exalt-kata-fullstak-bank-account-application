@@ -7,7 +7,9 @@ import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.model
 import java.util.Collection;
 
 public interface InputAccountService {
-    Account createAccount(AccountDto accountDto) throws AccountTypeInvalidException, AccountFieldsInvalidException, RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException;
+    Account createAccount(AccountDto accountDto) throws AccountTypeInvalidException, AccountFieldsInvalidException,
+            RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException;
     Collection<Account> getAllAccounts();
     Account getAccount(String accountId) throws AccountNotFoundException;
+    Collection<Account> getAccountOfGivenCustomer(String customerId);
 }

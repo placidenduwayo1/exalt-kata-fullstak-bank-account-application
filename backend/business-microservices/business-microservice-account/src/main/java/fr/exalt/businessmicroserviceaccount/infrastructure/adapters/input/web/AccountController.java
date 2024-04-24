@@ -1,10 +1,7 @@
 package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.web;
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.Account;
-import fr.exalt.businessmicroserviceaccount.domain.exceptions.AccountFieldsInvalidException;
-import fr.exalt.businessmicroserviceaccount.domain.exceptions.AccountTypeInvalidException;
-import fr.exalt.businessmicroserviceaccount.domain.exceptions.RemoteCustomerApiUnreachableException;
-import fr.exalt.businessmicroserviceaccount.domain.exceptions.RemoteCustomerStateInvalidException;
+import fr.exalt.businessmicroserviceaccount.domain.exceptions.*;
 import fr.exalt.businessmicroserviceaccount.domain.ports.input.InputAccountService;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountDto;
 import lombok.AllArgsConstructor;
@@ -26,5 +23,13 @@ public class AccountController {
     @GetMapping(value = "/accounts")
     public Collection<Account> getAllAccounts(){
         return inputAccountService.getAllAccounts();
+    }
+    @GetMapping(value = "/accounts/{accountId}")
+    public Account getAccount(@PathVariable(name = "accountId") String accountId) throws AccountNotFoundException {
+        return inputAccountService.getAccount(accountId);
+    }
+    @GetMapping(value = "/customers/{customerId}/accounts")
+    public Collection<Account> getAccountOfGivenCustomer(@PathVariable(name = "customerId") String customerId){
+        return inputAccountService.getAccountOfGivenCustomer(customerId);
     }
 }

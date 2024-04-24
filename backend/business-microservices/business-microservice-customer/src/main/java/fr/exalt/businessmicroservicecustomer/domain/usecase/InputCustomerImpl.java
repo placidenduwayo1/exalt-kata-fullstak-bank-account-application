@@ -1,26 +1,28 @@
 package fr.exalt.businessmicroservicecustomer.domain.usecase;
 
+import fr.exalt.businessmicroservicecustomer.domain.entities.Account;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.*;
 import fr.exalt.businessmicroservicecustomer.domain.ports.input.InputCustomerService;
 import fr.exalt.businessmicroservicecustomer.domain.ports.output.OutputCustomerService;
+import fr.exalt.businessmicroservicecustomer.domain.ports.output.OutputRemoteAccountService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mapper.MapperService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.Request;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.UUID;
-@Slf4j
 public class InputCustomerImpl implements InputCustomerService {
     private final OutputCustomerService outputCustomerService;
+    private final OutputRemoteAccountService remoteAccountServiceProxy;
 
-    public InputCustomerImpl(OutputCustomerService outputCustomerService) {
+    public InputCustomerImpl(OutputCustomerService outputCustomerService, OutputRemoteAccountService remoteAccountServiceProxy) {
         this.outputCustomerService = outputCustomerService;
+        this.remoteAccountServiceProxy = remoteAccountServiceProxy;
     }
 
     @Override
@@ -32,7 +34,6 @@ public class InputCustomerImpl implements InputCustomerService {
         mappedAddress.setAddressId(UUID.randomUUID().toString());
         Address savedAddress = getAddress(requestDto.getAddressDto());
         Customer customer = MapperService.fromTo(requestDto.getCustomerDto());
-        log.error("address 1{}",savedAddress);
         if(savedAddress==null){
             savedAddress = outputCustomerService.createAddress(mappedAddress);
             customer.setAddress(savedAddress);
@@ -41,10 +42,8 @@ public class InputCustomerImpl implements InputCustomerService {
         customer.setCreatedAt(Timestamp.from(Instant.now()).toString());
         customer.setAddress(mappedAddress);
         Request request = outputCustomerService.createCustomer(customer, savedAddress);
-        log.error("request 1{}", request);
         request.setAddress(savedAddress);
         request.setCustomer(customer);
-        log.error("request 2{}", request);
         return request.getCustomer();
     }
 
@@ -91,20 +90,39 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     @Override
-    public Address updateAddress(String addressId, AddressDto addressDto) {
+    public Address updateAddress(String addressId, AddressDto dto) throws AddressFieldsInvalidException, AddressNotFoundException {
+        CustomerValidators.formatter(dto);
+        if(CustomerValidators.invalidAddressDto(dto)){
+            throw new AddressFieldsInvalidException(ExceptionMsg.ADDRESS_FIELDS);
+        }
+        Address address = getAddress(dto);
+        if(address==null){
+            throw new AddressNotFoundException(ExceptionMsg.ADDRESS_NOT_FOUND);
+        }
+        address.setStreetNum(dto.getStreetNum());
+        address.setStreetName(dto.getStreetName());
+        address.setPoBox(dto.getPoBox());
+        address.setCity(dto.getCity());
+        address.setCountry(dto.getCountry());
 
-        return null;
+        // call output adapter to register updated address
+        return outputCustomerService.updateAddress(address);
+    }
+
+    @Override
+    public Collection<Account> loadRemoteAccountsOfCustomer(String customerId) {
+        return remoteAccountServiceProxy.loadRemoteAccountsOgCustomer(customerId);
     }
 
     private void validateCustomer(RequestDto requestDto) throws CustomerStateInvalidException,
             CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException {
 
-        CustomerValidator.formatter(requestDto);
+        CustomerValidators.formatter(requestDto);
 
-        if (!CustomerValidator.isValidCustomerState(requestDto.getCustomerDto().getState())) {
+        if (!CustomerValidators.isValidCustomerState(requestDto.getCustomerDto().getState())) {
             throw new CustomerStateInvalidException(ExceptionMsg.CUSTOMER_STATE_INVALID);
         }
-        if (CustomerValidator.invalidRequest(requestDto)) {
+        if (CustomerValidators.invalidRequest(requestDto)) {
             throw new CustomerOneOrMoreFieldsInvalidException(ExceptionMsg.CUSTOMER_FIELD_INVALID);
         }
         Customer savedCustomer = outputCustomerService.getCustomer(requestDto.getCustomerDto());
@@ -112,5 +130,4 @@ public class InputCustomerImpl implements InputCustomerService {
             throw new CustomerAlreadyExistsException(ExceptionMsg.CUSTOMER_ALREADY_EXISTS);
         }
     }
-
 }

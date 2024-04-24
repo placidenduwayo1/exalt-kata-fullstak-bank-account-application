@@ -16,8 +16,8 @@ public interface OutputCustomerService {
     Customer getCustomer(String customerId) throws CustomerNotFoundException;
     Address createAddress(Address address);
     Customer getCustomer(CustomerDto dto);
-
     Collection<Address> getAllAddresses();
-
     Request updateCustomer(Customer customer, Address address);
+    Address updateAddress(Address address);
+
 }

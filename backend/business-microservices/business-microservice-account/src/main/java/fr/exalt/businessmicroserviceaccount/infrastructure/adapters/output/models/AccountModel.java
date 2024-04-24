@@ -21,7 +21,7 @@ public class AccountModel {
     private double balance;
     private double overdraft;
     private String createdAt;
-    @Column(name = "customer_id",unique = true)
+    @Column(name = "customer_id")
     private String customerId;
     @Transient
     private CustomerModel customerModel;
