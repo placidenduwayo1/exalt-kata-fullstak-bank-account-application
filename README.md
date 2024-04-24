@@ -54,8 +54,8 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
 Pour accéder au microservices métiers backend on passe par la gateway : ```http://localhost:8101```
 - ***business-microservice-customer***
     - [POST], [PUT]: ```http://localhost:8101/api-customer/customers```  
-    dto payload:                                                                    customer post request return
-    ![customer-port](./assets/customer-post.png)                            --> ![customer-post-return](./assets/customer-post-return.png)
+    dto payload: 
+    ![customer-port](./assets/customer-post.png)                             ![customer-post-return](./assets/customer-post-return.png)
     - [GET] : ```http://localhost:8101/api-customer/customers```  
     - [GET] : ```http://localhost:8101/api-customer/addresses```
 
