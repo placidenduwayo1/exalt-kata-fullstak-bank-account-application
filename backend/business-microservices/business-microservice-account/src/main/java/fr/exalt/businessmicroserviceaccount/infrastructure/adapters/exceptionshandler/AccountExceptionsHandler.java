@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ExceptionsHandler {
+public class AccountExceptionsHandler {
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<String> handleBusinessExceptions(Exception exception) {
 
@@ -22,6 +22,8 @@ public class ExceptionsHandler {
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             case RemoteCustomerStateInvalidException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            case AccountNotFoundException e ->
+                new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
 
             default -> new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         };

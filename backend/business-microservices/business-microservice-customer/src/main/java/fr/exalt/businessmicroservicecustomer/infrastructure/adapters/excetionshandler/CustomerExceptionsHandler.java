@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class ExceptionsHandler {
+public class CustomerExceptionsHandler {
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<String> handleBusinessException (Exception exception){
        return  switch (exception) {
@@ -21,7 +21,6 @@ public class ExceptionsHandler {
                    new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
            case AddressNotFoundException e ->
                    new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-
            default -> new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_GATEWAY);
        };
     }

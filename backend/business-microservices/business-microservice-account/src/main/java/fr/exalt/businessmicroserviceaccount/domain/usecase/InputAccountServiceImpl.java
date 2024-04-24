@@ -8,6 +8,7 @@ import fr.exalt.businessmicroserviceaccount.domain.ports.output.OutputAccountSer
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.mapper.MapperService;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountDto;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -15,45 +16,45 @@ import java.util.Collection;
 import java.util.UUID;
 
 @AllArgsConstructor
+@Slf4j
 public class InputAccountServiceImpl implements InputAccountService {
+    //output adapter
     private final OutputAccountService outputAccountService;
 
     @Override
     public Account createAccount(AccountDto accountDto) throws AccountTypeInvalidException, AccountFieldsInvalidException,
             RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException {
         AccountValidators.formatter(accountDto);
-        if (AccountValidators.validAccountType(accountDto.getType())) {
+        if (!AccountValidators.validAccountType(accountDto.getType())) {
             throw new AccountTypeInvalidException(ExceptionMsg.ACCOUNT_TYPE_INVALID);
         }
         if (AccountValidators.invalidFields(accountDto)) {
             throw new AccountFieldsInvalidException(ExceptionMsg.ACCOUNT_FIELDS_INVALID);
         }
         Customer customer = outputAccountService.loadRemoteCustomer(accountDto.getCustomerId());
-        if (customer.getCustomerId().equals("It is possible that remote customer is unreachable")) {
-            throw new RemoteCustomerApiUnreachableException(ExceptionMsg.REMOTE_CUSTOMER_API);
+        log.error("!!!!!!!!! {}",customer);
+
+        if (AccountValidators.remoteCustomerApiUnreachable(customer.getCustomerId())) {
+            throw new RemoteCustomerApiUnreachableException(String.format("%s,%n%s", ExceptionMsg.REMOTE_CUSTOMER_API, customer));
         } else if (AccountValidators.remoteCustomerStateInvalid(customer.getState())) {
-            throw new RemoteCustomerStateInvalidException(ExceptionMsg.REMOTE_CUSTOMER_STATE);
+            throw new RemoteCustomerStateInvalidException(String.format("%s,%n%s", ExceptionMsg.REMOTE_CUSTOMER_STATE, customer));
         }
         Account account = MapperService.fromTo(accountDto);
         account.setAccountId(UUID.randomUUID().toString());
         account.setCreatedAt(Timestamp.from(Instant.now()).toString());
         account.setCustomer(customer);
-
+        // passer le bean créé à l'adaptateur pour l'enregistrer en db
         return outputAccountService.createAccount(account);
     }
 
     @Override
     public Collection<Account> getAllAccounts() {
-        return null;
+       return outputAccountService.getAllAccounts();
     }
 
     @Override
-    public Account getAccount(String accountId) {
-        return null;
+    public Account getAccount(String accountId) throws AccountNotFoundException {
+        return outputAccountService.getAccount(accountId);
     }
 
-    @Override
-    public Account getAccount(AccountDto dto) {
-        return null;
-    }
 }

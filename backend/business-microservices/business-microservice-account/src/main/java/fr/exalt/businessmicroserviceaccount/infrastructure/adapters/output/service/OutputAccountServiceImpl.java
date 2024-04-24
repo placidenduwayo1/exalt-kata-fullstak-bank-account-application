@@ -2,15 +2,15 @@ package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.serv
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.Account;
 import fr.exalt.businessmicroserviceaccount.domain.entities.Customer;
+import fr.exalt.businessmicroserviceaccount.domain.exceptions.AccountNotFoundException;
+import fr.exalt.businessmicroserviceaccount.domain.exceptions.ExceptionMsg;
 import fr.exalt.businessmicroserviceaccount.domain.ports.output.OutputAccountService;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feignclient.proxy.RemoteCustomerServiceProxy;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.mapper.MapperService;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountModel;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.repository.AccountRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Collection;
 @Service
 @AllArgsConstructor
@@ -25,18 +25,18 @@ public class OutputAccountServiceImpl implements OutputAccountService {
 
     @Override
     public Collection<Account> getAllAccounts() {
-        return null;
+        return accountRepository.findAll().stream()
+                .map(MapperService::fromTo)
+                .toList();
     }
 
     @Override
-    public Account getAccount(String accountId) {
-        return null;
+    public Account getAccount(String accountId) throws AccountNotFoundException {
+        AccountModel model = accountRepository.findById(accountId)
+                .orElseThrow(()->new AccountNotFoundException(ExceptionMsg.ACCOUNT_NOT_FOUND));
+        return MapperService.fromTo(model);
     }
 
-    @Override
-    public Account getAccount(AccountDto dto) {
-        return null;
-    }
 
     @Override
     public Customer loadRemoteCustomer(String customerId) {

@@ -16,6 +16,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>microservices-configuration-server</module>
+        <module>microservices-registration-server</module>
         <module>gateway-service-proxy</module>
     </modules>
 

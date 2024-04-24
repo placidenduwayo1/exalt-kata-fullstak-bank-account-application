@@ -3,10 +3,12 @@ package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feign
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Setter
 @Getter
 @Builder
+@ToString
 public class CustomerModel {
     private String customerId;
     private String firstname;

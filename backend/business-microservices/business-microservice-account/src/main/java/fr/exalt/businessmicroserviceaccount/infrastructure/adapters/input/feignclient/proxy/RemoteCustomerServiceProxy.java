@@ -18,7 +18,7 @@ public interface RemoteCustomerServiceProxy {
     class RemoteCustomerFallback implements RemoteCustomerServiceProxy {
         @Override
         public CustomerModel loadRemoteCustomer(String customerId) {
-            final String unreachable = "It is possible that remote customer is unreachable";
+            final String unreachable = "it is possible that remote customer is unreachable";
             CustomerModel resilience = CustomerModel.builder()
                     .customerId(unreachable)
                     .firstname(unreachable)

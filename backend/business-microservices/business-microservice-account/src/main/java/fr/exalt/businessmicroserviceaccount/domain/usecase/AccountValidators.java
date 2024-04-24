@@ -20,10 +20,6 @@ public class AccountValidators {
                 || dto.getCustomerId().isBlank();
     }
 
-    public static boolean invalidOverdraft(double overdraft) {
-        return overdraft < 200;
-    }
-
     public static boolean validAccountType(String type) {
         boolean typeValid = false;
         for (AccountType accType : AccountType.values()) {
@@ -36,7 +32,7 @@ public class AccountValidators {
     }
 
     public static boolean remoteCustomerApiUnreachable(String customerId) {
-        return customerId.strip().equals(ExceptionMsg.CUSTOMER_API_UNREACHABLE);
+        return customerId.strip().equals("it is possible that remote customer is unreachable");
     }
     public static boolean remoteCustomerStateInvalid(String customerState){
         return customerState.equals("archive");
