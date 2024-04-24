@@ -39,10 +39,10 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
 ### Microservices utilitaires
 
 - ***microservices-config-server***: *backend/utils-microservices/microservices-configuration-server*
-    - cet utilitaire récupère les configurations dans le dossier ***configurations-center*** et les distribuent aux autres microservices à leur démarrage
-    - voir la configuration ***application-dev.properties*** du microservice 
+    - au démarrage, les microservices demandent leur configurations au serveur **microservices-config-server**
+    - le serveur de configuration récupère les config depuis le git repo dans le dossier ***configurations-center*** et les distribuent aux microservices
 - ***gateway-service***: *backend/utils-microservices/gateway-service*
-    - cet utilitaire route les requêtes http dans les deux sens entre le frontend et la backend
+    - le service gateway route les requêtes http dans les deux sens entre le frontend et la backend
     - voir la configuration ***bootstrap-dev.yml*** du microservice 
     - au déploiement dans une image docker, on va utilise ***bootstrap-integ.yml***
 
@@ -69,6 +69,13 @@ Pour accéder au microservices métiers backend on passe par la gateway : ```htt
         ```
    - [GET] : ```http://localhost:8101/api-customer/customers```  
    - [GET] : ```http://localhost:8101/api-customer/addresses```
+
+## Deploiement en containers docker
+- Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**
+- Après nous déployons tous les microservices de **Bank Account** dans des containers docker:
+    - Nous allons utiliser l'environement *integ*: **application-integ.yml**, **bootstrap-integ.yml**
+- voir les fichiers de configurations de chaque microservice
+
 
 ## Frontend
 Le frontend est une ***application en Angular*** (V16) utilisant le pattern ***observeur de RxJs***
