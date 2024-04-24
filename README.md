@@ -13,11 +13,11 @@
     - *gateway-service*: pour router dans les deux sens les requêtes entre le front et le back
 - Le frontend est une ***application en Angular***
 
-## Conceptual model
-![modeling](./assets/exalt-bank-account-conception.png)
-
 ## Architecure
 ![application-archi](./assets/exalt-bank-account-archi.png)
+
+## Conceptual model
+![modeling](./assets/exalt-bank-account-conception.png)
 
 L'application orientée microservice **Bank Account** est dimensionnée comme suit:
 
