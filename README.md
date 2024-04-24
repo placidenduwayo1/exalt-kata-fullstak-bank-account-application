@@ -2,7 +2,7 @@
 
 ## Description
 
-- **BankAccount** est une application orientée microservices avec des microservices métiers et des microservices utilisataires
+- **Bank Account** est une application orientée microservices avec des microservices métiers et des microservices utilisataires
 - Les microservices métiers: ***customer***, ***account*** et ***operation***
     - chaque microservice métier est implementé dans une ***achitecture hexagonale***
     - les microcroservices métiers ***customer*** et ***account*** communiquent entre eux
@@ -11,7 +11,7 @@
 - Les microservices utilitaires: ***config-server*** et ***gateway-service***
     - config-server: pour externaliser et distribuer les configurations aux autres microservices
     - gateway-service: pour router dans les deux sens les requêtes entre le front et le back
-- Le frontend est une application en Angular
+- Le frontend est une ***application en Angular***
 
 ## Modélisation conceptuelle
 ![modeling](./assets/exalt-bank-account-conception.png)
@@ -19,7 +19,7 @@
 ## Architecure de l'application orientée microservice
 ![application-archi](./assets/exalt-bank-account-archi.png)
 
-L'application orientée microservice **BankAccount** est dimensionnée comme suit:
+L'application orientée microservice **Bank Account** est dimensionnée comme suit:
 
 ## Backend
 - 3 microservices métiers (business microservices)
@@ -71,4 +71,4 @@ Pour accéder au microservices métiers backend on passe par la gateway : ```htt
    - [GET] : ```http://localhost:8101/api-customer/addresses```
 
 ## Frontend
-Le frontend est une application en Angular (V16) utilisant le pattern observeur de RxJs
+Le frontend est une ***application en Angular*** (V16) utilisant le pattern ***observeur de RxJs***
