@@ -9,11 +9,13 @@ import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mapp
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.Request;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.UUID;
+@Slf4j
 public class InputCustomerImpl implements InputCustomerService {
     private final OutputCustomerService outputCustomerService;
 
@@ -22,23 +24,28 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     @Override
-    public Request createCustomer(RequestDto requestDto) throws CustomerStateInvalidException,
+    public Customer createCustomer(RequestDto requestDto) throws CustomerStateInvalidException,
             CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException {
 
         validateCustomer(requestDto);
         Address mappedAddress = MapperService.fromTo(requestDto.getAddressDto());
         mappedAddress.setAddressId(UUID.randomUUID().toString());
         Address savedAddress = getAddress(requestDto.getAddressDto());
+        Customer customer = MapperService.fromTo(requestDto.getCustomerDto());
+        log.error("address 1{}",savedAddress);
         if(savedAddress==null){
             savedAddress = outputCustomerService.createAddress(mappedAddress);
+            customer.setAddress(savedAddress);
         }
-        Customer customer = MapperService.fromTo(requestDto.getCustomerDto());
         customer.setCustomerId(UUID.randomUUID().toString());
         customer.setCreatedAt(Timestamp.from(Instant.now()).toString());
+        customer.setAddress(mappedAddress);
         Request request = outputCustomerService.createCustomer(customer, savedAddress);
+        log.error("request 1{}", request);
         request.setAddress(savedAddress);
         request.setCustomer(customer);
-        return request;
+        log.error("request 2{}", request);
+        return request.getCustomer();
     }
 
     @Override
@@ -62,7 +69,7 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     @Override
-    public Request updateCustomer(String customerId, RequestDto requestDto) throws CustomerStateInvalidException,
+    public Customer updateCustomer(String customerId, RequestDto requestDto) throws CustomerStateInvalidException,
             CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException, CustomerNotFoundException {
         validateCustomer(requestDto);
 
@@ -79,7 +86,7 @@ public class InputCustomerImpl implements InputCustomerService {
         Request request = outputCustomerService.updateCustomer(customer, address);
         request.setCustomer(customer);
         request.setAddress(address);
-        return request;
+        return request.getCustomer();
 
     }
 

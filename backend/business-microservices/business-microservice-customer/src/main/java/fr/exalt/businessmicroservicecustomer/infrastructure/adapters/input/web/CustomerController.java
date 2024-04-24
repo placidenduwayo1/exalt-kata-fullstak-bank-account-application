@@ -8,7 +8,6 @@ import fr.exalt.businessmicroservicecustomer.domain.exceptions.CustomerOneOrMore
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.CustomerStateInvalidException;
 import fr.exalt.businessmicroservicecustomer.domain.ports.input.InputCustomerService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.Request;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +21,7 @@ public class CustomerController {
     private final InputCustomerService inputCustomerService;
 
     @PostMapping(value = "/customers")
-    public Request createCustomer(@RequestBody RequestDto dto) throws CustomerStateInvalidException,
+    public Customer createCustomer(@RequestBody RequestDto dto) throws CustomerStateInvalidException,
             CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException {
         return inputCustomerService.createCustomer(dto);
     }
@@ -37,7 +36,7 @@ public class CustomerController {
         return inputCustomerService.getAllAddresses();
     }
     @PutMapping(value = "/customers/{customerId}")
-    public Request updateCustomer(@PathVariable(name = "customerId") String customerId, @RequestBody RequestDto dto) throws
+    public Customer updateCustomer(@PathVariable(name = "customerId") String customerId, @RequestBody RequestDto dto) throws
             CustomerStateInvalidException, CustomerOneOrMoreFieldsInvalidException, CustomerNotFoundException,
             CustomerAlreadyExistsException {
         return inputCustomerService.updateCustomer(customerId, dto);

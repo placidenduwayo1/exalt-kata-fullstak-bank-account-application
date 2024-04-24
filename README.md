@@ -55,24 +55,23 @@ Pour accéder au microservices métiers backend on passe par la gateway : ```htt
 - ***business-microservice-customer***
     
     - [POST], [PUT]: ```http://localhost:8101/api-customer/customers```
-        payload:  
-        ```{
-            "customerDto":{
-                "firstname":"string value",
-                "lastname":"string value",
-                "state":"string value"
-            },
-            "addressDto":{
-                "streetNum":num value,
-                "streetName":"string value",
-                "poBox":num value,
-                "city":"string value",
-                "country":"string value"
-            }
-        }
-        ```
+        dto payload:  
+        ![customer-post](./assets/customer-post.png) -> ![retour](./assets/customer-post-return.png.png)
+    retour de la requête:
+
    - [GET] : ```http://localhost:8101/api-customer/customers```  
    - [GET] : ```http://localhost:8101/api-customer/addresses```
+
+- ***business-microservice-account***
+   - [POST], [PUT]: ```http://localhost:8101/api-account/accounts```  
+        dto payload:
+        ```{
+                "type": "compte-courant ou compte-epargne",
+                "balance": int value,
+                "overdraft": int value,
+                "customerId":"id of remote customer"
+        }
+        ```
 
 ## Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**

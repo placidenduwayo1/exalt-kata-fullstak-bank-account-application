@@ -10,14 +10,14 @@ import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mode
 import java.util.Collection;
 
 public interface InputCustomerService {
-    Request createCustomer(RequestDto requestDto) throws CustomerStateInvalidException, CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException;
+    Customer createCustomer(RequestDto requestDto) throws CustomerStateInvalidException, CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException;
     Collection<Customer> getAllCustomers();
     Customer getCustomer(String customerId) throws CustomerNotFoundException;
     Address getAddress(AddressDto dto) throws AddressNotFoundException;
 
     Collection<Address> getAllAddresses();
 
-    Request updateCustomer(String customerId, RequestDto dto) throws CustomerStateInvalidException, CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException, CustomerNotFoundException;
+    Customer updateCustomer(String customerId, RequestDto dto) throws CustomerStateInvalidException, CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException, CustomerNotFoundException;
 
     Address updateAddress(String addressId, AddressDto addressDto);
 }
