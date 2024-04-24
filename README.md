@@ -55,8 +55,8 @@ Pour accéder au microservices métiers backend on passe par la gateway : ```htt
 - ***business-microservice-customer***
     
     - [POST], [PUT]: ```http://localhost:8101/api-customer/customers```
-        dto payload:  
-        ![customer-post](./assets/customer-post.png) -> ![retour](./assets/customer-post-return.png.png)
+        dto payload:
+![customer-post](./assets/customer-post.png) -> ![retour](./assets/customer-post-return.png)
     retour de la requête:
 
    - [GET] : ```http://localhost:8101/api-customer/customers```  
