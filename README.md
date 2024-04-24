@@ -60,14 +60,6 @@ Pour accéder au microservices métiers backend on passe par la gateway : ```htt
 
 - ***business-microservice-account***
    - [POST] : ```http://localhost:8101/api-account/accounts```  
-        dto payload:
-        ```{
-                "type": "compte-courant ou compte-epargne",
-                "balance": int value,
-                "overdraft": int value,
-                "customerId":"id of remote customer"
-        }
-        ```
    request payload -> ![account-post](./assets/account-post.png)    response -> ![account-post-return](./assets/account-post-return.png)
 
 ## Deploiement en containers docker
