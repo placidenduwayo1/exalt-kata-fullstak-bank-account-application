@@ -4,7 +4,7 @@
 
 - **BankAccount** est une application orientée microservices avec des microservices métiers et des microservices utilisataires
 - Les microservices métiers: ***customer***, ***account*** et ***operation***
-    - chaque microservice métier est implementé dans une achitecture hexagonale
+    - chaque microservice métier est implementé dans une ***achitecture hexagonale***
     - les microcroservices métiers ***customer*** et ***account*** communiquent entre eux
     - les microcroservices métiers ***account*** et ***operation*** communiquent aussi entre eux
     - chaque microservice métier possède sa propre base de données et peut évoluer en environnement différent des autres microservices
