@@ -5,12 +5,12 @@
 - **Bank Account** est une application orientée microservices avec des ***microservices métiers*** et des ***microservices utilisataires***
 - Les microservices métiers: ***customer***, ***account*** et ***operation***
     - chaque microservice métier est implementé dans une ***achitecture hexagonale***
-    - les microcroservices (***customer*** , ***account***) communiquent: c-à-d un account a besoin des données d'un customer pour être géré
-    - les microcroservices (***account*** , ***operation***) communiquent: c-à-d une opération a besoin des données d'un compte pour être géré
-    - chaque microservice métier possède ses propres ressources (db,dépendances, configurations, ..), il peut évoluer en env différent des autres services
+    - les microcroservices (***customer*** , ***account***) communiquent: c-à-d un **account** a besoin des données d'un **customer** pour être géré
+    - les microcroservices (***account*** , ***operation***) communiquent: c-à-d une **operation** a besoin des données d'un **account** pour être géré
+    - chaque microservice métier possède ses propres ressources (**db**,**dépendances**, **configurations**, ..), il peut évoluer dans son propre env 
 - Les microservices utilitaires: ***config-server*** et ***gateway-service***
-    - config-server: pour externaliser et distribuer les configurations aux autres microservices
-    - gateway-service: pour router dans les deux sens les requêtes entre le front et le back
+    - *config-server*: pour externaliser et distribuer les configurations aux autres microservices
+    - *gateway-service*: pour router dans les deux sens les requêtes entre le front et le back
 - Le frontend est une ***application en Angular***
 
 ## Modélisation conceptuelle
