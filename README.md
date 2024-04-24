@@ -19,7 +19,6 @@
 
 ## Conceptual model
 ![modeling](./assets/exalt-bank-account-conception.png)
-![customer-post](./assets/customer-post.png)
 
 L'application orientée microservice **Bank Account** est dimensionnée comme suit:
 
