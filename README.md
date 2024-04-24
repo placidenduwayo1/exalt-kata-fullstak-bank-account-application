@@ -8,8 +8,9 @@
     - les microcroservices (***customer*** , ***account***) communiquent: c-à-d un **account** a besoin des données d'un **customer** pour être géré
     - les microcroservices (***account*** , ***operation***) communiquent: c-à-d une **operation** a besoin des données d'un **account** pour être géré
     - chaque microservice métier possède ses propres ressources (**db**,**dépendances**, **configurations**, ..), il peut évoluer dans son propre env 
-- Les microservices utilitaires: ***config-server*** et ***gateway-service***
-    - *config-server*: pour externaliser et distribuer les configurations aux autres microservices
+- Les microservices utilitaires: , ***configuration-server***, ***registration-server*** et ***gateway-service***
+    - *configuration-server*: pour externaliser et distribuer les configurations aux autres microservices
+    - *registration-server*: pour l'enregistrement et le loabalancing des microservices
     - *gateway-service*: pour router dans les deux sens les requêtes entre le front et le back
 - Le frontend est une ***application en Angular***
 
@@ -25,7 +26,7 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
 - 3 microservices métiers (business microservices)
 - chaque microservice métier mappe une base données ***PostgreSQL*** déployée dans  un ***docker container***
     - le fichier ***postgresql.yml*** sert de lancer le container docker de PostgreSQL: ```docker compose -f ./postgresql.yml up -d```
-- 2 microservices utilitaires (utils microservices)
+- 3 microservices utilitaires (utils microservices)
 
 ### Microservices métiers
 
@@ -41,10 +42,13 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
 - ***microservices-config-server***: *backend/utils-microservices/microservices-configuration-server*
     - au démarrage, les microservices demandent leur configurations au serveur **microservices-config-server**
     - le serveur de configuration récupère les config depuis le git repo dans le dossier ***configurations-center*** et les distribuent aux microservices
-- ***gateway-service***: *backend/utils-microservices/gateway-service*
+- ***microservices-registration-server***: *backend/utils-microservices/microservices-registration-server*
+    - enregistrement des microservices dans l'annuaire
+    - loadbalancer les microservices
+    - les services enregistrés dans l'annuaire sont visionnés ici: ```http://localhost:8761```
+- ***gateway-service-proxy***: *backend/utils-microservices/gateway-service-proxy*
     - le service gateway route les requêtes http dans les deux sens entre le frontend et la backend
     - voir la configuration ***bootstrap-dev.yml*** du microservice 
-    - au déploiement dans une image docker, on va utilise ***bootstrap-integ.yml***
 
 ### Les api exposeés par les microservices métiers
 Pour accéder au microservices métiers backend on passe par la gateway : ```http://localhost:8101```

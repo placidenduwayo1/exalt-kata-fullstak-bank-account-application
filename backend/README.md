@@ -6,9 +6,10 @@
 - ***business-microservice-account***
 - ***business-microservice-operation***
 ## utils microservices
-2 utility microservices:
+3 utility microservices:
 - ***microservices-configuration-server***
-- ***gateway-service***
+- ***microservices-registration-server***
+- ***gateway-service-proxy***
 
 ## architecture
 ![archi](../assets/exalt-bank-account-archi.png)
