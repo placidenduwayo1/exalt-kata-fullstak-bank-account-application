@@ -9,14 +9,21 @@ import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feignc
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.mapper.MapperService;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountModel;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.repository.AccountRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.util.Collection;
 @Service
-@AllArgsConstructor
 public class OutputAccountServiceImpl implements OutputAccountService {
     private final AccountRepository accountRepository;
-    private final RemoteCustomerServiceProxy remoteCustomerService;
+    private final  RemoteCustomerServiceProxy remoteCustomerService;
+
+    public OutputAccountServiceImpl(
+            AccountRepository accountRepository,
+            @Qualifier(value = "remoteCustomerService") RemoteCustomerServiceProxy remoteCustomerService) {
+        this.accountRepository = accountRepository;
+        this.remoteCustomerService = remoteCustomerService;
+    }
+
     @Override
     public Account createAccount(Account account) {
         AccountModel model= accountRepository.save(MapperService.fromTo(account));

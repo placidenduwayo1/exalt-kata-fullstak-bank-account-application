@@ -2,12 +2,16 @@ package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feign
 
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feignclient.models.CustomerModel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "business-microservice-customer", fallback = RemoteCustomerServiceProxy.RemoteCustomerFallback.class)
+@FeignClient(name = "business-microservice-customer",
+        path = "/api-customer",
+        fallback = RemoteCustomerServiceProxy.RemoteCustomerFallback.class)
+@Qualifier(value = "remoteCustomerService")
 public interface RemoteCustomerServiceProxy {
     @GetMapping(value = "/customers/{customerId}")
     CustomerModel loadRemoteCustomer(@PathVariable(name = "customerId") String customerId);

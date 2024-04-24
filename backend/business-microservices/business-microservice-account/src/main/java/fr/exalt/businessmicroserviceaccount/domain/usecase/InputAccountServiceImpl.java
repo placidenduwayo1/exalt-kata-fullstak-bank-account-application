@@ -8,7 +8,6 @@ import fr.exalt.businessmicroserviceaccount.domain.ports.output.OutputAccountSer
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.mapper.MapperService;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountDto;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -16,7 +15,6 @@ import java.util.Collection;
 import java.util.UUID;
 
 @AllArgsConstructor
-@Slf4j
 public class InputAccountServiceImpl implements InputAccountService {
     //output adapter
     private final OutputAccountService outputAccountService;
@@ -32,7 +30,6 @@ public class InputAccountServiceImpl implements InputAccountService {
             throw new AccountFieldsInvalidException(ExceptionMsg.ACCOUNT_FIELDS_INVALID);
         }
         Customer customer = outputAccountService.loadRemoteCustomer(accountDto.getCustomerId());
-        log.error("!!!!!!!!! {}",customer);
 
         if (AccountValidators.remoteCustomerApiUnreachable(customer.getCustomerId())) {
             throw new RemoteCustomerApiUnreachableException(String.format("%s,%n%s", ExceptionMsg.REMOTE_CUSTOMER_API, customer));
@@ -42,14 +39,20 @@ public class InputAccountServiceImpl implements InputAccountService {
         Account account = MapperService.fromTo(accountDto);
         account.setAccountId(UUID.randomUUID().toString());
         account.setCreatedAt(Timestamp.from(Instant.now()).toString());
-        account.setCustomer(customer);
         // passer le bean créé à l'adaptateur pour l'enregistrer en db
-        return outputAccountService.createAccount(account);
+        Account saveAccount = outputAccountService.createAccount(account);
+        saveAccount.setCustomer(customer);
+        return saveAccount;
     }
 
     @Override
     public Collection<Account> getAllAccounts() {
-       return outputAccountService.getAllAccounts();
+       return outputAccountService.getAllAccounts().stream()
+               .map(account -> {
+                   Customer remoteCustomer = outputAccountService.loadRemoteCustomer(account.getCustomerId());
+                   account.setCustomer(remoteCustomer);
+                   return account;
+               }).toList();
     }
 
     @Override

@@ -1,4 +1,4 @@
-package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input;
+package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.web;
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.Account;
 import fr.exalt.businessmicroserviceaccount.domain.exceptions.AccountFieldsInvalidException;
