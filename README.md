@@ -54,12 +54,12 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
 Pour accéder au microservices métiers backend on passe par la gateway : ```http://localhost:8101```
 - ***business-microservice-customer***
     - [POST], [PUT]: ```http://localhost:8101/api-customer/customers```  
-    request dto payload -> ![customer-post](./assets/customer-post.png)    request response -> ![customer-post-return](./assets/customer-post-return.png)
+    request payload -> ![customer-post](./assets/customer-post.png)    response -> ![customer-post-return](./assets/customer-post-return.png)
     - [GET] : ```http://localhost:8101/api-customer/customers```  
     - [GET] : ```http://localhost:8101/api-customer/addresses```
 
 - ***business-microservice-account***
-   - [POST], [PUT]: ```http://localhost:8101/api-account/accounts```  
+   - [POST] : ```http://localhost:8101/api-account/accounts```  
         dto payload:
         ```{
                 "type": "compte-courant ou compte-epargne",
@@ -68,6 +68,7 @@ Pour accéder au microservices métiers backend on passe par la gateway : ```htt
                 "customerId":"id of remote customer"
         }
         ```
+   request payload -> ![account-post](./assets/account-post.png)    response -> ![account-post-return](./assets/account-post-return.png)
 
 ## Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**
