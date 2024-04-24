@@ -2,12 +2,12 @@
 
 ## Description
 
-- **Bank Account** est une application orientée microservices avec des microservices métiers et des microservices utilisataires
+- **Bank Account** est une application orientée microservices avec des ***microservices métiers*** et des ***microservices utilisataires***
 - Les microservices métiers: ***customer***, ***account*** et ***operation***
     - chaque microservice métier est implementé dans une ***achitecture hexagonale***
-    - les microcroservices métiers ***customer*** et ***account*** communiquent entre eux
-    - les microcroservices métiers ***account*** et ***operation*** communiquent aussi entre eux
-    - chaque microservice métier possède sa propre base de données et peut évoluer en environnement différent des autres microservices
+    - les microcroservices (***customer*** , ***account***) communiquent: c-à-d un account a besoin des données d'un customer pour être géré
+    - les microcroservices (***account*** , ***operation***) communiquent: c-à-d une opération a besoin des données d'un compte pour être géré
+    - chaque microservice métier possède ses propres ressources (db,dépendances, configurations, ..), il peut évoluer en env différent des autres services
 - Les microservices utilitaires: ***config-server*** et ***gateway-service***
     - config-server: pour externaliser et distribuer les configurations aux autres microservices
     - gateway-service: pour router dans les deux sens les requêtes entre le front et le back
