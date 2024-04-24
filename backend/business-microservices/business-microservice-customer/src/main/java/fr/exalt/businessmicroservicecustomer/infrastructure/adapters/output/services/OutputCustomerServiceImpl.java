@@ -3,6 +3,7 @@ package fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.ser
 import fr.exalt.businessmicroservicecustomer.domain.entities.Account;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
+import fr.exalt.businessmicroservicecustomer.domain.exceptions.AddressNotFoundException;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.CustomerNotFoundException;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.ExceptionMsg;
 import fr.exalt.businessmicroservicecustomer.domain.ports.output.OutputCustomerService;
@@ -18,6 +19,7 @@ import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mode
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.repositories.AddressRepository;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ import java.util.Collection;
 
 @Service
 @Transactional
+@Slf4j
 public class OutputCustomerServiceImpl implements OutputCustomerService, OutputRemoteAccountService {
     private final CustomerRepository customerRepository;
     private final AddressRepository addressRepository;
@@ -59,9 +62,22 @@ public class OutputCustomerServiceImpl implements OutputCustomerService, OutputR
     }
 
     @Override
+    public Address getAddress(String addressId) throws AddressNotFoundException {
+        AddressModel model = addressRepository.findById(addressId)
+                .orElseThrow(()->new AddressNotFoundException(ExceptionMsg.ADDRESS_NOT_FOUND));
+        return MapperService.fromTo(model);
+
+    }
+
+    @Override
     public Collection<Customer> getAllCustomers() {
         return customerRepository.findAll().stream()
-                .map(MapperService::fromTo)
+                .map(model -> {
+                    Address address = MapperService.fromTo(model.getAddress());
+                    Customer customer = MapperService.fromTo(model);
+                    customer.setAddress(address);
+                    return customer;
+                })
                 .toList();
     }
 

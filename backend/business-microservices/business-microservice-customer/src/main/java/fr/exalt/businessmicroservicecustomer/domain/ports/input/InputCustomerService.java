@@ -18,6 +18,7 @@ public interface InputCustomerService {
     Customer getCustomer(String customerId) throws CustomerNotFoundException;
 
     Address getAddress(AddressDto dto) throws AddressNotFoundException;
+    Address getAddress(String addressId) throws AddressNotFoundException;
 
     Collection<Address> getAllAddresses();
 

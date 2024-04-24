@@ -63,6 +63,11 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     @Override
+    public Address getAddress(String addressId) throws AddressNotFoundException {
+        return outputCustomerService.getAddress(addressId);
+    }
+
+    @Override
     public Collection<Address> getAllAddresses() {
         return outputCustomerService.getAllAddresses();
     }
@@ -95,10 +100,7 @@ public class InputCustomerImpl implements InputCustomerService {
         if(CustomerValidators.invalidAddressDto(dto)){
             throw new AddressFieldsInvalidException(ExceptionMsg.ADDRESS_FIELDS);
         }
-        Address address = getAddress(dto);
-        if(address==null){
-            throw new AddressNotFoundException(ExceptionMsg.ADDRESS_NOT_FOUND);
-        }
+        Address address = getAddress(addressId);
         address.setStreetNum(dto.getStreetNum());
         address.setStreetName(dto.getStreetName());
         address.setPoBox(dto.getPoBox());

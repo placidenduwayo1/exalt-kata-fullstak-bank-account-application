@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "customers")
 @Setter
 @Getter
+@ToString
 public class CustomerModel {
     @Id
     @GenericGenerator(name = "uuid")
