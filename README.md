@@ -72,8 +72,8 @@ Pour accéder au microservices métiers backend on passe par la gateway : ```htt
 
 ## Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**
-- Après nous déployons tous les microservices de **Bank Account** dans des containers docker:
-    - Nous allons utiliser l'environement *integ*: **application-integ.yml**, **bootstrap-integ.yml**
+- Après nous déployons tous les microservices de **Bank Account** dans des containers docker
+    - Nous allons pour cela utiliser l'environement *integ*: **application-integ.yml**, **bootstrap-integ.yml**
 - voir les fichiers de configurations de chaque microservice
 
 
