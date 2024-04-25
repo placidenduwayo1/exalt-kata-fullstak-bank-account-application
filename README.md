@@ -9,7 +9,7 @@
 
 - **Bank Account** est implémentée en **application orientée microservices** avec des ***microservices métiers*** et des ***microservices utilisataires***
 - Les microservices métiers: ***customer***, ***account*** et ***operation***
-    - chaque microservice métier est implementé dans une ***achitecture hexagonale***
+    - chaque microservice métier est implementé dans une achitecture ***hexagonale***
     - les microcroservices (***customer*** , ***account***) communiquent: c-à-d un **account** a besoin des données d'un **customer** pour être géré
     - les microcroservices (***account*** , ***operation***) communiquent: c-à-d une **operation** a besoin des données d'un **account** pour être géré
     - chaque microservice métier possède ses propres ressources (**db**,**dépendances**, **configurations**, ..), il peut évoluer dans son propre env 
@@ -28,12 +28,11 @@
 L'application orientée microservice **Bank Account** est dimensionnée comme suit:
 
 ## Backend
-- 3 microservices métiers (business microservices)
-- chaque microservice métier mappe une base données ***PostgreSQL*** déployée dans  un ***docker container***
-    - le fichier ***postgresql.yml*** sert de lancer le container docker de PostgreSQL: ```docker compose -f ./postgresql.yml up -d```
-- 3 microservices utilitaires (utils microservices)
+- 3 business microservices ou microservices métiers
+- chaque microservice métier mappe une base données ***PostgreSQL*** déployée dans  un ***docker container***: ```docker compose -f ./postgresql.yml up -d```
+- 3 utils microservices ou microservices utilitaires
 
-### Microservices métiers
+### Business microservices
 
 - ***business-microservice-customer***
     - *backend/business-micorservices/business-microservice-customer*
@@ -42,7 +41,7 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
 - ***business-microservice-operation***
     - *backend/business-micorservices/business-microservice-operation*
 
-### Microservices utilitaires
+### Utils microservices
 
 - ***microservices-config-server***: *backend/utils-microservices/microservices-configuration-server*
     - au démarrage, les microservices demandent leur configurations au serveur **microservices-config-server**
@@ -55,18 +54,20 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
     - le service gateway route les requêtes http dans les deux sens entre le frontend et la backend
     - voir la configuration ***bootstrap-dev.yml*** du microservice 
 
-### Les api exposeés par les microservices métiers
-Pour accéder au microservices métiers backend on passe par la gateway : ```http://localhost:8101```
+### Les api exposeés par les business microservices
+Pour accéder au business microservices en backend on passe par la gateway : ```http://localhost:8101```
 
 #### business-microservice-customer
-- [POST], [PUT]: ```http://localhost:8101/api-customer/customers```  
+- [POST], [PUT]: ```http://localhost:8101/api-customer/customers```  pour créer, éditer un customer
 request payload -> ![customer-post](./assets/customer-post.png)    response -> ![customer-post-return](./assets/customer-post-return.png)
-- [GET] : ```http://localhost:8101/api-customer/customers```  
-- [GET] : ```http://localhost:8101/api-customer/addresses```
-- [GET] : ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : liste des comptes et leurs soldes du ***customer*** depuis le remote ***account api***  
+- [GET] : ```http://localhost:8101/api-customer/customers```  pour consulter tous les customers
+- [GET] : ```http://localhost:8101/api-customer/addresses``` pour consulter les adresses des customers
+- [GET] : ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : pour consulter les comptes et leurs soldes du ***customer customerId*** depuis le remote ***account***  
 ![customer-accout](./assets/customer-account.png)
 
 #### business-microservice-account
+Pour crére un compte, l'api account intérroge l'api customer pour récupérer les infos du customer associé à l'id fourni par le account
+![account-customer](./assets/account-customer-post.png)
 - [POST] : ```http://localhost:8101/api-account/accounts```  
    request payload -> ![account-post](./assets/account-post.png)    response -> ![account-post-return](./assets/account-post-return.png)
 

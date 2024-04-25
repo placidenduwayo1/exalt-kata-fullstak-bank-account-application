@@ -6,5 +6,5 @@ import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.mod
 
 public interface InputOperationService {
     Operation createOperation(OperationRequestDto operationRequestDto);
-    
+
 }
