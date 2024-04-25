@@ -23,7 +23,7 @@ public class InputOperationServiceImpl implements InputOperationService {
 
     @Override
     public Operation createOperation(OperationDto operationDto) throws OperationRequestFieldsInvalidException,
-            OperationTypeInvalidException, RemoteAccountApiUnreachableException, RemoteAccountNotEnoughBalanceException {
+            OperationTypeInvalidException, RemoteAccountApiUnreachableException, RemoteAccountNotEnoughBalanceException, RemoteAccountInaccessibleFromOutsideException {
 
         OperationValidators.formatter(operationDto);
 
@@ -34,28 +34,35 @@ public class InputOperationServiceImpl implements InputOperationService {
             throw new OperationTypeInvalidException(ExceptionsMsg.OPERATION_TYPE);
         }
         Account account = outputOperationService.loadRemoteAccount(operationDto.getAccountId());
-        Customer customer = outputOperationService.loaddRemoteCustomer(account.getCustomerId());
-
         Account updatedAccount = null;
-
+        Customer customer = null;
         if (account.getAccountId().equals(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)) {
             throw new RemoteAccountApiUnreachableException(String.format("%s,%n%s", ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE, account));
         } else {
-            //operation de retrait
-            AccountDto accountDto;
-            if (operationDto.getType().equals("retrait") && (OperationValidators.notEnoughBalance(account, operationDto.getMount()))) {
-                throw new RemoteAccountNotEnoughBalanceException(ExceptionsMsg.REMOTE_ACCOUNT_BALANCE);
-            } else if (operationDto.getType().equals("retrait") && (!OperationValidators.notEnoughBalance(account, operationDto.getMount()))) {
-                account.setBalance(-operationDto.getMount());
-                accountDto = MapperService.fromTo(account);
-                updatedAccount = outputOperationService.updateRemoteAccount(account.getAccountId(), accountDto);
+            //operation de retrait from the remote account api
+            if(account.getType().equals("compte-courant")){
+                AccountDto accountDto;
+                if (operationDto.getType().equals("retrait") && (OperationValidators.notEnoughBalance(account, operationDto.getMount()))) {
+                    throw new RemoteAccountNotEnoughBalanceException(ExceptionsMsg.REMOTE_ACCOUNT_BALANCE);
+                } else if (operationDto.getType().equals("retrait") && (!OperationValidators.notEnoughBalance(account, operationDto.getMount()))) {
+
+                    customer = outputOperationService.loaddRemoteCustomer(account.getCustomerId());
+                    // verifier le state du customer
+                    account.setBalance(-operationDto.getMount());
+                    accountDto = MapperService.fromTo(account);
+                    updatedAccount = outputOperationService.updateRemoteAccount(account.getAccountId(), accountDto);
+                }
+                //operation de depot sur le remote account api
+                else if (operationDto.getType().equals("depot")) {
+                    account.setBalance(operationDto.getMount());
+                    accountDto = MapperService.fromTo(account);
+                    updatedAccount = outputOperationService.updateRemoteAccount(account.getAccountId(), accountDto);
+                }
             }
-            //operation ed depot sur le compte
-            else if (operationDto.getType().equals("depot")) {
-                account.setBalance(operationDto.getMount());
-                accountDto = MapperService.fromTo(account);
-                updatedAccount = outputOperationService.updateRemoteAccount(account.getAccountId(), accountDto);
+            else {
+                throw new RemoteAccountInaccessibleFromOutsideException(ExceptionsMsg.REMOTE_ACCOUNT_TYPE);
             }
+
         }
         assert updatedAccount != null;
         updatedAccount.setCustomer(customer);

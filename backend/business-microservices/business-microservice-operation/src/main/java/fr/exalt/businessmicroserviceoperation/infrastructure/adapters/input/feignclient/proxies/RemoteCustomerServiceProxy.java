@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface RemoteCustomerServiceProxy {
     @GetMapping(value = "/customers/{customerId}")
     CustomerModel loadRemoteCustomer(@PathVariable(name = "customerId") String customerId);
+
     @Component
     @Slf4j
     class RemoteCustomerServiceFallback implements RemoteCustomerServiceProxy {

@@ -1,10 +1,7 @@
 package fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.web;
 
 import fr.exalt.businessmicroserviceoperation.domain.entities.Operation;
-import fr.exalt.businessmicroserviceoperation.domain.exceptions.OperationRequestFieldsInvalidException;
-import fr.exalt.businessmicroserviceoperation.domain.exceptions.OperationTypeInvalidException;
-import fr.exalt.businessmicroserviceoperation.domain.exceptions.RemoteAccountApiUnreachableException;
-import fr.exalt.businessmicroserviceoperation.domain.exceptions.RemoteAccountNotEnoughBalanceException;
+import fr.exalt.businessmicroserviceoperation.domain.exceptions.*;
 import fr.exalt.businessmicroserviceoperation.domain.ports.input.InputOperationService;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models.OperationDto;
 import lombok.AllArgsConstructor;
@@ -18,13 +15,17 @@ import java.util.Collection;
 public class OperationController {
     // adapter inputOperationService comme interface entre le domain et l'entrée extérieure
     private final InputOperationService inputOperationService;
+
     @PostMapping(value = "/operations")
-    public Operation createOperation(@RequestBody OperationDto dto) throws OperationTypeInvalidException,
-            OperationRequestFieldsInvalidException, RemoteAccountApiUnreachableException, RemoteAccountNotEnoughBalanceException {
+    public Operation createOperation(@RequestBody OperationDto dto) throws
+            OperationTypeInvalidException, OperationRequestFieldsInvalidException,
+            RemoteAccountApiUnreachableException, RemoteAccountNotEnoughBalanceException,
+            RemoteAccountInaccessibleFromOutsideException {
         return inputOperationService.createOperation(dto);
     }
+
     @GetMapping(value = "/operations")
-    public Collection<Operation> getAllOperations(){
+    public Collection<Operation> getAllOperations() {
         return inputOperationService.getAllOperations();
     }
 }

@@ -81,6 +81,13 @@ Pour créer / editer un compte, **account api** intérroge **customer api** pour
 ### business-microservice-operation
 - **[POST]**: ```http://localhost:8101/api-operation/operations```: pour créer une opération de **dépot** ou de **retrait**
 request payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/opeation-post-return.png)
+![operation-request-chain](./assets/operation-post-chain.png) 
+- Pour enregistrer une opération:
+    - **(1)** l'api **operation** envoie la requête à l'api **account** pour récupérer les informations du compté associé à accountId
+        - **1.1.** l'api operation vérifie que c'est un compte courant (seuls les **comptes courants** autorisent les transactions), si oui ...
+        - **1.2** si opération de **retrat**, l'api operation vérifie la balance du compte ```account.balance + account.overdraft >= operation.amount```, si OK ...
+    - **(2)** l'api **operation** requête l'api **customer** moyenant le **customerId** de account reçu à **(1)** (un account est associé à un customer) 
+        - si le state du customer est active l'opération est saved en db sinon une business exception est retournée
 
 # Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**
