@@ -62,11 +62,12 @@ Pour accéder au business microservices en backend on passe par la gateway : ```
 request payload -> ![customer-post](./assets/customer-post.png)    response -> ![customer-post-return](./assets/customer-post-return.png)  
 - [GET] : ```http://localhost:8101/api-customer/customers```  pour consulter tous les customers  
 - [GET] : ```http://localhost:8101/api-customer/addresses``` pour consulter les adresses des customers  
-- [GET] : ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : pour consulter les comptes et leurs soldes du ***customer customerId*** depuis le remote ***account***    
+- [GET] : ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : pour consulter les comptes et leurs soldes du ***customer*** depuis le remote ***account***    
 ![customer-accout](./assets/customer-account.png)
+- - si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme relience sont retournées à l'utilisateur
 
 #### business-microservice-account
-Pour crére un compte, **ccount api** intérroge **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le account
+Pour crére un compte, **account api** intérroge **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le account
 ![account-customer](./assets/account-customer-post.png)
 - [POST] : ```http://localhost:8101/api-account/accounts```  
    request payload -> ![account-post](./assets/account-post.png)    response -> ![account-post-return](./assets/account-post-return.png)
