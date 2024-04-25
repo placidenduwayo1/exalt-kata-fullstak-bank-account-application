@@ -1,13 +1,13 @@
 # 💰 **Bank Account** 💰
 - ***assets*** contient les images utilisées dans cette documentation
-- ***backend*** contient 2 types de microservices de l'application Bank Account: microservices métiers et microservices utils
+- ***backend*** contient 2 types de microservices de l'application Bank Account: ***microservices métiers*** et **microservices utils**
 - ***configuration-center*** est un dossier externe contenant les fichiers de configuration des microservices
 - ***frontend-app*** est l'application angular à développer
 - ***postgresql.yml*** est un template de lancement de la db PostgreSQL dans un container docker
 
 ## Description
 
-- **Bank Account** est une **application orientée microservices** avec des ***microservices métiers*** et des ***microservices utilisataires***
+- **Bank Account** est implémentée en **application orientée microservices** avec des ***microservices métiers*** et des ***microservices utilisataires***
 - Les microservices métiers: ***customer***, ***account*** et ***operation***
     - chaque microservice métier est implementé dans une ***achitecture hexagonale***
     - les microcroservices (***customer*** , ***account***) communiquent: c-à-d un **account** a besoin des données d'un **customer** pour être géré
