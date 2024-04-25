@@ -5,11 +5,15 @@ public class Account {
     private String type;
     private double balance;
     private double overdraft;
+    private String customerId;
+    private Customer customer;
     private Account(AccountBuilder builder) {
         this.accountId = builder.accountId;
         this.type = builder.type;
         this.balance = builder.balance;
         this.overdraft = builder.overdraft;
+        this.customerId = builder.customerId;
+        this.customer = builder.customer;
     }
 
     public String getAccountId() {
@@ -44,11 +48,29 @@ public class Account {
         this.overdraft = overdraft;
     }
 
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
     public static class AccountBuilder {
         private String accountId;
         private String type;
         private double balance;
         private double overdraft;
+        private String customerId;
+        private Customer customer;
 
         public AccountBuilder accountId(String accountId) {
             this.accountId = accountId;
@@ -67,6 +89,16 @@ public class Account {
 
         public AccountBuilder overdraft(double overdraft) {
             this.overdraft = overdraft;
+            return this;
+        }
+
+        public AccountBuilder customerId(String customerId) {
+            this.customerId = customerId;
+            return this;
+        }
+
+        public AccountBuilder customer(Customer customer) {
+            this.customer = customer;
             return this;
         }
 

@@ -5,12 +5,16 @@ public class Operation {
     private String type;
     private double mount;
     private String createdAt;
+    private String accountId;
+    private Account account;
 
-    private Operation(OperationBuilder builder){
+    private Operation(OperationBuilder builder) {
         this.operationId = builder.operationId;
         this.type = builder.type;
         this.mount = builder.mount;
         this.createdAt = builder.createdAt;
+        this.accountId = builder.accountId;
+        this.account = builder.account;
     }
 
     public String getOperationId() {
@@ -45,11 +49,29 @@ public class Operation {
         this.createdAt = createdAt;
     }
 
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
     public static class OperationBuilder {
         private String operationId;
         private String type;
         private double mount;
         private String createdAt;
+        private String accountId;
+        private Account account;
 
         public OperationBuilder operationId(String operationId) {
             this.operationId = operationId;
@@ -70,7 +92,18 @@ public class Operation {
             this.createdAt = createdAt;
             return this;
         }
-        public Operation build(){
+
+        public OperationBuilder accountId(String accountId) {
+            this.accountId = accountId;
+            return this;
+        }
+
+        public OperationBuilder account(Account account) {
+            this.account = account;
+            return this;
+        }
+
+        public Operation build() {
             return new Operation(this);
         }
     }
@@ -78,10 +111,12 @@ public class Operation {
     @Override
     public String toString() {
         return "Operation [" +
-                "operationId='" + operationId + '\'' +
+                "operation id='" + operationId + '\'' +
                 ", type='" + type + '\'' +
                 ", mount=" + mount +
-                ", createdAt='" + createdAt + '\'' +
+                ", created at='" + createdAt + '\'' +
+                ", account id='" + accountId + '\'' +
+                ", account=" + account +
                 ']';
     }
 }

@@ -9,7 +9,14 @@ import java.util.Collection;
 public interface InputAccountService {
     Account createAccount(AccountDto accountDto) throws AccountTypeInvalidException, AccountFieldsInvalidException,
             RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException;
+
     Collection<Account> getAllAccounts();
+
     Account getAccount(String accountId) throws AccountNotFoundException;
+
     Collection<Account> getAccountOfGivenCustomer(String customerId);
+
+    Account updateAccount(String accountId, AccountDto accountDto) throws AccountTypeInvalidException,
+            AccountFieldsInvalidException, AccountNotFoundException, RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException;
+
 }

@@ -12,4 +12,5 @@ import lombok.ToString;
 public class OperationDto {
     private String type;
     private double mount;
+    private String accountId;
 }

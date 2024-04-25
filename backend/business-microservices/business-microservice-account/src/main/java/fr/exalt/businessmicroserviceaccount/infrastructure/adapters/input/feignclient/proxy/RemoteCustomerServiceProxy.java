@@ -1,5 +1,6 @@
 package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feignclient.proxy;
 
+import fr.exalt.businessmicroserviceaccount.domain.exceptions.ExceptionMsg;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feignclient.models.CustomerModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,12 +23,11 @@ public interface RemoteCustomerServiceProxy {
     class RemoteCustomerFallback implements RemoteCustomerServiceProxy {
         @Override
         public CustomerModel loadRemoteCustomer(String customerId) {
-            final String unreachable = "it is possible that remote customer is unreachable";
             CustomerModel resilience = CustomerModel.builder()
-                    .customerId(unreachable)
-                    .firstname(unreachable)
-                    .lastname(unreachable)
-                    .state(unreachable)
+                    .customerId(ExceptionMsg.REMOTE_CUSTOMER_API)
+                    .firstname(ExceptionMsg.REMOTE_CUSTOMER_API)
+                    .lastname(ExceptionMsg.REMOTE_CUSTOMER_API)
+                    .state(ExceptionMsg.REMOTE_CUSTOMER_API)
                     .build();
             log.error("[Fallback] resilience management {}", resilience);
             return resilience;

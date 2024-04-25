@@ -22,24 +22,13 @@ public class InputAccountServiceImpl implements InputAccountService {
     @Override
     public Account createAccount(AccountDto accountDto) throws AccountTypeInvalidException, AccountFieldsInvalidException,
             RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException {
-        AccountValidators.formatter(accountDto);
-        if (!AccountValidators.validAccountType(accountDto.getType())) {
-            throw new AccountTypeInvalidException(ExceptionMsg.ACCOUNT_TYPE_INVALID);
-        }
-        if (AccountValidators.invalidFields(accountDto)) {
-            throw new AccountFieldsInvalidException(ExceptionMsg.ACCOUNT_FIELDS_INVALID);
-        }
-        Customer customer = outputAccountService.loadRemoteCustomer(accountDto.getCustomerId());
 
-        if (AccountValidators.remoteCustomerApiUnreachable(customer.getCustomerId())) {
-            throw new RemoteCustomerApiUnreachableException(String.format("%s,%n%s", ExceptionMsg.REMOTE_CUSTOMER_API, customer));
-        } else if (AccountValidators.remoteCustomerStateInvalid(customer.getState())) {
-            throw new RemoteCustomerStateInvalidException(String.format("%s,%n%s", ExceptionMsg.REMOTE_CUSTOMER_STATE, customer));
-        }
+        Customer customer = outputAccountService.loadRemoteCustomer(accountDto.getCustomerId().strip());
+        validateAccount(accountDto, customer);
         Account account = MapperService.fromTo(accountDto);
         account.setAccountId(UUID.randomUUID().toString());
         account.setCreatedAt(Timestamp.from(Instant.now()).toString());
-        if(account.getType().equals("compte-epargne")){
+        if (account.getType().equals("compte-epargne")) {
             account.setOverdraft(0);//un compte epargne ne possede pas de decouvert
         }
         // passer le bean créé à l'adaptateur pour l'enregistrer en db
@@ -50,7 +39,7 @@ public class InputAccountServiceImpl implements InputAccountService {
 
     @Override
     public Collection<Account> getAllAccounts() {
-        Collection<Account>  accounts = outputAccountService.getAllAccounts();
+        Collection<Account> accounts = outputAccountService.getAllAccounts();
         return setCustomerToAccount(accounts);
     }
 
@@ -66,6 +55,36 @@ public class InputAccountServiceImpl implements InputAccountService {
     public Collection<Account> getAccountOfGivenCustomer(String customerId) {
         Collection<Account> accounts = outputAccountService.getAccountOfGivenCustomer(customerId);
         return setCustomerToAccount(accounts);
+    }
+
+    @Override
+    public Account updateAccount(String accountId, AccountDto accountDto) throws AccountTypeInvalidException,
+            AccountFieldsInvalidException, AccountNotFoundException, RemoteCustomerStateInvalidException,
+            RemoteCustomerApiUnreachableException {
+        Customer customer = outputAccountService.loadRemoteCustomer(accountDto.getCustomerId().strip());
+        validateAccount(accountDto, customer);
+        Account account = getAccount(accountId);
+        account.setBalance(account.getBalance() + accountDto.getBalance());
+        account.setCustomerId(accountDto.getCustomerId());
+        Account updatedAccount = outputAccountService.updateAccount(account);
+        updatedAccount.setCustomer(customer);
+        return updatedAccount;
+    }
+
+    private void validateAccount(AccountDto dto, Customer customer) throws AccountTypeInvalidException,
+            AccountFieldsInvalidException, RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException {
+        AccountValidators.formatter(dto);
+        if (!AccountValidators.validAccountType(dto.getType())) {
+            throw new AccountTypeInvalidException(ExceptionMsg.ACCOUNT_TYPE_INVALID);
+        }
+        if (AccountValidators.invalidFields(dto)) {
+            throw new AccountFieldsInvalidException(ExceptionMsg.ACCOUNT_FIELDS_INVALID);
+        }
+        if (AccountValidators.remoteCustomerApiUnreachable(customer.getCustomerId())) {
+            throw new RemoteCustomerApiUnreachableException(String.format("%s,%n%s", ExceptionMsg.REMOTE_CUSTOMER_API, customer));
+        } else if (AccountValidators.remoteCustomerStateInvalid(customer.getState())) {
+            throw new RemoteCustomerStateInvalidException(String.format("%s,%n%s", ExceptionMsg.REMOTE_CUSTOMER_STATE, customer));
+        }
     }
 
     private Collection<Account> setCustomerToAccount(Collection<Account> accounts) {

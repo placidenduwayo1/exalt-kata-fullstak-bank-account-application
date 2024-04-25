@@ -55,24 +55,32 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
     - voir la configuration ***bootstrap-dev.yml*** du microservice 
 
 ## Les api exposeés par les business microservices
+
 Pour accéder au business microservices en backend on passe par la ***gateway-service-proxy*** : ```http://localhost:8101```
 
 ### business-microservice-customer
-- [POST], [PUT]: ```http://localhost:8101/api-customer/customers```  pour créer, éditer un customer  
+
+- **[POST]** / **[PUT]**: ```http://localhost:8101/api-customer/customers```  pour créer / éditer un customer  
 request payload -> ![customer-post](./assets/customer-post.png)    response -> ![customer-post-return](./assets/customer-post-return.png)  
-- [GET] : ```http://localhost:8101/api-customer/customers```  pour consulter tous les customers  
-- [GET] : ```http://localhost:8101/api-customer/addresses``` pour consulter les adresses des customers  
-- [GET] : ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : pour consulter les comptes et leurs soldes du ***customer*** depuis le remote ***account***    
+- **[GET]**: ```http://localhost:8101/api-customer/customers```  pour consulter tous les customers  
+- **[GET]**: ```http://localhost:8101/api-customer/addresses``` pour consulter les adresses des customers  
+- **[GET]**: ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : pour consulter les comptes et leurs soldes du ***customer*** depuis le remote ***account***    
 ![customer-accout](./assets/customer-account.png)
 - si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme relience sont retournées à l'utilisateur
 
 ### business-microservice-account
-Pour crére un compte, **account api** intérroge **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le account
-![account-customer](./assets/account-customer-post.png)
-- [POST] : ```http://localhost:8101/api-account/accounts```  
+
+Pour créer / editer un compte, **account api** intérroge **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le account
+- **[POST]** / **[PUT]**: ```http://localhost:8101/api-account/accounts```  
+![account-customer](./assets/account-customer-post.png)  
    request payload -> ![account-post](./assets/account-post.png)    response -> ![account-post-return](./assets/account-post-return.png)
-- si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme relience sont retournées à l'utilisateur
+- si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme de relience sont retournées à l'utilisateur
 - si le state du customer est **archive**, une business exception est retournées à l'utilisateur
+- **[GET]**: ```http://localhost:8101/api-account/accounts```: consulter la liste de tous les comptes
+
+### business-microservice-operation
+- **[POST]**: ```http://localhost:8101/api-operation/operations```: pour créer une opération de **dépot** ou de **retrait**
+request payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/opeation-post-return.png)
 
 # Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**

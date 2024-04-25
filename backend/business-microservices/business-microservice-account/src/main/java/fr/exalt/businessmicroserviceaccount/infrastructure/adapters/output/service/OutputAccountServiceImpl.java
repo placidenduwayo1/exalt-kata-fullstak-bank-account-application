@@ -56,4 +56,10 @@ public class OutputAccountServiceImpl implements OutputAccountService {
     public Customer loadRemoteCustomer(String customerId) {
        return MapperService.fromTo(remoteCustomerService.loadRemoteCustomer(customerId));
     }
+
+    @Override
+    public Account updateAccount(Account account) {
+        AccountModel modelModel = accountRepository.save(MapperService.fromTo(account));
+        return MapperService.fromTo(modelModel);
+    }
 }

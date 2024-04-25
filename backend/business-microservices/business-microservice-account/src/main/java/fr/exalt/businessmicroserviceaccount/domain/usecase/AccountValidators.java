@@ -1,7 +1,6 @@
 package fr.exalt.businessmicroserviceaccount.domain.usecase;
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.AccountType;
-import fr.exalt.businessmicroserviceaccount.domain.exceptions.ExceptionMsg;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountDto;
 
 public class AccountValidators {
@@ -15,7 +14,6 @@ public class AccountValidators {
 
     public static boolean invalidFields(AccountDto dto) {
         return dto.getType().isBlank()
-                || dto.getBalance() < 200
                 || dto.getOverdraft() < 200
                 || dto.getCustomerId().isBlank();
     }
@@ -32,7 +30,7 @@ public class AccountValidators {
     }
 
     public static boolean remoteCustomerApiUnreachable(String customerId) {
-        return customerId.strip().equals("it is possible that remote customer is unreachable");
+        return customerId.strip().equals("it may be possible that remote customer is unreachable");
     }
     public static boolean remoteCustomerStateInvalid(String customerState){
         return customerState.equals("archive");

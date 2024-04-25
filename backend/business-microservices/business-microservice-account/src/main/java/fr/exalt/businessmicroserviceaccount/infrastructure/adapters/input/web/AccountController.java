@@ -15,21 +15,32 @@ import java.util.Collection;
 public class AccountController {
     //input adapter
     private final InputAccountService inputAccountService;
+
     @PostMapping(value = "/accounts")
     public Account createAccount(@RequestBody AccountDto accountDto) throws RemoteCustomerStateInvalidException,
             AccountTypeInvalidException, RemoteCustomerApiUnreachableException, AccountFieldsInvalidException {
         return inputAccountService.createAccount(accountDto);
     }
+
     @GetMapping(value = "/accounts")
-    public Collection<Account> getAllAccounts(){
+    public Collection<Account> getAllAccounts() {
         return inputAccountService.getAllAccounts();
     }
+
     @GetMapping(value = "/accounts/{accountId}")
     public Account getAccount(@PathVariable(name = "accountId") String accountId) throws AccountNotFoundException {
         return inputAccountService.getAccount(accountId);
     }
+
     @GetMapping(value = "/customers/{customerId}/accounts")
-    public Collection<Account> getAccountOfGivenCustomer(@PathVariable(name = "customerId") String customerId){
+    public Collection<Account> getAccountOfGivenCustomer(@PathVariable(name = "customerId") String customerId) {
         return inputAccountService.getAccountOfGivenCustomer(customerId);
+    }
+
+    @PutMapping(value = "/accounts/{accountId}")
+    public Account updateAccount(@PathVariable(name = "accountId") String accountId, @RequestBody AccountDto dto)
+            throws AccountTypeInvalidException, AccountFieldsInvalidException, AccountNotFoundException,
+            RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException {
+        return inputAccountService.updateAccount(accountId, dto);
     }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping(value = "api-customer")
+@RequestMapping(value = "/api-customer")
 @AllArgsConstructor
 public class CustomerController {
     private final InputCustomerService inputCustomerService;
