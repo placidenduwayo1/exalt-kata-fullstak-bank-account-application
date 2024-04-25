@@ -66,10 +66,12 @@ request payload -> ![customer-post](./assets/customer-post.png)    response -> !
 ![customer-accout](./assets/customer-account.png)
 
 #### business-microservice-account
-Pour crére un compte, l'api account intérroge l'api customer pour récupérer les infos du customer associé à l'id fourni par le account
+Pour crére un compte, **ccount api** intérroge **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le account
 ![account-customer](./assets/account-customer-post.png)
 - [POST] : ```http://localhost:8101/api-account/accounts```  
    request payload -> ![account-post](./assets/account-post.png)    response -> ![account-post-return](./assets/account-post-return.png)
+- si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme relience sont retournées à l'utilisateur
+- si le state du customer est **archive**, une business exception est retournées à l'utilisateur
 
 ## Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**
