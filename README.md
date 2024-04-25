@@ -1,4 +1,9 @@
 # 💰 **Bank Account** 💰
+- ***assets*** contient les images utilisées dans cette documentation
+- ***backend*** contient 2 types de microservices de l'application Bank Account: microservices métiers et microservices utils
+- ***configuration-center*** est un dossier externe contenant les fichiers de configuration des microservices
+- ***frontend-app*** est l'application angular à développer
+- ***postgresql.yml*** est un template de lancement de la db PostgreSQL dans un container docker
 
 ## Description
 
@@ -58,7 +63,7 @@ Pour accéder au microservices métiers backend on passe par la gateway : ```htt
 request payload -> ![customer-post](./assets/customer-post.png)    response -> ![customer-post-return](./assets/customer-post-return.png)
 - [GET] : ```http://localhost:8101/api-customer/customers```  
 - [GET] : ```http://localhost:8101/api-customer/addresses```
-- [GET] : ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : récupère la liste des comptes du customer depuis le **remote account api**  
+- [GET] : ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : liste des comptes et leurs soldes du ***customer*** depuis le remote ***account api***  
 ![customer-accout](./assets/customer-account.png)
 
 #### business-microservice-account
