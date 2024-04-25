@@ -87,9 +87,9 @@ request payload -> ![operation-post](./assets/operation-post.png)   response -> 
         - **(1.1)** l'api **operation** vérifie que l'api **account** est joignable, si ok passe à **(1.2)**
         - **(1.2)** l'api **operation** vérifie que c'est un compte **courant** (seuls les comptes courants autorisent les transactions), si oui passer à **(1.3)**
         - **(1.3)** si opération de **retrait**, l'api operation vérifie la **balance** du compte ```account.balance + account.overdraft >= operation.amount```, si OK, passer à **(2)**
-    - **(2)** l'api **operation** requête l'api **customer** moyenant le **customerId** de account reçu à **(1)** (un account est associé à un customer)
+    - **(2)** l'api **operation** requête la remote api **customer** moyenant le **customerId** de account reçu à **(1)** (un account est associé à un customer)
         - **(2.1)** l'api operation vérifie que customer est joignable, si OK, passer à **(2.2)**
-        - **(2.2)** si le **state** du customer est **active** l'opération est sauvegardée en db sinon une **business exception** est retournée
+        - **(2.2)** si le **state** du customer est **active** l'opération est sauvegardée en db sinon (customer state **archive**) une **business exception** est retournée
 
 # Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**
