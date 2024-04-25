@@ -20,7 +20,8 @@ public class OperationController {
     public Operation createOperation(@RequestBody OperationDto dto) throws
             OperationTypeInvalidException, OperationRequestFieldsInvalidException,
             RemoteAccountApiUnreachableException, RemoteAccountNotEnoughBalanceException,
-            RemoteAccountInaccessibleFromOutsideException {
+            RemoteAccountTypeInaccessibleFromOutsideException, RemoteCustomerStateInvalidException,
+            RemoteCustomerApiUnreachableException {
         return inputOperationService.createOperation(dto);
     }
 
