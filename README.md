@@ -79,7 +79,7 @@ Pour créer / editer un compte, **account api** intérroge **customer api** pour
 - **[GET]**: ```http://localhost:8101/api-account/accounts```: consulter la liste de tous les comptes
 
 ### business-microservice-operation
-- **[POST]**: ```http://localhost:8101/api-operation/operations```: pour créer une opération de **dépot** ou de **retrait**
+- **[POST]**: ```http://localhost:8101/api-operation/operations```: pour créer une opération de **dépot** ou de **retrait**  
 request payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/opeation-post-return.png)
 ![operation-request-chain](./assets/operation-post-chain.png) 
 - Pour enregistrer une opération:
