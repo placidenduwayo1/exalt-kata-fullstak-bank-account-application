@@ -48,6 +48,9 @@ public class InputOperationServiceImpl implements InputOperationService {
 
                     customer = outputOperationService.loaddRemoteCustomer(account.getCustomerId());
                     // verifier le state du customer
+                    if(customer.getCustomerId().equals(ExceptionsMsg.REMOTE_CUSTOMER_UNREACHABLE)){
+                        
+                    }
                     account.setBalance(-operationDto.getMount());
                     accountDto = MapperService.fromTo(account);
                     updatedAccount = outputOperationService.updateRemoteAccount(account.getAccountId(), accountDto);

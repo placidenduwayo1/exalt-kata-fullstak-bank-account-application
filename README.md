@@ -83,11 +83,13 @@ Pour créer / editer un compte, **account api** intérroge **customer api** pour
 request payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/opeation-post-return.png)
 ![operation-request-chain](./assets/operation-post-chain.png) 
 - Pour enregistrer une opération:
-    - **(1)** l'api **operation** envoie la requête à l'api **account** pour récupérer les informations du compté associé à **accountId**
-        - **1.1.** l'api **operation** vérifie que c'est un compte **courant** (seuls les comptes courants autorisent les transactions), si oui ...
-        - **1.2** si opération de **retrat**, l'api operation vérifie la **balance** du compte ```account.balance + account.overdraft >= operation.amount```, si OK ...
-    - **(2)** l'api **operation** requête l'api **customer** moyenant le **customerId** de account reçu à **(1)** (un account est associé à un customer) 
-        - si le **state** du customer est **active** l'opération est sauvegardée en db sinon une **business exception** est retournée
+    - **(1)** l'api **operation** requête à la remote api **account** pour récupérer les informations du compté associé à **accountId**
+        - **(1.1)** l'api **operation** vérifie que l'api **account** est joignable, si ok passe à **(1.2)**
+        - **(1.2)** l'api **operation** vérifie que c'est un compte **courant** (seuls les comptes courants autorisent les transactions), si oui passer à **(1.3)**
+        - **(1.3)** si opération de **retrait**, l'api operation vérifie la **balance** du compte ```account.balance + account.overdraft >= operation.amount```, si OK, passer à **(2)**
+    - **(2)** l'api **operation** requête l'api **customer** moyenant le **customerId** de account reçu à **(1)** (un account est associé à un customer)
+        - **(2.1)** l'api operation vérifie que customer est joignable, si OK, passer à **(2.2)**
+        - **(2.2)** si le **state** du customer est **active** l'opération est sauvegardée en db sinon une **business exception** est retournée
 
 # Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**
