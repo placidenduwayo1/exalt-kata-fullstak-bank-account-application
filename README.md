@@ -58,11 +58,11 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
 Pour accéder au business microservices en backend on passe par la gateway : ```http://localhost:8101```
 
 #### business-microservice-customer
-- [POST], [PUT]: ```http://localhost:8101/api-customer/customers```  pour créer, éditer un customer
-request payload -> ![customer-post](./assets/customer-post.png)    response -> ![customer-post-return](./assets/customer-post-return.png)
-- [GET] : ```http://localhost:8101/api-customer/customers```  pour consulter tous les customers
-- [GET] : ```http://localhost:8101/api-customer/addresses``` pour consulter les adresses des customers
-- [GET] : ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : pour consulter les comptes et leurs soldes du ***customer customerId*** depuis le remote ***account***  
+- [POST], [PUT]: ```http://localhost:8101/api-customer/customers```  pour créer, éditer un customer  
+request payload -> ![customer-post](./assets/customer-post.png)    response -> ![customer-post-return](./assets/customer-post-return.png)  
+- [GET] : ```http://localhost:8101/api-customer/customers```  pour consulter tous les customers  
+- [GET] : ```http://localhost:8101/api-customer/addresses``` pour consulter les adresses des customers  
+- [GET] : ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : pour consulter les comptes et leurs soldes du ***customer customerId*** depuis le remote ***account***    
 ![customer-accout](./assets/customer-account.png)
 
 #### business-microservice-account
