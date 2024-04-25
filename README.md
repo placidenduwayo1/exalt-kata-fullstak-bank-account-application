@@ -5,7 +5,7 @@
 - ***frontend-app*** est l'application angular à développer
 - ***postgresql.yml*** est un template de lancement de la db PostgreSQL dans un container docker
 
-## Description
+# Description
 
 - **Bank Account** est implémentée en **application orientée microservices** avec des ***microservices métiers*** et des ***microservices utilisataires***
 - Les microservices métiers: ***customer***, ***account*** et ***operation***
@@ -19,20 +19,20 @@
     - *gateway-service*: pour router dans les deux sens les requêtes entre le front et le back
 - Le frontend est une ***application en Angular***
 
-## Architecure
+# Architecure
 ![application-archi](./assets/exalt-bank-account-archi.png)
 
-## Conceptual model
+# Conceptual model
 ![modeling](./assets/exalt-bank-account-conception.png)
 
 L'application orientée microservice **Bank Account** est dimensionnée comme suit:
 
-## Backend
+# Backend
 - 3 business microservices ou microservices métiers
 - chaque microservice métier mappe une base données ***PostgreSQL*** déployée dans  un ***docker container***: ```docker compose -f ./postgresql.yml up -d```
 - 3 utils microservices ou microservices utilitaires
 
-### Business microservices
+## Business microservices
 
 - ***business-microservice-customer***
     - *backend/business-micorservices/business-microservice-customer*
@@ -41,7 +41,7 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
 - ***business-microservice-operation***
     - *backend/business-micorservices/business-microservice-operation*
 
-### Utils microservices
+## Utils microservices
 
 - ***microservices-config-server***: *backend/utils-microservices/microservices-configuration-server*
     - au démarrage, les microservices demandent leur configurations au serveur **microservices-config-server**
@@ -54,10 +54,10 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
     - le service gateway route les requêtes http dans les deux sens entre le frontend et la backend
     - voir la configuration ***bootstrap-dev.yml*** du microservice 
 
-### Les api exposeés par les business microservices
+## Les api exposeés par les business microservices
 Pour accéder au business microservices en backend on passe par la ***gateway-service-proxy*** : ```http://localhost:8101```
 
-#### business-microservice-customer
+### business-microservice-customer
 - [POST], [PUT]: ```http://localhost:8101/api-customer/customers```  pour créer, éditer un customer  
 request payload -> ![customer-post](./assets/customer-post.png)    response -> ![customer-post-return](./assets/customer-post-return.png)  
 - [GET] : ```http://localhost:8101/api-customer/customers```  pour consulter tous les customers  
@@ -66,7 +66,7 @@ request payload -> ![customer-post](./assets/customer-post.png)    response -> !
 ![customer-accout](./assets/customer-account.png)
 - si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme relience sont retournées à l'utilisateur
 
-#### business-microservice-account
+### business-microservice-account
 Pour crére un compte, **account api** intérroge **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le account
 ![account-customer](./assets/account-customer-post.png)
 - [POST] : ```http://localhost:8101/api-account/accounts```  
@@ -74,12 +74,12 @@ Pour crére un compte, **account api** intérroge **customer api** pour récupé
 - si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme relience sont retournées à l'utilisateur
 - si le state du customer est **archive**, une business exception est retournées à l'utilisateur
 
-## Deploiement en containers docker
+# Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**
 - Après nous déployons tous les microservices de **Bank Account** dans des containers docker
     - Nous allons pour cela utiliser l'environement *integ*: **application-integ.yml**, **bootstrap-integ.yml**
 - voir les fichiers de configurations de chaque microservice
 
 
-## Frontend
+# Frontend
 Le frontend est une ***application en Angular*** (V16) utilisant le pattern ***observeur de RxJs***
