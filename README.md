@@ -55,7 +55,7 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
     - voir la configuration ***bootstrap-dev.yml*** du microservice 
 
 ### Les api exposeés par les business microservices
-Pour accéder au business microservices en backend on passe par la gateway : ```http://localhost:8101```
+Pour accéder au business microservices en backend on passe par la ***gateway-service-proxy*** : ```http://localhost:8101```
 
 #### business-microservice-customer
 - [POST], [PUT]: ```http://localhost:8101/api-customer/customers```  pour créer, éditer un customer  
@@ -64,7 +64,7 @@ request payload -> ![customer-post](./assets/customer-post.png)    response -> !
 - [GET] : ```http://localhost:8101/api-customer/addresses``` pour consulter les adresses des customers  
 - [GET] : ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : pour consulter les comptes et leurs soldes du ***customer*** depuis le remote ***account***    
 ![customer-accout](./assets/customer-account.png)
-- - si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme relience sont retournées à l'utilisateur
+- si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme relience sont retournées à l'utilisateur
 
 #### business-microservice-account
 Pour crére un compte, **account api** intérroge **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le account
