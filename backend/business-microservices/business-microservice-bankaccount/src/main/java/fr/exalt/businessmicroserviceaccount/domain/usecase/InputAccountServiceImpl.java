@@ -1,7 +1,9 @@
 package fr.exalt.businessmicroserviceaccount.domain.usecase;
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccount;
+import fr.exalt.businessmicroserviceaccount.domain.entities.CurrentBankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.entities.Customer;
+import fr.exalt.businessmicroserviceaccount.domain.entities.SavingBankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.exceptions.*;
 import fr.exalt.businessmicroserviceaccount.domain.ports.input.InputAccountService;
 import fr.exalt.businessmicroserviceaccount.domain.ports.output.OutputAccountService;
@@ -18,23 +20,37 @@ import java.util.UUID;
 public class InputAccountServiceImpl implements InputAccountService {
     //output adapter
     private final OutputAccountService outputAccountService;
+    private static final String CURRENT = "compte-courant";
+    private static final String SAVING = "compte-epargne";
 
     @Override
-    public BankAccount createAccount(BankAccountDto bankAccountDto) throws AccountTypeInvalidException, AccountFieldsInvalidException,
-            RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException {
+    public BankAccount createAccount(BankAccountDto dto) throws AccountTypeInvalidException, AccountFieldsInvalidException,
+            RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException, AccountStateInvalidException {
 
-        Customer customer = outputAccountService.loadRemoteCustomer(bankAccountDto.getCustomerId().strip());
-        validateAccount(bankAccountDto, customer);
-        BankAccount bankAccount = MapperService.fromTo(bankAccountDto);
-        bankAccount.setAccountId(UUID.randomUUID().toString());
-        bankAccount.setCreatedAt(Timestamp.from(Instant.now()).toString());
-        if (bankAccount.getType().equals("compte-epargne")) {
-            bankAccount.setOverdraft(0);//un compte epargne ne possede pas de decouvert
+        Customer customer = outputAccountService.loadRemoteCustomer(dto.getCustomerId().strip());
+        validateAccount(dto, customer);
+
+        if (dto.getType().equals(CURRENT)) {
+            CurrentBankAccount currentBankAccount = MapperService.mapToCurrentAccount(dto);
+            currentBankAccount.setAccountId(UUID.randomUUID().toString());
+            currentBankAccount.setCreatedAt(Timestamp.from(Instant.now()).toString());
+            // call to output adapter to register current account
+            CurrentBankAccount savedBankAccount = outputAccountService.createCurrentAccount(currentBankAccount);
+            savedBankAccount.setType(CURRENT);
+            savedBankAccount.setCustomer(customer);
+            return savedBankAccount;
+        } else if (dto.getType().equals(SAVING)) {
+            SavingBankAccount savingAccount = MapperService.mapToSavingAccount(dto);
+            savingAccount.setAccountId(UUID.randomUUID().toString());
+            savingAccount.setCreatedAt(Timestamp.from(Instant.now()).toString());
+            // call to output adapter to register current account
+            SavingBankAccount savedAccount = outputAccountService.createSavingAccount(savingAccount);
+            savedAccount.setType(SAVING);
+            savedAccount.setCustomer(customer);
+            return savedAccount;
         }
-        // passer le bean créé à l'adaptateur pour l'enregistrer en db
-        BankAccount saveBankAccount = outputAccountService.createAccount(bankAccount);
-        saveBankAccount.setCustomer(customer);
-        return saveBankAccount;
+
+        return null;
     }
 
     @Override
@@ -60,26 +76,50 @@ public class InputAccountServiceImpl implements InputAccountService {
     @Override
     public BankAccount updateAccount(String accountId, BankAccountDto bankAccountDto) throws AccountTypeInvalidException,
             AccountFieldsInvalidException, AccountNotFoundException, RemoteCustomerStateInvalidException,
-            RemoteCustomerApiUnreachableException {
+            RemoteCustomerApiUnreachableException, AccountStateInvalidException, AccountTypeProvidedDifferentWithAccountTypeRegisteredException {
+
         Customer customer = outputAccountService.loadRemoteCustomer(bankAccountDto.getCustomerId().strip());
         validateAccount(bankAccountDto, customer);
+
         BankAccount bankAccount = getAccount(accountId);
-        bankAccount.setBalance(bankAccount.getBalance() + bankAccountDto.getBalance());
-        bankAccount.setCustomerId(bankAccountDto.getCustomerId());
-        BankAccount updatedBankAccount = outputAccountService.updateAccount(bankAccount);
-        updatedBankAccount.setCustomer(customer);
-        return updatedBankAccount;
+        if (!bankAccount.getType().equals(bankAccountDto.getType()))
+            throw new AccountTypeProvidedDifferentWithAccountTypeRegisteredException(ExceptionMsg.ACCOUNTS_TYPE_DIFFERENT);
+        if (bankAccountDto.getType().equals(SAVING)) {
+            SavingBankAccount savingAccount = MapperService.mapToSavingAccount(bankAccountDto);
+            savingAccount.setBalance(savingAccount.getBalance() + bankAccount.getBalance());
+
+            // call to output adapter to save updated account
+            SavingBankAccount updateSavingAccount = outputAccountService.updateSavingAccount(savingAccount);
+            updateSavingAccount.setCustomer(customer);
+
+            return updateSavingAccount;
+
+        } else if (bankAccountDto.getType().equals(CURRENT)) {
+            CurrentBankAccount currentAccount = MapperService.mapToCurrentAccount(bankAccountDto);
+            currentAccount.setBalance(currentAccount.getBalance() + bankAccount.getBalance());
+
+            // call to output adapter to save updated account
+            CurrentBankAccount updateCurrentAccount = outputAccountService.updateCurrentAccount(currentAccount);
+            updateCurrentAccount.setCustomer(customer);
+
+            return updateCurrentAccount;
+        }
+        return null;
     }
 
     private void validateAccount(BankAccountDto dto, Customer customer) throws AccountTypeInvalidException,
-            AccountFieldsInvalidException, RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException {
+            AccountFieldsInvalidException, RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException,
+            AccountStateInvalidException {
         AccountValidators.formatter(dto);
-        if (!AccountValidators.validAccountType(dto.getType())) {
+        if (!AccountValidators.validAccountSType(dto.getType()))
             throw new AccountTypeInvalidException(ExceptionMsg.ACCOUNT_TYPE_INVALID);
-        }
-        if (AccountValidators.invalidFields(dto)) {
+
+        if (!AccountValidators.validAccountState(dto.getState()))
+            throw new AccountStateInvalidException(ExceptionMsg.ACCOUNT_STATE_INVALID);
+
+        if (AccountValidators.invalidFields(dto))
             throw new AccountFieldsInvalidException(ExceptionMsg.ACCOUNT_FIELDS_INVALID);
-        }
+
         if (AccountValidators.remoteCustomerApiUnreachable(customer.getCustomerId())) {
             throw new RemoteCustomerApiUnreachableException(String.format("%s,%n%s", ExceptionMsg.REMOTE_CUSTOMER_API, customer));
         } else if (AccountValidators.remoteCustomerStateInvalid(customer.getState())) {

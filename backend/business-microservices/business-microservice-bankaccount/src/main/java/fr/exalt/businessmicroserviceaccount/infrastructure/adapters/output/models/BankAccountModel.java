@@ -7,19 +7,19 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Setter
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
 @Table(name = "bank_accounts")
-public class BankAccountModel {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", length = 20)
+public abstract class BankAccountModel {
     @Id
     @GenericGenerator(name = "uuid")
     private String accountId;
-    private String type;
+    private String state;
     private double balance;
-    private double overdraft;
     private String createdAt;
     @Column(name = "customer_id")
     private String customerId;

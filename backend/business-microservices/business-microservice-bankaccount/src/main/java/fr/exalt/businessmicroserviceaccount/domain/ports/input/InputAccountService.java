@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public interface InputAccountService {
     BankAccount createAccount(BankAccountDto bankAccountDto) throws AccountTypeInvalidException, AccountFieldsInvalidException,
-            RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException;
+            RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException, AccountStateInvalidException;
 
     Collection<BankAccount> getAllAccounts();
 
@@ -17,6 +17,7 @@ public interface InputAccountService {
     Collection<BankAccount> getAccountOfGivenCustomer(String customerId);
 
     BankAccount updateAccount(String accountId, BankAccountDto bankAccountDto) throws AccountTypeInvalidException,
-            AccountFieldsInvalidException, AccountNotFoundException, RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException;
+            AccountFieldsInvalidException, AccountNotFoundException, RemoteCustomerStateInvalidException,
+            RemoteCustomerApiUnreachableException, AccountStateInvalidException, AccountTypeProvidedDifferentWithAccountTypeRegisteredException;
 
 }

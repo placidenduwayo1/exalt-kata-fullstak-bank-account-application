@@ -18,7 +18,7 @@ public class BankAccountController {
 
     @PostMapping(value = "/accounts")
     public BankAccount createAccount(@RequestBody BankAccountDto bankAccountDto) throws RemoteCustomerStateInvalidException,
-            AccountTypeInvalidException, RemoteCustomerApiUnreachableException, AccountFieldsInvalidException {
+            AccountTypeInvalidException, RemoteCustomerApiUnreachableException, AccountFieldsInvalidException, AccountStateInvalidException {
         return inputAccountService.createAccount(bankAccountDto);
     }
 
@@ -40,7 +40,8 @@ public class BankAccountController {
     @PutMapping(value = "/accounts/{accountId}")
     public BankAccount updateAccount(@PathVariable(name = "accountId") String accountId, @RequestBody BankAccountDto dto)
             throws AccountTypeInvalidException, AccountFieldsInvalidException, AccountNotFoundException,
-            RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException {
+            RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException, AccountStateInvalidException,
+            AccountTypeProvidedDifferentWithAccountTypeRegisteredException {
         return inputAccountService.updateAccount(accountId, dto);
     }
 }

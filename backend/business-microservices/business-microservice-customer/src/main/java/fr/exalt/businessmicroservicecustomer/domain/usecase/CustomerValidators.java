@@ -1,6 +1,6 @@
 package fr.exalt.businessmicroservicecustomer.domain.usecase;
 
-import fr.exalt.businessmicroservicecustomer.domain.entities.State;
+import fr.exalt.businessmicroservicecustomer.domain.entities.CustomerState;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
 
@@ -44,8 +44,8 @@ public class CustomerValidators {
 
     public static boolean isValidCustomerState(String customerState) {
         boolean stateValid = false;
-        for (State state : State.values()) {
-            if (customerState.equals(state.getCustomerState())) {
+        for (CustomerState state : CustomerState.values()) {
+            if (customerState.equals(state.getState())) {
                 stateValid = true;
                 break;
             }
