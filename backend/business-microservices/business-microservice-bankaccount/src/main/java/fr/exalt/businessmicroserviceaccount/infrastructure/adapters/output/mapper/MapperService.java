@@ -3,18 +3,18 @@ package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.mapp
 import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.entities.Customer;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feignclient.models.CustomerModel;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountDto;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountModel;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountModel;
 import org.springframework.beans.BeanUtils;
 
 public class MapperService {
     private MapperService(){}
-    public static BankAccount fromTo(AccountDto dto){
+    public static BankAccount fromTo(BankAccountDto dto){
         BankAccount bankAccount = new BankAccount.AccountBuilder().build();
         BeanUtils.copyProperties(dto, bankAccount);
         return bankAccount;
     }
-    public static BankAccount fromTo(AccountModel model){
+    public static BankAccount fromTo(BankAccountModel model){
         BankAccount bankAccount = new BankAccount.AccountBuilder().build();
         BeanUtils.copyProperties(model, bankAccount);
         return bankAccount;
@@ -24,8 +24,8 @@ public class MapperService {
         BeanUtils.copyProperties(model, customer);
         return customer;
     }
-    public static AccountModel fromTo(BankAccount bankAccount){
-        AccountModel model = AccountModel.builder().build();
+    public static BankAccountModel fromTo(BankAccount bankAccount){
+        BankAccountModel model = BankAccountModel.builder().build();
         BeanUtils.copyProperties(bankAccount, model);
         return model;
     }

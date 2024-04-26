@@ -6,7 +6,7 @@ import fr.exalt.businessmicroserviceaccount.domain.exceptions.*;
 import fr.exalt.businessmicroserviceaccount.domain.ports.input.InputAccountService;
 import fr.exalt.businessmicroserviceaccount.domain.ports.output.OutputAccountService;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.mapper.MapperService;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountDto;
 import lombok.AllArgsConstructor;
 
 import java.sql.Timestamp;
@@ -20,12 +20,12 @@ public class InputAccountServiceImpl implements InputAccountService {
     private final OutputAccountService outputAccountService;
 
     @Override
-    public BankAccount createAccount(AccountDto accountDto) throws AccountTypeInvalidException, AccountFieldsInvalidException,
+    public BankAccount createAccount(BankAccountDto bankAccountDto) throws AccountTypeInvalidException, AccountFieldsInvalidException,
             RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException {
 
-        Customer customer = outputAccountService.loadRemoteCustomer(accountDto.getCustomerId().strip());
-        validateAccount(accountDto, customer);
-        BankAccount bankAccount = MapperService.fromTo(accountDto);
+        Customer customer = outputAccountService.loadRemoteCustomer(bankAccountDto.getCustomerId().strip());
+        validateAccount(bankAccountDto, customer);
+        BankAccount bankAccount = MapperService.fromTo(bankAccountDto);
         bankAccount.setAccountId(UUID.randomUUID().toString());
         bankAccount.setCreatedAt(Timestamp.from(Instant.now()).toString());
         if (bankAccount.getType().equals("compte-epargne")) {
@@ -58,20 +58,20 @@ public class InputAccountServiceImpl implements InputAccountService {
     }
 
     @Override
-    public BankAccount updateAccount(String accountId, AccountDto accountDto) throws AccountTypeInvalidException,
+    public BankAccount updateAccount(String accountId, BankAccountDto bankAccountDto) throws AccountTypeInvalidException,
             AccountFieldsInvalidException, AccountNotFoundException, RemoteCustomerStateInvalidException,
             RemoteCustomerApiUnreachableException {
-        Customer customer = outputAccountService.loadRemoteCustomer(accountDto.getCustomerId().strip());
-        validateAccount(accountDto, customer);
+        Customer customer = outputAccountService.loadRemoteCustomer(bankAccountDto.getCustomerId().strip());
+        validateAccount(bankAccountDto, customer);
         BankAccount bankAccount = getAccount(accountId);
-        bankAccount.setBalance(bankAccount.getBalance() + accountDto.getBalance());
-        bankAccount.setCustomerId(accountDto.getCustomerId());
+        bankAccount.setBalance(bankAccount.getBalance() + bankAccountDto.getBalance());
+        bankAccount.setCustomerId(bankAccountDto.getCustomerId());
         BankAccount updatedBankAccount = outputAccountService.updateAccount(bankAccount);
         updatedBankAccount.setCustomer(customer);
         return updatedBankAccount;
     }
 
-    private void validateAccount(AccountDto dto, Customer customer) throws AccountTypeInvalidException,
+    private void validateAccount(BankAccountDto dto, Customer customer) throws AccountTypeInvalidException,
             AccountFieldsInvalidException, RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException {
         AccountValidators.formatter(dto);
         if (!AccountValidators.validAccountType(dto.getType())) {

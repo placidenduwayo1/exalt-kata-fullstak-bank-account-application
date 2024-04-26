@@ -1,6 +1,6 @@
 package fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models;
 
-import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.AccountModel;
+import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.BankAccountModel;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -22,5 +22,5 @@ public class OperationModel {
     @Column(name = "account_id")
     private String accountId;
     @Transient
-    private AccountModel account;
+    private BankAccountModel account;
 }

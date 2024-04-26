@@ -1,18 +1,18 @@
 package fr.exalt.businessmicroserviceaccount.domain.usecase;
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.AccountType;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountDto;
 
 public class AccountValidators {
     private AccountValidators() {
     }
 
-    public static void formatter(AccountDto dto) {
+    public static void formatter(BankAccountDto dto) {
         dto.setType(dto.getType().strip());
         dto.setCustomerId(dto.getCustomerId().strip());
     }
 
-    public static boolean invalidFields(AccountDto dto) {
+    public static boolean invalidFields(BankAccountDto dto) {
         return dto.getType().isBlank()
                 || dto.getOverdraft() < 200
                 || dto.getCustomerId().isBlank();

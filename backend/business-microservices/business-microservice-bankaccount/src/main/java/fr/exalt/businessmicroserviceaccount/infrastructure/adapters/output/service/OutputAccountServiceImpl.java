@@ -7,7 +7,7 @@ import fr.exalt.businessmicroserviceaccount.domain.exceptions.ExceptionMsg;
 import fr.exalt.businessmicroserviceaccount.domain.ports.output.OutputAccountService;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feignclient.proxy.RemoteCustomerServiceProxy;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.mapper.MapperService;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountModel;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountModel;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class OutputAccountServiceImpl implements OutputAccountService {
 
     @Override
     public BankAccount createAccount(BankAccount bankAccount) {
-        AccountModel model= accountRepository.save(MapperService.fromTo(bankAccount));
+        BankAccountModel model= accountRepository.save(MapperService.fromTo(bankAccount));
         return MapperService.fromTo(model);
     }
 
@@ -39,7 +39,7 @@ public class OutputAccountServiceImpl implements OutputAccountService {
 
     @Override
     public BankAccount getAccount(String accountId) throws AccountNotFoundException {
-        AccountModel model = accountRepository.findById(accountId)
+        BankAccountModel model = accountRepository.findById(accountId)
                 .orElseThrow(()->new AccountNotFoundException(ExceptionMsg.ACCOUNT_NOT_FOUND));
         return MapperService.fromTo(model);
     }
@@ -59,7 +59,7 @@ public class OutputAccountServiceImpl implements OutputAccountService {
 
     @Override
     public BankAccount updateAccount(BankAccount bankAccount) {
-        AccountModel modelModel = accountRepository.save(MapperService.fromTo(bankAccount));
+        BankAccountModel modelModel = accountRepository.save(MapperService.fromTo(bankAccount));
         return MapperService.fromTo(modelModel);
     }
 }

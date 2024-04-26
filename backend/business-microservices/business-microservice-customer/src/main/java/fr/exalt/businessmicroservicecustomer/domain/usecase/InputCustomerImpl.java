@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.UUID;
+
 public class InputCustomerImpl implements InputCustomerService {
     private final OutputCustomerService outputCustomerService;
     private final OutputRemoteAccountService remoteAccountServiceProxy;
@@ -34,13 +35,15 @@ public class InputCustomerImpl implements InputCustomerService {
         mappedAddress.setAddressId(UUID.randomUUID().toString());
         Address savedAddress = getAddress(requestDto.getAddressDto());
         Customer customer = MapperService.fromTo(requestDto.getCustomerDto());
-        if(savedAddress==null){
+        if (savedAddress == null) {
             savedAddress = outputCustomerService.createAddress(mappedAddress);
             customer.setAddress(savedAddress);
         }
+
+        customer.setAddress(savedAddress);
         customer.setCustomerId(UUID.randomUUID().toString());
         customer.setCreatedAt(Timestamp.from(Instant.now()).toString());
-        customer.setAddress(mappedAddress);
+
         Request request = outputCustomerService.createCustomer(customer, savedAddress);
         request.setAddress(savedAddress);
         request.setCustomer(customer);
@@ -49,7 +52,7 @@ public class InputCustomerImpl implements InputCustomerService {
 
     @Override
     public Collection<Customer> getAllCustomers() {
-     return outputCustomerService.getAllCustomers();
+        return outputCustomerService.getAllCustomers();
     }
 
     @Override
@@ -58,8 +61,8 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     @Override
-    public Address getAddress(AddressDto dto)  {
-       return outputCustomerService.getAddress(dto);
+    public Address getAddress(AddressDto dto) {
+        return outputCustomerService.getAddress(dto);
     }
 
     @Override
@@ -79,8 +82,8 @@ public class InputCustomerImpl implements InputCustomerService {
 
         Customer customer = getCustomer(customerId);
         Address address = getAddress(requestDto.getAddressDto());
-        if(address==null){
-            address= outputCustomerService.createAddress(MapperService.fromTo(requestDto.getAddressDto()));
+        if (address == null) {
+            address = outputCustomerService.createAddress(MapperService.fromTo(requestDto.getAddressDto()));
         }
         customer.setAddress(address);
         customer.setFirstname(requestDto.getCustomerDto().getFirstname());
@@ -97,7 +100,7 @@ public class InputCustomerImpl implements InputCustomerService {
     @Override
     public Address updateAddress(String addressId, AddressDto dto) throws AddressFieldsInvalidException, AddressNotFoundException {
         CustomerValidators.formatter(dto);
-        if(CustomerValidators.invalidAddressDto(dto)){
+        if (CustomerValidators.invalidAddressDto(dto)) {
             throw new AddressFieldsInvalidException(ExceptionMsg.ADDRESS_FIELDS);
         }
         Address address = getAddress(addressId);
@@ -128,7 +131,7 @@ public class InputCustomerImpl implements InputCustomerService {
             throw new CustomerOneOrMoreFieldsInvalidException(ExceptionMsg.CUSTOMER_FIELD_INVALID);
         }
         Customer savedCustomer = outputCustomerService.getCustomer(requestDto.getCustomerDto());
-        if(savedCustomer!=null){
+        if (savedCustomer != null) {
             throw new CustomerAlreadyExistsException(ExceptionMsg.CUSTOMER_ALREADY_EXISTS);
         }
     }

@@ -3,7 +3,7 @@
 ## business mocroservices
 3 business microservices:
 - ***business-microservice-customer***
-- ***business-microservice-account***
+- ***business-microservice-bankaccount***
 - ***business-microservice-operation***
 ## utils microservices
 3 utility microservices:

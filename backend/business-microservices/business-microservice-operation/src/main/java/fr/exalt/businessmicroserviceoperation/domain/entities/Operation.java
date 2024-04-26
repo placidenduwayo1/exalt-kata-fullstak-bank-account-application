@@ -6,7 +6,7 @@ public class Operation {
     private double mount;
     private String createdAt;
     private String accountId;
-    private Account account;
+    private BankAccount bankAccount;
 
     private Operation(OperationBuilder builder) {
         this.operationId = builder.operationId;
@@ -14,7 +14,7 @@ public class Operation {
         this.mount = builder.mount;
         this.createdAt = builder.createdAt;
         this.accountId = builder.accountId;
-        this.account = builder.account;
+        this.bankAccount = builder.bankAccount;
     }
 
     public String getOperationId() {
@@ -57,12 +57,12 @@ public class Operation {
         this.accountId = accountId;
     }
 
-    public Account getAccount() {
-        return account;
+    public BankAccount getAccount() {
+        return bankAccount;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     public static class OperationBuilder {
@@ -71,7 +71,7 @@ public class Operation {
         private double mount;
         private String createdAt;
         private String accountId;
-        private Account account;
+        private BankAccount bankAccount;
 
         public OperationBuilder operationId(String operationId) {
             this.operationId = operationId;
@@ -98,8 +98,8 @@ public class Operation {
             return this;
         }
 
-        public OperationBuilder account(Account account) {
-            this.account = account;
+        public OperationBuilder account(BankAccount bankAccount) {
+            this.bankAccount = bankAccount;
             return this;
         }
 
@@ -116,7 +116,7 @@ public class Operation {
                 ", mount=" + mount +
                 ", created at='" + createdAt + '\'' +
                 ", account id='" + accountId + '\'' +
-                ", account=" + account +
+                ", account=" + bankAccount +
                 ']';
     }
 }

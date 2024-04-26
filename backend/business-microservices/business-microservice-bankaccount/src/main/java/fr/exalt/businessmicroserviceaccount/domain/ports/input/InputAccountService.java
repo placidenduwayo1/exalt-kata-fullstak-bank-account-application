@@ -2,12 +2,12 @@ package fr.exalt.businessmicroserviceaccount.domain.ports.input;
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.exceptions.*;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountDto;
 
 import java.util.Collection;
 
 public interface InputAccountService {
-    BankAccount createAccount(AccountDto accountDto) throws AccountTypeInvalidException, AccountFieldsInvalidException,
+    BankAccount createAccount(BankAccountDto bankAccountDto) throws AccountTypeInvalidException, AccountFieldsInvalidException,
             RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException;
 
     Collection<BankAccount> getAllAccounts();
@@ -16,7 +16,7 @@ public interface InputAccountService {
 
     Collection<BankAccount> getAccountOfGivenCustomer(String customerId);
 
-    BankAccount updateAccount(String accountId, AccountDto accountDto) throws AccountTypeInvalidException,
+    BankAccount updateAccount(String accountId, BankAccountDto bankAccountDto) throws AccountTypeInvalidException,
             AccountFieldsInvalidException, AccountNotFoundException, RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException;
 
 }

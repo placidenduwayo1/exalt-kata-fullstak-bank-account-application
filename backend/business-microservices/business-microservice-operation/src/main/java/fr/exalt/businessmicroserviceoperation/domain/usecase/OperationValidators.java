@@ -1,6 +1,6 @@
 package fr.exalt.businessmicroserviceoperation.domain.usecase;
 
-import fr.exalt.businessmicroserviceoperation.domain.entities.Account;
+import fr.exalt.businessmicroserviceoperation.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceoperation.domain.entities.OperationType;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models.OperationDto;
 
@@ -27,7 +27,7 @@ public class OperationValidators {
         return false;
     }
 
-    public static boolean notEnoughBalance(Account account, double operationAmount) {
-        return account.getBalance() + account.getOverdraft() < operationAmount;
+    public static boolean notEnoughBalance(BankAccount bankAccount, double operationAmount) {
+        return bankAccount.getBalance() + bankAccount.getOverdraft() < operationAmount;
     }
 }

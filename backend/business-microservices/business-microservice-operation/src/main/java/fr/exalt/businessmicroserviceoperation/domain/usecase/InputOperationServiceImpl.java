@@ -1,12 +1,12 @@
 package fr.exalt.businessmicroserviceoperation.domain.usecase;
 
-import fr.exalt.businessmicroserviceoperation.domain.entities.Account;
+import fr.exalt.businessmicroserviceoperation.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceoperation.domain.entities.Customer;
 import fr.exalt.businessmicroserviceoperation.domain.entities.Operation;
 import fr.exalt.businessmicroserviceoperation.domain.exceptions.*;
 import fr.exalt.businessmicroserviceoperation.domain.ports.input.InputOperationService;
 import fr.exalt.businessmicroserviceoperation.domain.ports.output.OutputOperationService;
-import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.AccountDto;
+import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.BankAccountDto;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.mapper.MapperService;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models.OperationDto;
 import lombok.AllArgsConstructor;
@@ -36,14 +36,14 @@ public class InputOperationServiceImpl implements InputOperationService {
             RemoteAccountTypeInaccessibleFromOutsideException, RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException {
 
         validateOperation(operationDto);
-        Account account = outputOperationService.loadRemoteAccount(operationDto.getAccountId());
-        Account updatedAccount = null;
+        BankAccount bankAccount = outputOperationService.loadRemoteAccount(operationDto.getAccountId());
+        BankAccount updatedBankAccount = null;
         Customer customer;
-        if (account.getAccountId().equals(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)) {
+        if (bankAccount.getAccountId().equals(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)) {
             throw new RemoteAccountApiUnreachableException(String.format("%s,%n%s",
-                    ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE, account));
+                    ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE, bankAccount));
         } else {
-            customer = outputOperationService.loaddRemoteCustomer(account.getCustomerId());
+            customer = outputOperationService.loaddRemoteCustomer(bankAccount.getCustomerId());
             // verifier le state du customer
             if (customer.getCustomerId().equals(ExceptionsMsg.REMOTE_CUSTOMER_UNREACHABLE)) {
                 throw new RemoteCustomerApiUnreachableException(String.format("%s,%n%s",
@@ -53,39 +53,39 @@ public class InputOperationServiceImpl implements InputOperationService {
                 throw new RemoteCustomerStateInvalidException(ExceptionsMsg.REMOTE_CUSTOMER_STATE);
             }
 
-            if (account.getType().equals("compte-courant")) {
-                AccountDto accountDto;
+            if (bankAccount.getType().equals("compte-courant")) {
+                BankAccountDto bankAccountDto;
                 //operation de retrait from the remote account api
                 if (operationDto.getType().equals("retrait") &&
-                        (OperationValidators.notEnoughBalance(account, operationDto.getMount()))) {
+                        (OperationValidators.notEnoughBalance(bankAccount, operationDto.getMount()))) {
                     throw new RemoteAccountNotEnoughBalanceException(ExceptionsMsg.REMOTE_ACCOUNT_BALANCE);
                 } else if (operationDto.getType().equals("retrait") &&
-                        (!OperationValidators.notEnoughBalance(account, operationDto.getMount()))) {
+                        (!OperationValidators.notEnoughBalance(bankAccount, operationDto.getMount()))) {
 
 
-                    account.setBalance(-operationDto.getMount());
-                    accountDto = MapperService.fromTo(account);
-                    updatedAccount = outputOperationService.updateRemoteAccount(account.getAccountId(), accountDto);
+                    bankAccount.setBalance(-operationDto.getMount());
+                    bankAccountDto = MapperService.fromTo(bankAccount);
+                    updatedBankAccount = outputOperationService.updateRemoteAccount(bankAccount.getAccountId(), bankAccountDto);
                 }
                 //operation de depot sur le remote account api
                 else if (operationDto.getType().equals("depot")) {
-                    account.setBalance(operationDto.getMount());
-                    accountDto = MapperService.fromTo(account);
-                    updatedAccount = outputOperationService.updateRemoteAccount(account.getAccountId(), accountDto);
+                    bankAccount.setBalance(operationDto.getMount());
+                    bankAccountDto = MapperService.fromTo(bankAccount);
+                    updatedBankAccount = outputOperationService.updateRemoteAccount(bankAccount.getAccountId(), bankAccountDto);
                 }
             } else {
                 throw new RemoteAccountTypeInaccessibleFromOutsideException(ExceptionsMsg.REMOTE_ACCOUNT_TYPE);
             }
         }
 
-        assert updatedAccount != null;
-        updatedAccount.setCustomer(customer);
+        assert updatedBankAccount != null;
+        updatedBankAccount.setCustomer(customer);
 
         Operation operation = MapperService.fromTo(operationDto);
         operation.setOperationId(UUID.randomUUID().toString());
         operation.setCreatedAt(Timestamp.from(Instant.now()).toString());
         Operation savedOp = outputOperationService.createOperation(operation);
-        savedOp.setAccount(updatedAccount);
+        savedOp.setAccount(updatedBankAccount);
         return savedOp;
     }
 
@@ -93,8 +93,8 @@ public class InputOperationServiceImpl implements InputOperationService {
     public Collection<Operation> getAllOperations() {
         return outputOperationService.getAllOperations().stream()
                 .map(operation -> {
-                    Account account = outputOperationService.loadRemoteAccount(operation.getAccountId());
-                    operation.setAccount(account);
+                    BankAccount bankAccount = outputOperationService.loadRemoteAccount(operation.getAccountId());
+                    operation.setAccount(bankAccount);
                     return operation;
                 })
                 .toList();

@@ -3,7 +3,7 @@ package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.web;
 import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.exceptions.*;
 import fr.exalt.businessmicroserviceaccount.domain.ports.input.InputAccountService;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.AccountDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,9 +17,9 @@ public class BankAccountController {
     private final InputAccountService inputAccountService;
 
     @PostMapping(value = "/accounts")
-    public BankAccount createAccount(@RequestBody AccountDto accountDto) throws RemoteCustomerStateInvalidException,
+    public BankAccount createAccount(@RequestBody BankAccountDto bankAccountDto) throws RemoteCustomerStateInvalidException,
             AccountTypeInvalidException, RemoteCustomerApiUnreachableException, AccountFieldsInvalidException {
-        return inputAccountService.createAccount(accountDto);
+        return inputAccountService.createAccount(bankAccountDto);
     }
 
     @GetMapping(value = "/accounts")
@@ -38,7 +38,7 @@ public class BankAccountController {
     }
 
     @PutMapping(value = "/accounts/{accountId}")
-    public BankAccount updateAccount(@PathVariable(name = "accountId") String accountId, @RequestBody AccountDto dto)
+    public BankAccount updateAccount(@PathVariable(name = "accountId") String accountId, @RequestBody BankAccountDto dto)
             throws AccountTypeInvalidException, AccountFieldsInvalidException, AccountNotFoundException,
             RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException {
         return inputAccountService.updateAccount(accountId, dto);

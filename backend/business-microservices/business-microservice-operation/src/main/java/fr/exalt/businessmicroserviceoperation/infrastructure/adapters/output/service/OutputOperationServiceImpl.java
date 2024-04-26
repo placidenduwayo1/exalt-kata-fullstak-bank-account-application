@@ -1,11 +1,11 @@
 package fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.service;
 
-import fr.exalt.businessmicroserviceoperation.domain.entities.Account;
+import fr.exalt.businessmicroserviceoperation.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceoperation.domain.entities.Customer;
 import fr.exalt.businessmicroserviceoperation.domain.entities.Operation;
 import fr.exalt.businessmicroserviceoperation.domain.ports.output.OutputOperationService;
-import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.AccountDto;
-import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.AccountModel;
+import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.BankAccountDto;
+import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.BankAccountModel;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.CustomerModel;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.proxies.RemoteAccountServiceProxy;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.proxies.RemoteCustomerServiceProxy;
@@ -45,8 +45,8 @@ public class OutputOperationServiceImpl implements OutputOperationService {
     }
 
     @Override
-    public Account loadRemoteAccount(String accountId) {
-        AccountModel model = remoteAccountServiceProxy.loadRemoteAccount(accountId);
+    public BankAccount loadRemoteAccount(String accountId) {
+        BankAccountModel model = remoteAccountServiceProxy.loadRemoteAccount(accountId);
         return MapperService.fromTo(model);
     }
 
@@ -57,8 +57,8 @@ public class OutputOperationServiceImpl implements OutputOperationService {
     }
 
     @Override
-    public Account updateRemoteAccount(String accountId, AccountDto accountDto) {
-        AccountModel model = remoteAccountServiceProxy.updateRemoteAccount(accountId, accountDto);
+    public BankAccount updateRemoteAccount(String accountId, BankAccountDto bankAccountDto) {
+        BankAccountModel model = remoteAccountServiceProxy.updateRemoteAccount(accountId, bankAccountDto);
         return MapperService.fromTo(model);
     }
 }

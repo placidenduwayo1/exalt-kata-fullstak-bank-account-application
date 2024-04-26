@@ -1,10 +1,10 @@
 package fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.mapper;
 
-import fr.exalt.businessmicroserviceoperation.domain.entities.Account;
+import fr.exalt.businessmicroserviceoperation.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceoperation.domain.entities.Customer;
 import fr.exalt.businessmicroserviceoperation.domain.entities.Operation;
-import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.AccountDto;
-import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.AccountModel;
+import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.BankAccountDto;
+import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.BankAccountModel;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.CustomerModel;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models.OperationDto;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models.OperationModel;
@@ -32,15 +32,15 @@ public class MapperService {
         return model;
     }
 
-    public static Account fromTo(AccountModel model){
-        Account account = new Account.AccountBuilder().build();
-        BeanUtils.copyProperties(model, account);
-        return account;
+    public static BankAccount fromTo(BankAccountModel model){
+        BankAccount bankAccount = new BankAccount.AccountBuilder().build();
+        BeanUtils.copyProperties(model, bankAccount);
+        return bankAccount;
     }
-    public static AccountDto fromTo(Account account){
-        AccountDto accountDto = AccountDto.builder().build();
-        BeanUtils.copyProperties(account, accountDto);
-        return accountDto;
+    public static BankAccountDto fromTo(BankAccount bankAccount){
+        BankAccountDto bankAccountDto = BankAccountDto.builder().build();
+        BeanUtils.copyProperties(bankAccount, bankAccountDto);
+        return bankAccountDto;
     }
     public static Customer fromTo(CustomerModel model){
         Customer customer = new Customer.CustomerBuilder().build();
