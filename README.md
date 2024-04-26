@@ -8,10 +8,10 @@
 # Description
 
 - **Bank Account** est implémentée en **application orientée microservices** avec des ***microservices métiers*** et des ***microservices utilisataires***
-- Les microservices métiers: ***customer***, ***account*** et ***operation***
+- Les microservices métiers: ***customer***, ***bank-account*** et ***operation***
     - chaque microservice métier est implementé dans une achitecture ***hexagonale***
-    - les microcroservices (***customer*** , ***account***) communiquent: c-à-d un **account** a besoin des données d'un **customer** pour être géré
-    - les microcroservices (***account*** , ***operation***) communiquent: c-à-d une **operation** a besoin des données d'un **account** pour être géré
+    - les microcroservices (***customer*** , ***bank-account***) communiquent: c-à-d un **bank-account** a besoin des données d'un **customer** pour être géré
+    - les microcroservices (***bank-account*** , ***operation***) communiquent: c-à-d une **operation** a besoin des données d'un **bank-account** pour être géré
     - chaque microservice métier possède ses propres ressources (**db**,**dépendances**, **configurations**, ..), il peut évoluer dans son propre env 
 - Les microservices utilitaires: , ***configuration-server***, ***registration-server*** et ***gateway-service***
     - *configuration-server*: pour externaliser et distribuer les configurations aux autres microservices
@@ -36,8 +36,8 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
 
 - ***business-microservice-customer***
     - *backend/business-micorservices/business-microservice-customer*
-- ***business-microservice-account***
-    - *backend/business-micorservices/business-microservice-account*
+- ***business-microservice-bank-account***
+    - *backend/business-micorservices/business-microservice-bank-account*
 - ***business-microservice-operation***
     - *backend/business-micorservices/business-microservice-operation*
 
@@ -64,30 +64,30 @@ Pour accéder au business microservices en backend on passe par la ***gateway-se
 request payload -> ![customer-post](./assets/customer-post.png)    response -> ![customer-post-return](./assets/customer-post-return.png)  
 - **[GET]**: ```http://localhost:8101/api-customer/customers```  pour consulter tous les customers  
 - **[GET]**: ```http://localhost:8101/api-customer/addresses``` pour consulter les adresses des customers  
-- **[GET]**: ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : pour consulter les comptes et leurs soldes du ***customer*** depuis le remote ***account***    
+- **[GET]**: ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : pour consulter les comptes et leurs soldes du ***customer*** depuis le remote ***bank-account***    
 ![customer-accout](./assets/customer-account.png)
 - si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme relience sont retournées à l'utilisateur
 
 ### business-microservice-account
 
-Pour créer / editer un compte, **account api** intérroge **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le account
-- **[POST]** / **[PUT]**: ```http://localhost:8101/api-account/accounts```  
+Pour créer / editer un compte, **bank-account api** intérroge **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le account
+- **[POST]** / **[PUT]**: ```http://localhost:8101/api-bank-account/accounts```  
 ![account-customer](./assets/account-customer-post.png)  
    request payload -> ![account-post](./assets/account-post.png)    response -> ![account-post-return](./assets/account-post-return.png)
 - si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme de relience sont retournées à l'utilisateur
 - si le state du customer est **archive**, une business exception est retournées à l'utilisateur
-- **[GET]**: ```http://localhost:8101/api-account/accounts```: consulter la liste de tous les comptes
+- **[GET]**: ```http://localhost:8101/api-bank-account/accounts```: consulter la liste de tous les comptes
 
 ### business-microservice-operation
 - **[POST]**: ```http://localhost:8101/api-operation/operations```: pour créer une opération de **dépot** ou de **retrait**  
 request payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/opeation-post-return.png)
 ![operation-request-chain](./assets/operation-post-chain.png) 
 - Pour enregistrer une opération:
-    - **(1)** l'api **operation** requête à la remote api **account** pour récupérer les informations du compté associé à **accountId**
-        - **(1.1)** l'api **operation** vérifie que l'api **account** est joignable, si ok passe à **(1.2)**
-        - **(1.2)** l'api **operation** vérifie que c'est un compte **courant** (seuls les comptes courants autorisent les transactions), si oui passer à **(1.3)**
+    - **(1)** l'api **operation** requête à la remote api **bank-account** pour récupérer les informations du compté associé à **accountId**
+        - **(1.1)** l'api **operation** vérifie que l'api **bank-account** est joignable, si ok passe à **(1.2)**
+        - **(1.2)** l'api **operation** vérifie que c'est un bank-account **courant** (seuls les bank-account courants autorisent les transactions), si oui passer à **(1.3)**
         - **(1.3)** si opération de **retrait**, l'api operation vérifie la **balance** du compte ```account.balance + account.overdraft >= operation.amount```, si OK, passer à **(2)**
-    - **(2)** l'api **operation** requête la remote api **customer** moyenant le **customerId** de account reçu à **(1)** (un account est associé à un customer)
+    - **(2)** l'api **operation** requête la remote api **customer** moyenant le **customerId** de account reçu à **(1)** (un bank-account est associé à un customer)
         - **(2.1)** l'api operation vérifie que customer est joignable, si OK, passer à **(2.2)**
         - **(2.2)** si le **state** du customer est **active** l'opération est sauvegardée en db sinon (customer state **archive**) une **business exception** est renvoyée
 

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "business-microservice-account",
-        path = "/api-account",
+@FeignClient(name = "business-microservice-bank-account",
+        path = "/api-bank-account",
         fallback = RemoteAccountServiceProxy.RemoteAccountServiceFallback.class)
 @Qualifier(value = "accountserviceproxy")
 public interface RemoteAccountServiceProxy {

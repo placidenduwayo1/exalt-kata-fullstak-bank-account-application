@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 @RestController
-@RequestMapping(value = "/api-account")
+@RequestMapping(value = "/api-bank-account")
 @AllArgsConstructor
 public class AccountController {
     //input adapter
