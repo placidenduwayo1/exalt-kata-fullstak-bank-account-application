@@ -1,6 +1,6 @@
 package fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mapper;
 
-import fr.exalt.businessmicroservicecustomer.domain.entities.Account;
+import fr.exalt.businessmicroservicecustomer.domain.entities.BankAccount;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.input.feignclient.model.AccountModel;
@@ -42,9 +42,9 @@ public class MapperService {
         BeanUtils.copyProperties(model,address);
         return address;
     }
-    public static Account fromTo(AccountModel model){
-        Account account = new Account.AccountBuilder().build();
-        BeanUtils.copyProperties(model,account);
-        return account;
+    public static BankAccount fromTo(AccountModel model){
+        BankAccount bankAccount = new BankAccount.AccountBuilder().build();
+        BeanUtils.copyProperties(model, bankAccount);
+        return bankAccount;
     }
 }

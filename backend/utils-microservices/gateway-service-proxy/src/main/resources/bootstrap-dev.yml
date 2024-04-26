@@ -13,10 +13,10 @@ spring:
           predicates:
             - Path=/api-customer/**
 
-        - id: business-microservice-account
+        - id: business-microservice-bank-account
           uri: http://localhost:8103
           predicates:
-            - Path=/api-account/**
+            - Path=/api-bank-account/**
 
         - id: business-microservice-operation
           uri: http://localhost:8104

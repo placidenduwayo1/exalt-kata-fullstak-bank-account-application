@@ -12,7 +12,7 @@ import java.util.Collection;
 @RestController
 @RequestMapping(value = "/api-bank-account")
 @AllArgsConstructor
-public class AccountController {
+public class BankAccountController {
     //input adapter
     private final InputAccountService inputAccountService;
 

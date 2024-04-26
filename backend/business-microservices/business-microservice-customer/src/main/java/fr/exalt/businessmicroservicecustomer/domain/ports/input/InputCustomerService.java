@@ -1,6 +1,6 @@
 package fr.exalt.businessmicroservicecustomer.domain.ports.input;
 
-import fr.exalt.businessmicroservicecustomer.domain.entities.Account;
+import fr.exalt.businessmicroservicecustomer.domain.entities.BankAccount;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.*;
@@ -26,5 +26,5 @@ public interface InputCustomerService {
             CustomerAlreadyExistsException, CustomerNotFoundException;
 
     Address updateAddress(String addressId, AddressDto addressDto) throws AddressFieldsInvalidException, AddressNotFoundException;
-    Collection<Account> loadRemoteAccountsOfCustomer(String customerId);
+    Collection<BankAccount> loadRemoteAccountsOfCustomer(String customerId);
 }

@@ -1,6 +1,6 @@
 package fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.services;
 
-import fr.exalt.businessmicroservicecustomer.domain.entities.Account;
+import fr.exalt.businessmicroservicecustomer.domain.entities.BankAccount;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.AddressNotFoundException;
@@ -128,7 +128,7 @@ public class OutputCustomerServiceImpl implements OutputCustomerService, OutputR
     }
 
     @Override
-    public Collection<Account> loadRemoteAccountsOgCustomer(String customerId) {
+    public Collection<BankAccount> loadRemoteAccountsOgCustomer(String customerId) {
         Collection<AccountModel>  models = remoteAccountServiceProxy.loadRemoteAccountsOfCustomer(customerId);
         return models.stream().map(MapperService::fromTo).toList();
     }

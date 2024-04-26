@@ -12,7 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "accounts")
+@Table(name = "bankaccount")
 public class AccountModel {
     @Id
     @GenericGenerator(name = "uuid")

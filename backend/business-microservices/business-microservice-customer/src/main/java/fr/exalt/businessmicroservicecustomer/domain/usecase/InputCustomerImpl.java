@@ -1,6 +1,6 @@
 package fr.exalt.businessmicroservicecustomer.domain.usecase;
 
-import fr.exalt.businessmicroservicecustomer.domain.entities.Account;
+import fr.exalt.businessmicroservicecustomer.domain.entities.BankAccount;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.*;
@@ -112,7 +112,7 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     @Override
-    public Collection<Account> loadRemoteAccountsOfCustomer(String customerId) {
+    public Collection<BankAccount> loadRemoteAccountsOfCustomer(String customerId) {
         return remoteAccountServiceProxy.loadRemoteAccountsOgCustomer(customerId);
     }
 

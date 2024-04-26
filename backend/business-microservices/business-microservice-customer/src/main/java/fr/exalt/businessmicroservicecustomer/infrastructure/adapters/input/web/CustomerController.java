@@ -1,6 +1,6 @@
 package fr.exalt.businessmicroservicecustomer.infrastructure.adapters.input.web;
 
-import fr.exalt.businessmicroservicecustomer.domain.entities.Account;
+import fr.exalt.businessmicroservicecustomer.domain.entities.BankAccount;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.*;
@@ -49,7 +49,7 @@ public class CustomerController {
         return inputCustomerService.getCustomer(customerId);
     }
     @GetMapping(value = "/customers/{customerId}/accounts")
-    public Collection<Account> loadRemoteAccountsOfGivenCustomer(@PathVariable(name = "customerId") String customerId){
+    public Collection<BankAccount> loadRemoteAccountsOfGivenCustomer(@PathVariable(name = "customerId") String customerId){
         return inputCustomerService.loadRemoteAccountsOfCustomer(customerId);
     }
  }

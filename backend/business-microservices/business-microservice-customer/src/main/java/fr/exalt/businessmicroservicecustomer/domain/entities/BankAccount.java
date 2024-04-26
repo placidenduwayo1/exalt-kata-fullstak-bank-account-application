@@ -1,11 +1,11 @@
 package fr.exalt.businessmicroservicecustomer.domain.entities;
 
-public class Account {
+public class BankAccount {
     private String accountId;
     private double balance;
     private double overdraft;
     private String createdAt;
-    private Account(AccountBuilder builder){
+    private BankAccount(AccountBuilder builder){
         this.accountId= builder.accountId;
         this.balance = builder.balance;
         this.overdraft = builder.overdraft;
@@ -70,8 +70,8 @@ public class Account {
             return this;
         }
 
-        public Account build(){
-            return new Account(this);
+        public BankAccount build(){
+            return new BankAccount(this);
         }
     }
 
