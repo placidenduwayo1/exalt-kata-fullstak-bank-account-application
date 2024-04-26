@@ -12,7 +12,7 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin123
-    restart: no
+    restart: always
     volumes:
       - postgres_db:/var/lib/postgresql/data
 

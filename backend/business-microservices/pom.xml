@@ -16,7 +16,7 @@
 
     <packaging>pom</packaging>
     <modules>
-        <module>business-microservice-account</module>
+        <module>business-microservice-bankaccount</module>
         <module>business-microservice-customer</module>
         <module>business-microservice-operation</module>
     </modules>
