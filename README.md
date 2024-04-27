@@ -80,6 +80,7 @@ l'api **bank account** verifie que:
 request payload -> ![account-post](./assets/account-post.png)    request response -> ![account-post-return](./assets/account-post-return.png)
 - **[GET]**: ```http://localhost:8101/api-bank-account/accounts```: consulter la liste de tous les comptes 
 - **[POST]**: ```http://localhost:8101/api-bank-account/accounts/suspend```: suspendre un bank account  
+![account-customer](./assets/account-customer-post.png)  
 l'api **bank account** verifie que:
     - le compte existe
     - le compte n'est pas déjà suspendu
