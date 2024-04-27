@@ -73,17 +73,18 @@ request payload -> ![customer-post](./assets/customer-post.png)    request respo
 Pour créer / editer un compte, **bank-account api** intérroge **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le bank account
 - **[POST]** / **[PUT]**: ```http://localhost:8101/api-bank-account/accounts```  
 ![account-customer](./assets/account-customer-post.png)  
-request payload -> ![account-post](./assets/account-post.png)    request response -> ![account-post-return](./assets/account-post-return.png)
 l'api **bank account** verifie que:
     - le ***customer api*** est up, sinon une business exception et une forme de relience sont retournées à l'utilisateur
     - le ***customer*** associé au ***customerId*** fourni existe, sinon une business exception est renvoyée 
     - le ***state*** du customer est **active** sinon une business exception est retournées à l'utilisateur
-    - **[GET]**: ```http://localhost:8101/api-bank-account/accounts```: consulter la liste de tous les comptes  
+    - **[GET]**: ```http://localhost:8101/api-bank-account/accounts```: consulter la liste de tous les comptes 
+request payload -> ![account-post](./assets/account-post.png)    request response -> ![account-post-return](./assets/account-post-return.png)
+ 
 - **[POST]**: ```http://localhost:8101/api-bank-account/accounts/suspend```: suspendre un bank account  
-request payload ![account-suspend](./assets/account-suspend.png) request response -> ![account-suspend-return](./assets/account-suspend-return.png)
 l'api **bank account** verifie que:
 - le compte existe
 - le compte n'est pas déjà suspendu
+request payload ![account-suspend](./assets/account-suspend.png) request response -> ![account-suspend-return](./assets/account-suspend-return.png)
 
 
 ### business-microservice-operation
