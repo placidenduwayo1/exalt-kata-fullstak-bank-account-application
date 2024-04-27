@@ -12,21 +12,21 @@ public class AccountExceptionsHandler {
     public ResponseEntity<String> handleBusinessExceptions(Exception exception) {
 
         return switch (exception) {
-            case AccountBalanceInvalidException e ->
+            case BankAccountBalanceInvalidException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            case AccountFieldsInvalidException e ->
+            case BankAccountFieldsInvalidException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            case AccountTypeInvalidException e ->
+            case BankAccountTypeInvalidException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            case AccountStateInvalidException e ->
+            case BankAccountStateInvalidException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             case RemoteCustomerApiUnreachableException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             case RemoteCustomerStateInvalidException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            case AccountNotFoundException e ->
+            case BankAccountNotFoundException e ->
                 new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
-            case AccountTypeProvidedDifferentWithAccountTypeRegisteredException e ->
+            case BankAccountTypeProvidedDifferentWithAccountTypeRegisteredException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
             default -> new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);

@@ -4,7 +4,7 @@ import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.entities.CurrentBankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.entities.Customer;
 import fr.exalt.businessmicroserviceaccount.domain.entities.SavingBankAccount;
-import fr.exalt.businessmicroserviceaccount.domain.exceptions.AccountNotFoundException;
+import fr.exalt.businessmicroserviceaccount.domain.exceptions.BankAccountNotFoundException;
 import fr.exalt.businessmicroserviceaccount.domain.exceptions.ExceptionMsg;
 import fr.exalt.businessmicroserviceaccount.domain.ports.output.OutputAccountService;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feignclient.models.CustomerModel;
@@ -49,9 +49,9 @@ public class OutputAccountServiceImpl implements OutputAccountService {
     }
 
     @Override
-    public BankAccount getAccount(String accountId) throws AccountNotFoundException {
+    public BankAccount getAccount(String accountId) throws BankAccountNotFoundException {
         BankAccountModel model = accountRepository.findById(accountId)
-                .orElseThrow(()->new AccountNotFoundException(ExceptionMsg.ACCOUNT_NOT_FOUND));
+                .orElseThrow(()->new BankAccountNotFoundException(ExceptionMsg.ACCOUNT_NOT_FOUND));
         return mapBankAccount(model);
     }
 
@@ -79,16 +79,28 @@ public class OutputAccountServiceImpl implements OutputAccountService {
         return MapperService.mapToSavingAccount(model);
     }
 
+    @Override
+    public BankAccount suspendAccount(BankAccount bankAccount) {
+        if(bankAccount instanceof CurrentBankAccount current) {
+            CurrentBankAccountModel model = MapperService.mapToCurrentAccountModel(current);
+            CurrentBankAccountModel savedAccount = accountRepository.save(model);
+            return MapperService.mapToCurrentAccount(savedAccount);
+        } else if (bankAccount instanceof SavingBankAccount saving) {
+            SavingBankAccountModel model = MapperService.mapToSavingAccountModel(saving);
+            SavingBankAccountModel savedAccount = accountRepository.save(model);
+            return MapperService.mapToSavingAccount(savedAccount);
+        }
+        return null;
+    }
+
     private Collection<BankAccount> mapBankAccounts(Collection<BankAccountModel> bankAccountModels){
        return bankAccountModels.stream().map(model -> {
            BankAccount bankAccount = null;
            if(model instanceof CurrentBankAccountModel current){
                bankAccount = MapperService.mapToCurrentAccount(current);
-               bankAccount.setType("compte-courant");
            }
            else if(model instanceof SavingBankAccountModel saving){
                bankAccount = MapperService.mapToSavingAccount(saving);
-               bankAccount.setType("compte-epargne");
            }
            return bankAccount;
         }).toList();

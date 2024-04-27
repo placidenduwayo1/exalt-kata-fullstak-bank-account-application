@@ -1,8 +1,8 @@
 package fr.exalt.businessmicroserviceaccount.domain.entities;
 
 public enum BankAccountType {
-    CURRENT("compte-courant"),
-    SAVING("compte-epargne");
+    CURRENT("current"),
+    SAVING("saving");
     private final String accountType;
 
     BankAccountType(String accountType) {

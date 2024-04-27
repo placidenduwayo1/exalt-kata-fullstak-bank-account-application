@@ -1,12 +1,10 @@
 package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.mapper;
 
-import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.entities.CurrentBankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.entities.Customer;
 import fr.exalt.businessmicroserviceaccount.domain.entities.SavingBankAccount;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feignclient.models.CustomerModel;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountDto;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountModel;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.CurrentBankAccountModel;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.SavingBankAccountModel;
 import org.springframework.beans.BeanUtils;
@@ -14,12 +12,12 @@ import org.springframework.beans.BeanUtils;
 public class MapperService {
     private MapperService(){}
     public static CurrentBankAccount mapToCurrentAccount(BankAccountDto dto){
-        CurrentBankAccount currentAccount = new CurrentBankAccount();
+        CurrentBankAccount currentAccount = new CurrentBankAccount.AccountBuilder().build();
         BeanUtils.copyProperties(dto, currentAccount);
         return currentAccount;
     }
     public static CurrentBankAccount mapToCurrentAccount(CurrentBankAccountModel model){
-        CurrentBankAccount currentAccount = new CurrentBankAccount();
+        CurrentBankAccount currentAccount = new CurrentBankAccount.AccountBuilder().build();
         BeanUtils.copyProperties(model, currentAccount);
         return currentAccount;
     }

@@ -4,7 +4,7 @@ import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.entities.CurrentBankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.entities.Customer;
 import fr.exalt.businessmicroserviceaccount.domain.entities.SavingBankAccount;
-import fr.exalt.businessmicroserviceaccount.domain.exceptions.AccountNotFoundException;
+import fr.exalt.businessmicroserviceaccount.domain.exceptions.BankAccountNotFoundException;
 
 import java.util.Collection;
 
@@ -14,7 +14,7 @@ public interface OutputAccountService {
 
     Collection<BankAccount> getAllAccounts();
 
-    BankAccount getAccount(String accountId) throws AccountNotFoundException;
+    BankAccount getAccount(String accountId) throws BankAccountNotFoundException;
 
     Collection<BankAccount> getAccountOfGivenCustomer(String customerId);
 
@@ -22,5 +22,5 @@ public interface OutputAccountService {
 
     CurrentBankAccount updateCurrentAccount(CurrentBankAccount currentAccount);
     SavingBankAccount updateSavingAccount(SavingBankAccount savingBankAccount);
-
+    BankAccount suspendAccount(BankAccount bankAccount);
 }

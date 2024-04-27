@@ -4,19 +4,17 @@ import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccountState;
 import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccountType;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountDto;
 
-public class AccountValidators {
-    private AccountValidators() {
+public class BankAccountValidators {
+    private BankAccountValidators() {
     }
 
     public static void formatter(BankAccountDto dto) {
         dto.setType(dto.getType().strip());
-        dto.setState(dto.getState().strip());
         dto.setCustomerId(dto.getCustomerId().strip());
     }
 
     public static boolean invalidFields(BankAccountDto dto) {
         return dto.getType().isBlank()
-                || dto.getState().isBlank()
                 || dto.getCustomerId().isBlank();
     }
     public static boolean validAccountSType(String type) {

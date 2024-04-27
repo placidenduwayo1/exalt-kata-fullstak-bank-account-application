@@ -2,7 +2,7 @@ package fr.exalt.businessmicroserviceaccount.domain.entities;
 
 public enum BankAccountState {
     ACTIVE("active"),
-    SUSPENDED("suspendu");
+    SUSPENDED("suspended");
     private final String state;
     BankAccountState(String state) {
         this.state = state;
