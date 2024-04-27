@@ -66,7 +66,7 @@ request payload -> ![customer-post](./assets/customer-post.png)    request respo
 - **[GET]**: ```http://localhost:8101/api-customer/addresses``` pour consulter les adresses des customers  
 - **[GET]**: ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : pour consulter les comptes et leurs soldes du ***customer*** depuis le remote ***bank-account***    
 ![customer-accout](./assets/customer-account.png)
-- si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme relience sont retournées à l'utilisateur
+    - si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme relience sont retournées à l'utilisateur
 
 ### business-microservice-account
 
