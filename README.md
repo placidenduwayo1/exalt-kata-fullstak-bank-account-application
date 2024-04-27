@@ -73,16 +73,22 @@ request payload -> ![customer-post](./assets/customer-post.png)    request respo
 Pour créer / editer un compte, **bank-account api** intérroge **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le bank account
 - **[POST]** / **[PUT]**: ```http://localhost:8101/api-bank-account/accounts```  
 ![account-customer](./assets/account-customer-post.png)  
-   request payload -> ![account-post](./assets/account-post.png)    request response -> ![account-post-return](./assets/account-post-return.png)
-- si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme de relience sont retournées à l'utilisateur
-- si le state du customer est **archive**, une business exception est retournées à l'utilisateur
+request payload -> ![account-post](./assets/account-post.png)    request response -> ![account-post-return](./assets/account-post-return.png)
+l'api **bank account** verifie que:
+- le ***customer api*** est up, sinon une business exception et une forme de relience sont retournées à l'utilisateur
+- le ***customer*** associé au ***customerId*** fourni existe, sinon une business exception est renvoyée 
+- le ***state*** du customer est **active** sinon une business exception est retournées à l'utilisateur
 - **[GET]**: ```http://localhost:8101/api-bank-account/accounts```: consulter la liste de tous les comptes  
 - **[POST]**: ```http://localhost:8101/api-bank-account/accounts/suspend```: suspendre un bank account  
 request payload ![account-suspend](./assets/account-suspend.png) request response -> ![account-suspend-return](./assets/account-suspend-return.png)
+l'api **bank account** verifie que:
+- le compte existe
+- le compte n'est pas déjà suspendu
+
 
 ### business-microservice-operation
 - **[POST]**: ```http://localhost:8101/api-operation/operations```: pour créer une opération de **dépot** ou de **retrait**  
-request payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/opeation-post-return.png)
+request payload -> ![operation-post](./assets/operation-post.png)   request response -> ![operation-post-return](./assets/opeation-post-return.png)
 ![operation-request-chain](./assets/operation-post-chain.png) 
 - Pour enregistrer une opération:
     - **(1)** l'api **operation** requête à la remote api **bank-account** pour récupérer les informations du compté associé à **accountId**
