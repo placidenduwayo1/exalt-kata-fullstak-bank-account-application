@@ -83,7 +83,7 @@ request payload -> ![account-post](./assets/account-post.png)    request respons
 ![account-customer](./assets/account-customer-post.png)  
 l'api **bank account** verifie que:
     - le compte existe
-    - le compte n'est pas déjà suspendu
+    - le compte n'est pas déjà suspendu  
 request payload ![account-suspend](./assets/account-suspend.png) request response -> ![account-suspend-return](./assets/account-suspend-return.png)
 
 
