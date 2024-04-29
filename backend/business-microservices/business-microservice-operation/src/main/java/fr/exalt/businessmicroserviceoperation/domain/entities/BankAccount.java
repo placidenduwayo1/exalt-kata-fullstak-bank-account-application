@@ -3,6 +3,7 @@ package fr.exalt.businessmicroserviceoperation.domain.entities;
 public class BankAccount {
     private String accountId;
     private String type;
+    private String state;
     private double balance;
     private double overdraft;
     private String customerId;
@@ -10,6 +11,7 @@ public class BankAccount {
     private BankAccount(AccountBuilder builder) {
         this.accountId = builder.accountId;
         this.type = builder.type;
+        this.state = builder.state;
         this.balance = builder.balance;
         this.overdraft = builder.overdraft;
         this.customerId = builder.customerId;
@@ -44,6 +46,14 @@ public class BankAccount {
         return overdraft;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     public void setOverdraft(double overdraft) {
         this.overdraft = overdraft;
     }
@@ -67,6 +77,7 @@ public class BankAccount {
     public static class AccountBuilder {
         private String accountId;
         private String type;
+        private String state;
         private double balance;
         private double overdraft;
         private String customerId;
@@ -79,6 +90,10 @@ public class BankAccount {
 
         public AccountBuilder type(String type) {
             this.type = type;
+            return this;
+        }
+        public AccountBuilder state(String state) {
+            this.state = state;
             return this;
         }
 

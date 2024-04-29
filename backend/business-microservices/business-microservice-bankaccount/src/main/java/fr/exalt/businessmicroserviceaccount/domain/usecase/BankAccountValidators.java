@@ -35,9 +35,6 @@ public class BankAccountValidators {
         }
         return false;
     }
-    public static boolean invalidOverdraft(double overdraft){
-        return overdraft<100;
-    }
 
     public static boolean remoteCustomerApiUnreachable(String customerId) {
         return customerId.strip().equals(ExceptionMsg.REMOTE_CUSTOMER_API);

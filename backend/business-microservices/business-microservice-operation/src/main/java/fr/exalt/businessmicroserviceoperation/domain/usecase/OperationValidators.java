@@ -27,7 +27,7 @@ public class OperationValidators {
         return false;
     }
 
-    public static boolean notEnoughBalance(BankAccount bankAccount, double operationAmount) {
-        return bankAccount.getBalance() + bankAccount.getOverdraft() < operationAmount;
+    public static boolean enoughBalance(BankAccount bankAccount, double operationAmount) {
+        return bankAccount.getBalance() + bankAccount.getOverdraft() >= operationAmount;
     }
 }

@@ -12,21 +12,19 @@ import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.model
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountInterestRateDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountOverdraftDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountSuspendDto;
-import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.UUID;
 
-@Slf4j
 public class InputBankAccountServiceImpl implements InputBankAccountService {
     //output adapter
     private final OutputAccountService outputAccountService;
-    private static final String CURRENT = "current";
-    private static final String SAVING = "saving";
-    private static final String ACTIVE = "active";
-    private static final String SUSPEND = "suspended";
+    private static final String BANK_ACCOUNT_CURRENT = "current";
+    private static final String BANK_ACCOUNT_SAVING = "saving";
+    private static final String BANK_ACCOUNT_ACTIVE = "active";
+    private static final String BANK_ACCOUNT_SUSPEND = "suspended";
     private static final String FORMATTER = "%s,%n%s";
     private static final double INITIAL_OVERDRAFT = 100;
     private static final double INITIAL_INTEREST = 3.5;
@@ -41,26 +39,26 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
         validateAccount(dto);
         Customer customer = outputAccountService.loadRemoteCustomer(dto.getCustomerId());
         validateRemoteCustomer(customer.getCustomerId(), customer.getState());
-        if (dto.getType().equals(CURRENT)) {
+        if (dto.getType().equals(BANK_ACCOUNT_CURRENT)) {
             CurrentBankAccount currentBankAccount = MapperService.mapToCurrentAccount(dto);
             currentBankAccount.setAccountId(UUID.randomUUID().toString());
             currentBankAccount.setCreatedAt(Timestamp.from(Instant.now()).toString());
-            currentBankAccount.setState(ACTIVE);
+            currentBankAccount.setState(BANK_ACCOUNT_ACTIVE);
             currentBankAccount.setOverdraft(INITIAL_OVERDRAFT);
             // call to output adapter to register current account in db
             CurrentBankAccount savedBankAccount = outputAccountService.createCurrentAccount(currentBankAccount);
-            savedBankAccount.setType(CURRENT);
+            savedBankAccount.setType(BANK_ACCOUNT_CURRENT);
             savedBankAccount.setCustomer(customer);
             return savedBankAccount;
-        } else if (dto.getType().equals(SAVING)) {
+        } else if (dto.getType().equals(BANK_ACCOUNT_SAVING)) {
             SavingBankAccount savingAccount = MapperService.mapToSavingAccount(dto);
             savingAccount.setAccountId(UUID.randomUUID().toString());
             savingAccount.setCreatedAt(Timestamp.from(Instant.now()).toString());
-            savingAccount.setState(ACTIVE);
+            savingAccount.setState(BANK_ACCOUNT_ACTIVE);
             savingAccount.setInterestRate(INITIAL_INTEREST);
             // call to output adapter to register current account in db
             SavingBankAccount savedAccount = outputAccountService.createSavingAccount(savingAccount);
-            savedAccount.setType(SAVING);
+            savedAccount.setType(BANK_ACCOUNT_SAVING);
             savedAccount.setCustomer(customer);
             return savedAccount;
         }
@@ -78,9 +76,9 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
     public BankAccount getAccount(String accountId) throws BankAccountNotFoundException {
         BankAccount bankAccount = outputAccountService.getAccount(accountId);
         if (bankAccount instanceof CurrentBankAccount current) {
-            current.setType(CURRENT);
+            current.setType(BANK_ACCOUNT_CURRENT);
         } else if (bankAccount instanceof SavingBankAccount saving) {
-            saving.setType(SAVING);
+            saving.setType(BANK_ACCOUNT_SAVING);
         }
         Customer customer = outputAccountService.loadRemoteCustomer(bankAccount.getCustomerId());
         bankAccount.setCustomer(customer);
@@ -103,7 +101,7 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
         validateAccount(dto);
 
         BankAccount bankAccount = getAccount(accountId);
-        if (dto.getType().equals(SAVING)) {
+        if (dto.getType().equals(BANK_ACCOUNT_SAVING)) {
             SavingBankAccount savingBankAccount = new SavingBankAccount.SavingAccountBuilder().build();
             savingBankAccount.setAccountId(bankAccount.getAccountId());
             savingBankAccount.setState(bankAccount.getState());
@@ -113,11 +111,11 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
             savingBankAccount.setCreatedAt(bankAccount.getCreatedAt());
             // call to output adapter to save updated account in db
             SavingBankAccount updateSavingAccount = outputAccountService.updateSavingAccount(savingBankAccount);
-            updateSavingAccount.setType(SAVING);
+            updateSavingAccount.setType(BANK_ACCOUNT_SAVING);
             updateSavingAccount.setCustomer(customer);
             return updateSavingAccount;
 
-        } else if (dto.getType().equals(CURRENT)) {
+        } else if (dto.getType().equals(BANK_ACCOUNT_CURRENT)) {
             CurrentBankAccount currentAccount = new CurrentBankAccount.CurrentAccountBuilder().build();
             currentAccount.setAccountId(bankAccount.getAccountId());
             currentAccount.setState(bankAccount.getState());
@@ -127,7 +125,7 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
             currentAccount.setCreatedAt(bankAccount.getCreatedAt());
             // call to output adapter to save updated account in db
             CurrentBankAccount updateCurrentAccount = outputAccountService.updateCurrentAccount(currentAccount);
-            updateCurrentAccount.setType(CURRENT);
+            updateCurrentAccount.setType(BANK_ACCOUNT_CURRENT);
             updateCurrentAccount.setCustomer(customer);
             return updateCurrentAccount;
         }
@@ -165,7 +163,7 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
         BankAccount bankAccount = getAccount(dto.getAccountId());
         Customer customer = outputAccountService.loadRemoteCustomer(bankAccount.getCustomerId());
         validateRemoteCustomer(customer.getCustomerId(), customer.getState());
-        if (bankAccount.getState().equals(SUSPEND)) {
+        if (bankAccount.getState().equals(BANK_ACCOUNT_SUSPEND)) {
             throw new BankAccountSuspendException(ExceptionMsg.BANK_ACCOUNT_STATE_SUSPENDED);
         }
 
@@ -195,7 +193,7 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
         BankAccount bankAccount = getAccount(dto.getAccountId());
         Customer customer = outputAccountService.loadRemoteCustomer(bankAccount.getCustomerId());
         validateRemoteCustomer(customer.getCustomerId(), customer.getState());
-        if (bankAccount.getState().equals(SUSPEND)) {
+        if (bankAccount.getState().equals(BANK_ACCOUNT_SUSPEND)) {
             throw new BankAccountSuspendException(ExceptionMsg.BANK_ACCOUNT_STATE_SUSPENDED);
         }
         if (bankAccount instanceof CurrentBankAccount account) {
@@ -242,9 +240,9 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
                     Customer remoteCustomer = outputAccountService.loadRemoteCustomer(account.getCustomerId());
                     account.setCustomer(remoteCustomer);
                     if (account instanceof CurrentBankAccount current) {
-                        current.setType(CURRENT);
+                        current.setType(BANK_ACCOUNT_CURRENT);
                     } else if (account instanceof SavingBankAccount saving) {
-                        saving.setType(SAVING);
+                        saving.setType(BANK_ACCOUNT_SAVING);
                     }
                     return account;
                 })

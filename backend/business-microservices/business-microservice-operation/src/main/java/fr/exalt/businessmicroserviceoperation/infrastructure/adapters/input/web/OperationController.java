@@ -19,8 +19,8 @@ public class OperationController {
     @PostMapping(value = "/operations")
     public Operation createOperation(@RequestBody OperationDto dto) throws
             OperationTypeInvalidException, OperationRequestFieldsInvalidException,
-            RemoteAccountApiUnreachableException, RemoteAccountNotEnoughBalanceException,
-            RemoteAccountTypeInaccessibleFromOutsideException, RemoteCustomerStateInvalidException,
+            RemoteBankAccountApiUnreachableException, RemoteBankAccountBalanceException,
+            RemoteBankAccountTypeInaccessibleFromOutsideException, RemoteCustomerStateInvalidException,
             RemoteCustomerApiUnreachableException {
         return inputOperationService.createOperation(dto);
     }

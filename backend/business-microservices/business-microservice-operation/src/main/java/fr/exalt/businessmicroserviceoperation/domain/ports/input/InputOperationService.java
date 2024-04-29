@@ -9,8 +9,8 @@ import java.util.Collection;
 
 public interface InputOperationService {
     Operation createOperation(OperationDto dto) throws OperationRequestFieldsInvalidException,
-            OperationTypeInvalidException, RemoteAccountApiUnreachableException,
-            RemoteAccountNotEnoughBalanceException, RemoteAccountTypeInaccessibleFromOutsideException,
+            OperationTypeInvalidException, RemoteBankAccountApiUnreachableException,
+            RemoteBankAccountBalanceException, RemoteBankAccountTypeInaccessibleFromOutsideException,
             RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException;
 
     Collection<Operation> getAllOperations();

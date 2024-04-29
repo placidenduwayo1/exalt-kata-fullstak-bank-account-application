@@ -15,11 +15,11 @@ public class OperationsExceptionsHandler {
                 new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             case OperationTypeInvalidException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            case RemoteAccountApiUnreachableException e ->
+            case RemoteBankAccountApiUnreachableException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            case RemoteAccountNotEnoughBalanceException e ->
+            case RemoteBankAccountBalanceException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-            case RemoteAccountTypeInaccessibleFromOutsideException e ->
+            case RemoteBankAccountTypeInaccessibleFromOutsideException e ->
                 new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             case RemoteCustomerStateInvalidException e ->
                 new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
