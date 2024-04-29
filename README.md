@@ -91,7 +91,7 @@ l'api **bank account** verifie que:
     - le customer api de ce bank account est joignable (reachablea/unreachable) sinon une forme de résilience est renvoyée
     - le customer state est **active**
     
-request payload ![account-suspend](./assets/switch-state.png) request response -> ![account-suspend-return](./assets/switch-state-return.png)  
+payload ![account-suspend](./assets/switch-state.png) response -> ![account-suspend-return](./assets/switch-state-return.png)  
 - **[POST]**: ```http://localhost:8101/api-bank-account/accounts/overdraft```: **update** le découvert d'un bank account  
 ![account-customer](./assets/account-customer-post.png)  
 l'api **bank account** verifie que:
@@ -103,7 +103,7 @@ l'api **bank account** verifie que:
 
 ### business-microservice-operation
 - **[POST]**: ```http://localhost:8101/api-operation/operations```: **créer** une opération de **dépot** ou de **retrait**  
-request payload -> ![operation-post](./assets/operation-post.png)   request response -> ![operation-post-return](./assets/opeation-post-return.png)
+payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/opeation-post-return.png)
 ![operation-request-chain](./assets/operation-post-chain.png) 
 - Pour enregistrer une opération:
     - **(1)** l'api **operation** requête à la remote api **bank-account**: **récupérer** les informations du compté associé à **accountId**
