@@ -91,7 +91,7 @@ l'api **bank account** verifie que:
     - le customer api de ce bank account est joignable (reachablea/unreachable) sinon une forme de résilience est renvoyée
     - le customer state est **active**
     
-request payload ![account-suspend](./assets/switch-state.png) request response -> ![account-suspend-return](./assets/switch-state-return.png.png)  
+request payload ![account-suspend](./assets/switch-state.png) request response -> ![account-suspend-return](./assets/switch-state-return.png)  
 - **[POST]**: ```http://localhost:8101/api-bank-account/accounts/overdraft```: **update** le découvert d'un bank account  
 ![account-customer](./assets/account-customer-post.png)  
 l'api **bank account** verifie que:
