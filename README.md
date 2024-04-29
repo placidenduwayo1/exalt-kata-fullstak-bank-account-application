@@ -81,7 +81,7 @@ l'api **bank account** verifie que:
     - le ***customer api*** est est ***reachable*** (reachable/unreachable), sinon une business exception et une forme de relience sont retournées à l'utilisateur
     - le ***customer*** associé au ***customerId*** fourni existe, sinon une business exception est renvoyée 
     - le customer ***state*** est **active** sinon une business exception est retournées à l'utilisateur  
-request payload -> ![account-post](./assets/account-post.png)    request response -> ![account-post-return](./assets/account-post-return.png)
+request payload -> ![account-post](./assets/account-post.png) request response -> ![account-post-return](./assets/account-post-return.png)
 - **[GET]**: ```http://localhost:8101/api-bank-account/accounts```: **consulter** la liste de tous les comptes 
 - **[POST]**: ```http://localhost:8101/api-bank-account/accounts/switch-state```: **suspendre** / **activer** un bank account  
 ![account-customer](./assets/account-customer-post.png)  
