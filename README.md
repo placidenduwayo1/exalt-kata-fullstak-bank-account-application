@@ -60,11 +60,11 @@ Pour accéder au business microservices en backend on passe par la ***gateway-se
 
 ### business-microservice-customer
 
-- **[POST]** / **[PUT]**: ```http://localhost:8101/api-customer/customers```  pour créer / éditer un customer  
+- **[POST]** / **[PUT]**: ```http://localhost:8101/api-customer/customers```: **créer** / **éditer** un customer  
 request payload -> ![customer-post](./assets/customer-post.png)    request response -> ![customer-post-return](./assets/customer-post-return.png)  
-- **[GET]**: ```http://localhost:8101/api-customer/customers```  pour consulter tous les customers  
-- **[GET]**: ```http://localhost:8101/api-customer/addresses``` pour consulter les adresses des customers  
-- **[GET]**: ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : pour consulter les comptes et leurs soldes du ***customer*** depuis le remote ***bank-account***    
+- **[GET]**: ```http://localhost:8101/api-customer/customers```: **consulter** tous les customers  
+- **[GET]**: ```http://localhost:8101/api-customer/addresses```: **consulter** les adresses des customers  
+- **[GET]**: ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : **consulter** les comptes et leurs soldes du ***customer*** depuis le remote ***bank-account***    
 ![customer-accout](./assets/customer-account.png)
     - si le ***customerId*** fourni n'existe pas ou si le ***customer api*** est down une business exception et une forme relience sont retournées à l'utilisateur
 
@@ -76,23 +76,32 @@ Pour créer / editer un compte, **bank-account api** intérroge **customer api**
 l'api **bank account** verifie que:
     - le ***customer api*** est up, sinon une business exception et une forme de relience sont retournées à l'utilisateur
     - le ***customer*** associé au ***customerId*** fourni existe, sinon une business exception est renvoyée 
-    - le ***state*** du customer est **active** sinon une business exception est retournées à l'utilisateur  
+    - le customer ***state*** est **active** sinon une business exception est retournées à l'utilisateur  
 request payload -> ![account-post](./assets/account-post.png)    request response -> ![account-post-return](./assets/account-post-return.png)
-- **[GET]**: ```http://localhost:8101/api-bank-account/accounts```: consulter la liste de tous les comptes 
-- **[POST]**: ```http://localhost:8101/api-bank-account/accounts/suspend```: suspendre un bank account  
+- **[GET]**: ```http://localhost:8101/api-bank-account/accounts```: **consulter** la liste de tous les comptes 
+- **[POST]**: ```http://localhost:8101/api-bank-account/accounts/suspend```: **suspendre** un bank account  
 ![account-customer](./assets/account-customer-post.png)  
 l'api **bank account** verifie que:
     - le compte existe
     - le compte n'est pas déjà suspendu  
-request payload ![account-suspend](./assets/account-suspend.png) request response -> ![account-suspend-return](./assets/account-suspend-return.png)
-
+    - le customer api de ce bank account est joignable (reachablea/unreachable) sinon une forme de résilience est renvoyée
+    
+request payload ![account-suspend](./assets/account-suspend.png) request response -> ![account-suspend-return](./assets/account-suspend-return.png)  
+- **[POST]**: ```http://localhost:8101/api-bank-account/accounts/overdraft```: **update** le découvert d'un bank account  
+![account-customer](./assets/account-customer-post.png)  
+l'api **bank account** verifie que:
+    - le compte existe
+    - le compte n'est pas suspendu
+    - le compte n'est pas un compte epargne
+    - le ***customer api*** de ce bank account est joignable (reachablea/unreachable) sinon une forme de résilience est renvoyée
+    - le customer ***state*** (active/archive) de bank account est active
 
 ### business-microservice-operation
-- **[POST]**: ```http://localhost:8101/api-operation/operations```: pour créer une opération de **dépot** ou de **retrait**  
+- **[POST]**: ```http://localhost:8101/api-operation/operations```: **créer** une opération de **dépot** ou de **retrait**  
 request payload -> ![operation-post](./assets/operation-post.png)   request response -> ![operation-post-return](./assets/opeation-post-return.png)
 ![operation-request-chain](./assets/operation-post-chain.png) 
 - Pour enregistrer une opération:
-    - **(1)** l'api **operation** requête à la remote api **bank-account** pour récupérer les informations du compté associé à **accountId**
+    - **(1)** l'api **operation** requête à la remote api **bank-account**: **récupérer** les informations du compté associé à **accountId**
         - **(1.1)** l'api **operation** vérifie que l'api **bank-account** est joignable, si ok passe à **(1.2)**
         - **(1.2)** l'api **operation** vérifie que c'est un bank-account **courant** (seuls les bank-account courants autorisent les transactions), si oui passer à **(1.3)**
         - **(1.3)** si opération de **retrait**, l'api operation vérifie la **balance** du compte ```account.balance + account.overdraft >= operation.amount```, si OK, passer à **(2)**
