@@ -4,11 +4,10 @@ import fr.exalt.businessmicroserviceaccount.domain.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class AccountExceptionsHandler {
-    @ExceptionHandler(value = Exception.class)
+    //@ExceptionHandler(value = Exception.class)
     public ResponseEntity<String> handleBusinessExceptions(Exception exception) {
 
         return switch (exception) {
@@ -26,7 +25,11 @@ public class AccountExceptionsHandler {
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             case BankAccountNotFoundException e ->
                 new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
-            case BankAccountTypeProvidedDifferentWithAccountTypeRegisteredException e ->
+            case BankAccountAlreadySuspendException e ->
+                    new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            case BankAccountGivenSavingException e ->
+                    new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            case BankAccountOverdraftInvalidException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
 
             default -> new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);

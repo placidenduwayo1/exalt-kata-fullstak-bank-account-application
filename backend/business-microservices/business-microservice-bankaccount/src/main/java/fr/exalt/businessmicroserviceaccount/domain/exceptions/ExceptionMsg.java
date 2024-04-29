@@ -1,7 +1,6 @@
 package fr.exalt.businessmicroserviceaccount.domain.exceptions;
 
 public class ExceptionMsg {
-
     private ExceptionMsg() {
     }
     public static final String ACCOUNT_TYPE_INVALID = "Bank Account type invalid Exception";
@@ -12,4 +11,6 @@ public class ExceptionMsg {
     public static final String ACCOUNT_NOT_FOUND = "Bank Account not found Exception";
     public static final String ACCOUNTS_TYPE_DIFFERENT = "Bank Account type provided is different with Account type registered Exception";
     public static final String BANK_ACCOUNT_SUSPEND = "Bank Account Already Suspended Exception";
+    public static final String BANK_ACCOUNT_SAVING = "Saving Bank Account can not have overdraft Exception";
+    public static final String BANK_ACCOUNT_OVERDRAFT = "Bank Account overdraft invalid Exception";
 }

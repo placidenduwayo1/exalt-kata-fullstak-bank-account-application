@@ -2,7 +2,7 @@ package fr.exalt.businessmicroserviceaccount.domain.entities;
 
 public class CurrentBankAccount extends BankAccount{
     private double overdraft;
-    private CurrentBankAccount(AccountBuilder builder){
+    private CurrentBankAccount(CurrentAccountBuilder builder){
         super();
         this.overdraft = builder.overdraft;
     }
@@ -15,10 +15,10 @@ public class CurrentBankAccount extends BankAccount{
         this.overdraft = overdraft;
     }
 
-    public static class AccountBuilder {
+    public static class CurrentAccountBuilder {
         private double overdraft;
 
-        public AccountBuilder overdraft(double overdraft) {
+        public CurrentAccountBuilder overdraft(double overdraft) {
             this.overdraft = overdraft;
             return this;
         }

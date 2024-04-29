@@ -2,7 +2,8 @@ package fr.exalt.businessmicroserviceaccount.domain.usecase;
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccountState;
 import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccountType;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountDto;
+import fr.exalt.businessmicroserviceaccount.domain.exceptions.ExceptionMsg;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountDto;
 
 public class BankAccountValidators {
     private BankAccountValidators() {
@@ -34,9 +35,12 @@ public class BankAccountValidators {
         }
         return false;
     }
+    public static boolean invalidOverdraft(double overdraft){
+        return overdraft<100;
+    }
 
     public static boolean remoteCustomerApiUnreachable(String customerId) {
-        return customerId.strip().equals("it may be possible that remote customer is unreachable");
+        return customerId.strip().equals(ExceptionMsg.REMOTE_CUSTOMER_API);
     }
     public static boolean remoteCustomerStateInvalid(String customerState){
         return customerState.equals("archive");

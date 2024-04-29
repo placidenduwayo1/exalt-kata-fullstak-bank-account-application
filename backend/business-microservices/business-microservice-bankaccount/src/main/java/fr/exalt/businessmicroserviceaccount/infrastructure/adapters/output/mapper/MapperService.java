@@ -4,20 +4,20 @@ import fr.exalt.businessmicroserviceaccount.domain.entities.CurrentBankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.entities.Customer;
 import fr.exalt.businessmicroserviceaccount.domain.entities.SavingBankAccount;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feignclient.models.CustomerModel;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountDto;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.CurrentBankAccountModel;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.SavingBankAccountModel;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.entities.CurrentBankAccountModel;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.entities.SavingBankAccountModel;
 import org.springframework.beans.BeanUtils;
 
 public class MapperService {
     private MapperService(){}
     public static CurrentBankAccount mapToCurrentAccount(BankAccountDto dto){
-        CurrentBankAccount currentAccount = new CurrentBankAccount.AccountBuilder().build();
+        CurrentBankAccount currentAccount = new CurrentBankAccount.CurrentAccountBuilder().build();
         BeanUtils.copyProperties(dto, currentAccount);
         return currentAccount;
     }
     public static CurrentBankAccount mapToCurrentAccount(CurrentBankAccountModel model){
-        CurrentBankAccount currentAccount = new CurrentBankAccount.AccountBuilder().build();
+        CurrentBankAccount currentAccount = new CurrentBankAccount.CurrentAccountBuilder().build();
         BeanUtils.copyProperties(model, currentAccount);
         return currentAccount;
     }
@@ -27,12 +27,12 @@ public class MapperService {
         return model;
     }
     public static SavingBankAccount mapToSavingAccount(BankAccountDto dto){
-       SavingBankAccount savingAccount = new SavingBankAccount();
+       SavingBankAccount savingAccount = new SavingBankAccount.SavingAccountBuilder().build();
        BeanUtils.copyProperties(dto, savingAccount);
        return savingAccount;
     }
     public static SavingBankAccount mapToSavingAccount(SavingBankAccountModel model) {
-        SavingBankAccount account = new SavingBankAccount();
+        SavingBankAccount account = new SavingBankAccount.SavingAccountBuilder().build();
         BeanUtils.copyProperties(model, account);
         return account;
     }

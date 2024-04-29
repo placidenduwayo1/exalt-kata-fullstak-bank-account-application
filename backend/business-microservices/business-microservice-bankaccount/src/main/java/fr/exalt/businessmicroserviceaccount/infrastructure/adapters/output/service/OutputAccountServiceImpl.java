@@ -10,9 +10,9 @@ import fr.exalt.businessmicroserviceaccount.domain.ports.output.OutputAccountSer
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feignclient.models.CustomerModel;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.feignclient.proxy.RemoteCustomerServiceProxy;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.mapper.MapperService;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountModel;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.CurrentBankAccountModel;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.SavingBankAccountModel;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.entities.BankAccountModel;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.entities.CurrentBankAccountModel;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.entities.SavingBankAccountModel;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -91,6 +91,13 @@ public class OutputAccountServiceImpl implements OutputAccountService {
             return MapperService.mapToSavingAccount(savedAccount);
         }
         return null;
+    }
+
+    @Override
+    public CurrentBankAccount updateOverdraft(CurrentBankAccount current) {
+        CurrentBankAccountModel model = accountRepository
+                .save(MapperService.mapToCurrentAccountModel(current));
+        return MapperService.mapToCurrentAccount(model);
     }
 
     private Collection<BankAccount> mapBankAccounts(Collection<BankAccountModel> bankAccountModels){

@@ -1,9 +1,11 @@
 package fr.exalt.businessmicroserviceaccount.domain.ports.input;
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccount;
+import fr.exalt.businessmicroserviceaccount.domain.entities.CurrentBankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.exceptions.*;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountDto;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.BankAccountSuspendDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountOverdraftDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountSuspendDto;
 
 import java.util.Collection;
 
@@ -19,9 +21,12 @@ public interface InputBankAccountService {
 
     BankAccount updateAccount(String accountId, BankAccountDto bankAccountDto) throws BankAccountTypeInvalidException,
             BankAccountFieldsInvalidException, BankAccountNotFoundException, RemoteCustomerStateInvalidException,
-            RemoteCustomerApiUnreachableException, BankAccountStateInvalidException,
-            BankAccountTypeProvidedDifferentWithAccountTypeRegisteredException;
+            RemoteCustomerApiUnreachableException, BankAccountStateInvalidException;
     BankAccount suspendAccount(BankAccountSuspendDto dto) throws BankAccountNotFoundException,
-            BankAccountStateInvalidException, BankAccountAlreadySuspendException;
+            BankAccountStateInvalidException, BankAccountAlreadySuspendException, RemoteCustomerApiUnreachableException;
 
+    CurrentBankAccount updateOverdraft(BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
+            BankAccountGivenSavingException, BankAccountAlreadySuspendException, BankAccountOverdraftInvalidException,
+            RemoteCustomerStateInvalidException;
 }
+
