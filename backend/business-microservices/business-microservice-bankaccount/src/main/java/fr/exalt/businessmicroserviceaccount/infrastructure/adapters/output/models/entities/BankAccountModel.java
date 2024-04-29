@@ -13,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "bank_accounts")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type", length = 20)
+@DiscriminatorColumn(name = "type", length = 7)
 public abstract class BankAccountModel {
     @Id
     @GenericGenerator(name = "uuid")

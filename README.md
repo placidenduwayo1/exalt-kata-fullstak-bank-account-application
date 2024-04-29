@@ -75,10 +75,10 @@ le customer api verifie que:
 ### business-microservice-account
 
 - **[POST]** / **[PUT]**: ```http://localhost:8101/api-bank-account/accounts```: **créer** / **éditer** un bank account  
-    - **bank-account api** intérroge **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le bank account  
+    - **bank-account api** intérroge le remote **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le bank account api  
 ![account-customer](./assets/account-customer-post.png)  
 l'api **bank account** verifie que:
-    - le ***customer api*** est up, sinon une business exception et une forme de relience sont retournées à l'utilisateur
+    - le ***customer api*** est est ***reachable*** (reachable/unreachable), sinon une business exception et une forme de relience sont retournées à l'utilisateur
     - le ***customer*** associé au ***customerId*** fourni existe, sinon une business exception est renvoyée 
     - le customer ***state*** est **active** sinon une business exception est retournées à l'utilisateur  
 request payload -> ![account-post](./assets/account-post.png)    request response -> ![account-post-return](./assets/account-post-return.png)

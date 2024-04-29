@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@DiscriminatorValue("compte-courant")
+@DiscriminatorValue("current")
 public class CurrentBankAccountModel extends BankAccountModel{
     private double overdraft;
 }

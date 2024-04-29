@@ -72,7 +72,7 @@ public abstract class BankAccount {
     public String toString() {
         return "Account [" +
                 "account id='" + accountId + '\'' +
-                ", type " + type +
+                ", type=" + type +
                 ", state='" + state + '\'' +
                 ", balance=" + balance +
                 ", created at" + createdAt +

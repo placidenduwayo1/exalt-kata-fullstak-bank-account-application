@@ -22,7 +22,9 @@ public interface OutputAccountService {
 
     CurrentBankAccount updateCurrentAccount(CurrentBankAccount currentAccount);
     SavingBankAccount updateSavingAccount(SavingBankAccount savingBankAccount);
-    BankAccount suspendAccount(BankAccount bankAccount);
+    BankAccount switchAccountState(BankAccount bankAccount);
 
-    CurrentBankAccount updateOverdraft(CurrentBankAccount current);
+    void changeOverdraft(CurrentBankAccount current);
+
+    void changeInterestRate(SavingBankAccount saving);
 }

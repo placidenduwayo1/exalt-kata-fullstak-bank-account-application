@@ -2,8 +2,10 @@ package fr.exalt.businessmicroserviceaccount.domain.ports.input;
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.entities.CurrentBankAccount;
+import fr.exalt.businessmicroserviceaccount.domain.entities.SavingBankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.exceptions.*;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountInterestRateDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountOverdraftDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountSuspendDto;
 
@@ -22,11 +24,15 @@ public interface InputBankAccountService {
     BankAccount updateAccount(String accountId, BankAccountDto bankAccountDto) throws BankAccountTypeInvalidException,
             BankAccountFieldsInvalidException, BankAccountNotFoundException, RemoteCustomerStateInvalidException,
             RemoteCustomerApiUnreachableException, BankAccountStateInvalidException;
-    BankAccount suspendAccount(BankAccountSuspendDto dto) throws BankAccountNotFoundException,
-            BankAccountStateInvalidException, BankAccountAlreadySuspendException, RemoteCustomerApiUnreachableException;
-
-    CurrentBankAccount updateOverdraft(BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
-            BankAccountGivenSavingException, BankAccountAlreadySuspendException, BankAccountOverdraftInvalidException,
+    BankAccount switchAccountState(BankAccountSuspendDto dto) throws BankAccountNotFoundException,
+            BankAccountStateInvalidException, BankAccountSameStateException, RemoteCustomerApiUnreachableException,
             RemoteCustomerStateInvalidException;
+
+    CurrentBankAccount changeOverdraft(BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
+            BankAccountOverdraftInvalidException, RemoteCustomerStateInvalidException, BankAccountSuspendException,
+            BankAccountTypeNotAcceptedException, RemoteCustomerApiUnreachableException;
+
+    SavingBankAccount changeInterestRate(BankAccountInterestRateDto dto) throws BankAccountNotFoundException, BankAccountSuspendException,
+            RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException, BankAccountTypeNotAcceptedException;
 }
 

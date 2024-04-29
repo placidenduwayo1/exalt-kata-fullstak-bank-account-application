@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@DiscriminatorValue("compte-epargne")
+@DiscriminatorValue("saving")
 public class SavingBankAccountModel extends BankAccountModel{
     private double interestRate;
 }

@@ -9,16 +9,17 @@ import fr.exalt.businessmicroserviceaccount.domain.ports.input.InputBankAccountS
 import fr.exalt.businessmicroserviceaccount.domain.ports.output.OutputAccountService;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.mapper.MapperService;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountInterestRateDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountOverdraftDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountSuspendDto;
-import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.UUID;
 
-@AllArgsConstructor
+@Slf4j
 public class InputBankAccountServiceImpl implements InputBankAccountService {
     //output adapter
     private final OutputAccountService outputAccountService;
@@ -27,20 +28,25 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
     private static final String ACTIVE = "active";
     private static final String SUSPEND = "suspended";
     private static final String FORMATTER = "%s,%n%s";
+    private static final double INITIAL_OVERDRAFT = 100;
+    private static final double INITIAL_INTEREST = 3.5;
+
+    public InputBankAccountServiceImpl(OutputAccountService outputAccountService) {
+        this.outputAccountService = outputAccountService;
+    }
 
     @Override
     public BankAccount createAccount(BankAccountDto dto) throws BankAccountTypeInvalidException, BankAccountFieldsInvalidException,
             RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException {
-
+        validateAccount(dto);
         Customer customer = outputAccountService.loadRemoteCustomer(dto.getCustomerId());
-        validateAccount(dto, customer);
-
+        validateRemoteCustomer(customer.getCustomerId(), customer.getState());
         if (dto.getType().equals(CURRENT)) {
             CurrentBankAccount currentBankAccount = MapperService.mapToCurrentAccount(dto);
             currentBankAccount.setAccountId(UUID.randomUUID().toString());
             currentBankAccount.setCreatedAt(Timestamp.from(Instant.now()).toString());
             currentBankAccount.setState(ACTIVE);
-            currentBankAccount.setOverdraft(100);
+            currentBankAccount.setOverdraft(INITIAL_OVERDRAFT);
             // call to output adapter to register current account in db
             CurrentBankAccount savedBankAccount = outputAccountService.createCurrentAccount(currentBankAccount);
             savedBankAccount.setType(CURRENT);
@@ -51,7 +57,7 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
             savingAccount.setAccountId(UUID.randomUUID().toString());
             savingAccount.setCreatedAt(Timestamp.from(Instant.now()).toString());
             savingAccount.setState(ACTIVE);
-            savingAccount.setInterestRate(3.5);
+            savingAccount.setInterestRate(INITIAL_INTEREST);
             // call to output adapter to register current account in db
             SavingBankAccount savedAccount = outputAccountService.createSavingAccount(savingAccount);
             savedAccount.setType(SAVING);
@@ -71,6 +77,11 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
     @Override
     public BankAccount getAccount(String accountId) throws BankAccountNotFoundException {
         BankAccount bankAccount = outputAccountService.getAccount(accountId);
+        if (bankAccount instanceof CurrentBankAccount current) {
+            current.setType(CURRENT);
+        } else if (bankAccount instanceof SavingBankAccount saving) {
+            saving.setType(SAVING);
+        }
         Customer customer = outputAccountService.loadRemoteCustomer(bankAccount.getCustomerId());
         bankAccount.setCustomer(customer);
         return bankAccount;
@@ -88,101 +99,141 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
             RemoteCustomerApiUnreachableException {
 
         Customer customer = outputAccountService.loadRemoteCustomer(dto.getCustomerId());
-        validateAccount(dto, customer);
+        validateRemoteCustomer(customer.getCustomerId(), customer.getState());
+        validateAccount(dto);
+
         BankAccount bankAccount = getAccount(accountId);
         if (dto.getType().equals(SAVING)) {
-            SavingBankAccount savingAccount = MapperService.mapToSavingAccount(dto);
-            savingAccount.setBalance(savingAccount.getBalance() + bankAccount.getBalance());
-
+            SavingBankAccount savingBankAccount = new SavingBankAccount.SavingAccountBuilder().build();
+            savingBankAccount.setAccountId(bankAccount.getAccountId());
+            savingBankAccount.setState(bankAccount.getState());
+            savingBankAccount.setBalance(dto.getBalance() + bankAccount.getBalance());
+            savingBankAccount.setInterestRate(INITIAL_INTEREST);
+            savingBankAccount.setCustomerId(dto.getCustomerId());
+            savingBankAccount.setCreatedAt(bankAccount.getCreatedAt());
             // call to output adapter to save updated account in db
-            SavingBankAccount updateSavingAccount = outputAccountService.updateSavingAccount(savingAccount);
+            SavingBankAccount updateSavingAccount = outputAccountService.updateSavingAccount(savingBankAccount);
+            updateSavingAccount.setType(SAVING);
             updateSavingAccount.setCustomer(customer);
-
             return updateSavingAccount;
 
         } else if (dto.getType().equals(CURRENT)) {
-            CurrentBankAccount currentAccount = MapperService.mapToCurrentAccount(dto);
-            currentAccount.setBalance(currentAccount.getBalance() + bankAccount.getBalance());
-
+            CurrentBankAccount currentAccount = new CurrentBankAccount.CurrentAccountBuilder().build();
+            currentAccount.setAccountId(bankAccount.getAccountId());
+            currentAccount.setState(bankAccount.getState());
+            currentAccount.setBalance(dto.getBalance() + bankAccount.getBalance());
+            currentAccount.setOverdraft(INITIAL_OVERDRAFT);
+            currentAccount.setCustomerId(dto.getCustomerId());
+            currentAccount.setCreatedAt(bankAccount.getCreatedAt());
             // call to output adapter to save updated account in db
             CurrentBankAccount updateCurrentAccount = outputAccountService.updateCurrentAccount(currentAccount);
+            updateCurrentAccount.setType(CURRENT);
             updateCurrentAccount.setCustomer(customer);
-
             return updateCurrentAccount;
         }
         return null;
     }
 
     @Override
-    public BankAccount suspendAccount(BankAccountSuspendDto dto) throws BankAccountNotFoundException,
-            BankAccountStateInvalidException, BankAccountAlreadySuspendException, RemoteCustomerApiUnreachableException {
-        BankAccount savedBankAccount = getAccount(dto.getAccountId());
-        if (!BankAccountValidators.validAccountState(dto.getState()))
-            throw new BankAccountStateInvalidException(ExceptionMsg.ACCOUNT_STATE_INVALID);
-
-        if (savedBankAccount.getState().equals(SUSPEND)) {
-            throw new BankAccountAlreadySuspendException(ExceptionMsg.BANK_ACCOUNT_SUSPEND);
-        }
-        savedBankAccount.setState(SUSPEND);
-        // call to output adapter to suspend account in db updated account
-        BankAccount suspendAccount = outputAccountService.suspendAccount(savedBankAccount);
-        Customer customer = outputAccountService.loadRemoteCustomer(suspendAccount.getCustomerId());
-        if(BankAccountValidators.remoteCustomerApiUnreachable(customer.getCustomerId())){
-            throw new RemoteCustomerApiUnreachableException(ExceptionMsg.REMOTE_CUSTOMER_API);
-        }
-        if (suspendAccount instanceof CurrentBankAccount current) {
-            current.setType(CURRENT);
-            current.setCustomer(customer);
-            return current;
-        } else if (suspendAccount instanceof SavingBankAccount saving) {
-            saving.setType(SAVING);
-            saving.setCustomer(customer);
-            return saving;
-        }
-        return null;
-    }
-
-    @Override
-    public CurrentBankAccount updateOverdraft(BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
-            BankAccountGivenSavingException, BankAccountAlreadySuspendException, BankAccountOverdraftInvalidException,
+    public BankAccount switchAccountState(BankAccountSuspendDto dto) throws BankAccountNotFoundException,
+            BankAccountStateInvalidException, BankAccountSameStateException, RemoteCustomerApiUnreachableException,
             RemoteCustomerStateInvalidException {
 
         BankAccount bankAccount = getAccount(dto.getAccountId());
         Customer customer = outputAccountService.loadRemoteCustomer(bankAccount.getCustomerId());
-        if (customer.getState().equals("archive")) {
-            throw new RemoteCustomerStateInvalidException(ExceptionMsg.REMOTE_CUSTOMER_STATE);
+        validateRemoteCustomer(customer.getCustomerId(), customer.getState());
+        if (!BankAccountValidators.validAccountState(dto.getState()))
+            throw new BankAccountStateInvalidException(ExceptionMsg.BANK_ACCOUNT_STATE_INVALID);
+
+        else if (bankAccount.getState().equals(dto.getState()))
+            throw new BankAccountSameStateException(ExceptionMsg.BANK_ACCOUNT_SAME_STATE);
+        else {
+            bankAccount.setState(dto.getState());
+            // call to output adapter to save updated account in db
+            BankAccount switchedAccountState = outputAccountService.switchAccountState(bankAccount);
+            switchedAccountState.setType(bankAccount.getType());
+            switchedAccountState.setCustomer(customer);
+            return switchedAccountState;
         }
-        if (bankAccount.getState().equals(SUSPEND)) {
-            throw new BankAccountAlreadySuspendException(ExceptionMsg.BANK_ACCOUNT_SUSPEND);
-        } else if (bankAccount instanceof SavingBankAccount saving) {
-            throw new BankAccountGivenSavingException(
-                    String.format(FORMATTER, ExceptionMsg.BANK_ACCOUNT_SAVING, saving));
-        } else if (bankAccount instanceof CurrentBankAccount && BankAccountValidators.invalidOverdraft(dto.getOverdraft())) {
-            throw new BankAccountOverdraftInvalidException(ExceptionMsg.BANK_ACCOUNT_OVERDRAFT);
-        } else if (bankAccount instanceof CurrentBankAccount current) {
-            current.setOverdraft(dto.getOverdraft());
-            CurrentBankAccount savedCurrent = outputAccountService.updateOverdraft(current);
-            savedCurrent.setType(CURRENT);
-            savedCurrent.setCustomer(customer);
-            return savedCurrent;
-        } else
-            return null;
     }
 
-    private void validateAccount(BankAccountDto dto, Customer customer) throws BankAccountTypeInvalidException,
-            BankAccountFieldsInvalidException, RemoteCustomerApiUnreachableException, RemoteCustomerStateInvalidException {
+    @Override
+    public CurrentBankAccount changeOverdraft(BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
+            RemoteCustomerStateInvalidException, BankAccountSuspendException, BankAccountTypeNotAcceptedException,
+            RemoteCustomerApiUnreachableException, BankAccountOverdraftInvalidException {
+
+        BankAccount bankAccount = getAccount(dto.getAccountId());
+        Customer customer = outputAccountService.loadRemoteCustomer(bankAccount.getCustomerId());
+        validateRemoteCustomer(customer.getCustomerId(), customer.getState());
+        if (bankAccount.getState().equals(SUSPEND)) {
+            throw new BankAccountSuspendException(ExceptionMsg.BANK_ACCOUNT_STATE_SUSPENDED);
+        }
+
+        if (bankAccount instanceof SavingBankAccount account) {
+            throw new BankAccountTypeNotAcceptedException(String.format(FORMATTER, ExceptionMsg.BANK_ACCOUNT_TYPE_NOT_ACCEPTED,account));
+        } else if (dto.getOverdraft() < 0) {
+            throw new BankAccountOverdraftInvalidException(ExceptionMsg.BANK_ACCOUNT_OVERDRAFT);
+        } else {
+            CurrentBankAccount current = new CurrentBankAccount.CurrentAccountBuilder()
+                    .overdraft(dto.getOverdraft())
+                    .build();
+            current.setAccountId(bankAccount.getAccountId());
+            current.setType(bankAccount.getType());
+            current.setState(bankAccount.getState());
+            current.setBalance(bankAccount.getBalance());
+            current.setCreatedAt(bankAccount.getCreatedAt());
+            current.setCustomer(bankAccount.getCustomer());
+            outputAccountService.changeOverdraft(current);
+            return current;
+        }
+
+    }
+
+    @Override
+    public SavingBankAccount changeInterestRate(BankAccountInterestRateDto dto) throws BankAccountNotFoundException,
+            BankAccountSuspendException, RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException, BankAccountTypeNotAcceptedException {
+        BankAccount bankAccount = getAccount(dto.getAccountId());
+        Customer customer = outputAccountService.loadRemoteCustomer(bankAccount.getCustomerId());
+        validateRemoteCustomer(customer.getCustomerId(), customer.getState());
+        if (bankAccount.getState().equals(SUSPEND)) {
+            throw new BankAccountSuspendException(ExceptionMsg.BANK_ACCOUNT_STATE_SUSPENDED);
+        }
+        if (bankAccount instanceof CurrentBankAccount account) {
+            throw new BankAccountTypeNotAcceptedException(String.format(FORMATTER, ExceptionMsg.BANK_ACCOUNT_TYPE_NOT_ACCEPTED, account));
+        }
+        else {
+            SavingBankAccount saving = new SavingBankAccount.SavingAccountBuilder()
+                    .interestRate(dto.getInterestRate())
+                    .build();
+            saving.setAccountId(bankAccount.getAccountId());
+            saving.setType(bankAccount.getType());
+            saving.setState(bankAccount.getState());
+            saving.setBalance(bankAccount.getBalance());
+            saving.setCreatedAt(bankAccount.getCreatedAt());
+            saving.setCustomerId(bankAccount.getCustomerId());
+            saving.setCustomer(bankAccount.getCustomer());
+            //call output adapter to save update account
+            outputAccountService.changeInterestRate(saving);
+            return saving;
+        }
+    }
+
+    private void validateAccount(BankAccountDto dto) throws BankAccountTypeInvalidException,
+            BankAccountFieldsInvalidException {
         BankAccountValidators.formatter(dto);
         if (!BankAccountValidators.validAccountSType(dto.getType()))
-            throw new BankAccountTypeInvalidException(ExceptionMsg.ACCOUNT_TYPE_INVALID);
+            throw new BankAccountTypeInvalidException(ExceptionMsg.BANK_ACCOUNT_TYPE_INVALID);
 
         if (BankAccountValidators.invalidFields(dto))
-            throw new BankAccountFieldsInvalidException(ExceptionMsg.ACCOUNT_FIELDS_INVALID);
+            throw new BankAccountFieldsInvalidException(ExceptionMsg.BANK_ACCOUNT_FIELDS_INVALID);
+    }
 
-        if (BankAccountValidators.remoteCustomerApiUnreachable(customer.getCustomerId()))
-            throw new RemoteCustomerApiUnreachableException(String.format(FORMATTER, ExceptionMsg.REMOTE_CUSTOMER_API, customer));
-        else if (BankAccountValidators.remoteCustomerStateInvalid(customer.getState()))
-            throw new RemoteCustomerStateInvalidException(String.format(FORMATTER, ExceptionMsg.REMOTE_CUSTOMER_STATE, customer));
-
+    private void validateRemoteCustomer(String customerId, String customerState) throws RemoteCustomerApiUnreachableException,
+            RemoteCustomerStateInvalidException {
+        if (BankAccountValidators.remoteCustomerApiUnreachable(customerId))
+            throw new RemoteCustomerApiUnreachableException(ExceptionMsg.REMOTE_CUSTOMER_API);
+        else if (BankAccountValidators.remoteCustomerStateInvalid(customerState))
+            throw new RemoteCustomerStateInvalidException(ExceptionMsg.REMOTE_CUSTOMER_STATE);
     }
 
     private Collection<BankAccount> setCustomerToAccount(Collection<BankAccount> bankAccounts) {

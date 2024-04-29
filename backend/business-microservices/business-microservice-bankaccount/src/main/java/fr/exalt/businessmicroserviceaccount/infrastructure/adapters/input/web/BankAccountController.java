@@ -2,9 +2,11 @@ package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.web;
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.entities.CurrentBankAccount;
+import fr.exalt.businessmicroserviceaccount.domain.entities.SavingBankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.exceptions.*;
 import fr.exalt.businessmicroserviceaccount.domain.ports.input.InputBankAccountService;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountInterestRateDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountOverdraftDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountSuspendDto;
 import lombok.AllArgsConstructor;
@@ -46,16 +48,23 @@ public class BankAccountController {
             RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException, BankAccountStateInvalidException{
         return inputBankAccountService.updateAccount(accountId, dto);
     }
-    @PostMapping(value = "/accounts/suspend")
-    public BankAccount suspendAccount(@RequestBody BankAccountSuspendDto dto) throws BankAccountNotFoundException,
-            BankAccountStateInvalidException, BankAccountAlreadySuspendException, RemoteCustomerApiUnreachableException {
-        return inputBankAccountService.suspendAccount(dto);
+    @PostMapping(value = "/accounts/switch-state")
+    public BankAccount switchAccountState(@RequestBody BankAccountSuspendDto dto) throws BankAccountNotFoundException,
+            BankAccountStateInvalidException, BankAccountSameStateException, RemoteCustomerApiUnreachableException,
+            RemoteCustomerStateInvalidException {
+        return inputBankAccountService.switchAccountState(dto);
     }
     @PostMapping(value = "/accounts/overdraft")
-    public CurrentBankAccount updateOverdraft(@RequestBody BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
-            BankAccountAlreadySuspendException, BankAccountOverdraftInvalidException, BankAccountGivenSavingException,
-            RemoteCustomerStateInvalidException {
-        return inputBankAccountService.updateOverdraft(dto);
+    public CurrentBankAccount changeOverdraft(@RequestBody BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
+            BankAccountOverdraftInvalidException, BankAccountTypeNotAcceptedException, RemoteCustomerStateInvalidException,
+            BankAccountSuspendException, RemoteCustomerApiUnreachableException {
+        return inputBankAccountService.changeOverdraft(dto);
+    }
+    @PostMapping(value = "/accounts/interest-rate")
+    public SavingBankAccount changeInterestRate(@RequestBody BankAccountInterestRateDto dto) throws BankAccountNotFoundException,
+            BankAccountSuspendException, RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException,
+            BankAccountTypeNotAcceptedException {
+        return inputBankAccountService.changeInterestRate(dto);
     }
 
 }
