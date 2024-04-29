@@ -76,7 +76,7 @@ le customer api verifie que:
 
 - **[POST]** / **[PUT]**: ```http://localhost:8101/api-bank-account/accounts```: **créer** / **éditer** un bank account  
     - **bank-account api** intérroge le remote **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le bank account api  
-![account-customer](./assets/account-customer-post.png)  
+![account-post](./assets/account-customer-post.png)  
 l'api **bank account** verifie que:
     - le ***customer api*** est est ***reachable*** (reachable/unreachable), sinon une business exception et une forme de relience sont retournées à l'utilisateur
     - le ***customer*** associé au ***customerId*** fourni existe, sinon une business exception est renvoyée 
@@ -87,10 +87,11 @@ request payload -> ![account-post](./assets/account-post.png)    request respons
 ![account-customer](./assets/account-customer-post.png)  
 l'api **bank account** verifie que:
     - le compte existe
-    - le compte n'est pas déjà suspendu  
+    - le compte n'est pas déjà dans le même state  
     - le customer api de ce bank account est joignable (reachablea/unreachable) sinon une forme de résilience est renvoyée
+    - le customer state est **active**
     
-request payload ![account-suspend](./assets/account-suspend.png) request response -> ![account-suspend-return](./assets/account-suspend-return.png)  
+request payload ![account-suspend](./assets/switch-state.png) request response -> ![account-suspend-return](./assets/switch-state-return.png.png)  
 - **[POST]**: ```http://localhost:8101/api-bank-account/accounts/overdraft```: **update** le découvert d'un bank account  
 ![account-customer](./assets/account-customer-post.png)  
 l'api **bank account** verifie que:
