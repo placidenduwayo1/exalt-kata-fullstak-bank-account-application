@@ -1,12 +1,10 @@
 package fr.exalt.businessmicroservicecustomer.domain.usecase;
 
-import fr.exalt.businessmicroservicecustomer.domain.entities.BankAccount;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.*;
 import fr.exalt.businessmicroservicecustomer.domain.ports.input.InputCustomerService;
 import fr.exalt.businessmicroservicecustomer.domain.ports.output.OutputCustomerService;
-import fr.exalt.businessmicroservicecustomer.domain.ports.output.OutputRemoteAccountService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mapper.MapperService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.Request;
@@ -19,11 +17,9 @@ import java.util.UUID;
 
 public class InputCustomerImpl implements InputCustomerService {
     private final OutputCustomerService outputCustomerService;
-    private final OutputRemoteAccountService remoteAccountServiceProxy;
 
-    public InputCustomerImpl(OutputCustomerService outputCustomerService, OutputRemoteAccountService remoteAccountServiceProxy) {
+    public InputCustomerImpl(OutputCustomerService outputCustomerService) {
         this.outputCustomerService = outputCustomerService;
-        this.remoteAccountServiceProxy = remoteAccountServiceProxy;
     }
 
     @Override
@@ -112,11 +108,6 @@ public class InputCustomerImpl implements InputCustomerService {
 
         // call output adapter to register updated address
         return outputCustomerService.updateAddress(address);
-    }
-
-    @Override
-    public Collection<BankAccount> loadRemoteAccountsOfCustomer(String customerId) {
-        return remoteAccountServiceProxy.loadRemoteAccountsOgCustomer(customerId);
     }
 
     private void validateCustomer(RequestDto requestDto) throws CustomerStateInvalidException,

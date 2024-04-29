@@ -1,26 +1,17 @@
 package fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.services;
 
-import fr.exalt.businessmicroservicecustomer.domain.entities.BankAccount;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.AddressNotFoundException;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.CustomerNotFoundException;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.ExceptionMsg;
 import fr.exalt.businessmicroservicecustomer.domain.ports.output.OutputCustomerService;
-import fr.exalt.businessmicroservicecustomer.domain.ports.output.OutputRemoteAccountService;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.input.feignclient.model.AccountModel;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.input.feignclient.proxy.RemoteAccountServiceProxy;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mapper.MapperService;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerDto;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressModel;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerModel;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.Request;
+import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.*;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.repositories.AddressRepository;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -28,16 +19,13 @@ import java.util.Collection;
 @Service
 @Transactional
 @Slf4j
-public class OutputCustomerServiceImpl implements OutputCustomerService, OutputRemoteAccountService {
+public class OutputCustomerServiceImpl implements OutputCustomerService {
     private final CustomerRepository customerRepository;
     private final AddressRepository addressRepository;
-    private final RemoteAccountServiceProxy remoteAccountServiceProxy;
 
-    public OutputCustomerServiceImpl(CustomerRepository customerRepository, AddressRepository addressRepository,
-            @Qualifier(value = "accountserviceproxy") RemoteAccountServiceProxy remoteAccountServiceProxy) {
+    public OutputCustomerServiceImpl(CustomerRepository customerRepository, AddressRepository addressRepository) {
         this.customerRepository = customerRepository;
         this.addressRepository = addressRepository;
-        this.remoteAccountServiceProxy = remoteAccountServiceProxy;
     }
 
     @Override
@@ -128,11 +116,5 @@ public class OutputCustomerServiceImpl implements OutputCustomerService, OutputR
     public Address updateAddress(Address address) {
         AddressModel addressModel = addressRepository.save(MapperService.fromTo(address));
         return MapperService.fromTo(addressModel);
-    }
-
-    @Override
-    public Collection<BankAccount> loadRemoteAccountsOgCustomer(String customerId) {
-        Collection<AccountModel>  models = remoteAccountServiceProxy.loadRemoteAccountsOfCustomer(customerId);
-        return models.stream().map(MapperService::fromTo).toList();
     }
 }

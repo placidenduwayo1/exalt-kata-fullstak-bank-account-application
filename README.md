@@ -66,11 +66,6 @@ request payload -> ![customer-post](./assets/customer-post.png)    request respo
     - si adresse n'existe pas, créer la nouvelle adresse et enregistrer le customer à cette adresse.
 - **[GET]**: ```http://localhost:8101/api-customer/customers```: **consulter** tous les customers  
 - **[GET]**: ```http://localhost:8101/api-customer/addresses```: **consulter** les adresses des customers  
-- **[GET]**: ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : **consulter** les comptes et leurs soldes du ***customer*** depuis le remote ***bank-account***    
-![customer-accout](./assets/customer-account.png)  
-le customer api verifie que:
-    - le ***customer*** associé au ***customerId*** fourni existe
-    - le remote ***account api*** est ***reachable*** (reachable/unreachable) sinon une business exception et une forme relience sont renvoyées
 
 ### business-microservice-account
 
@@ -87,11 +82,11 @@ l'api **bank account** verifie que:
 ![account-customer](./assets/account-customer-post.png)  
 l'api **bank account** verifie que:
     - le compte existe
-    - le compte n'est pas déjà dans le même state  
+    - le compte n'est pas déjà dans le même state que le state fourni
     - le customer api de ce bank account est joignable (reachablea/unreachable) sinon une forme de résilience est renvoyée
     - le customer state est **active**
     
-payload ![account-suspend](./assets/switch-state.png) response -> ![account-suspend-return](./assets/switch-state-return.png)  
+payload ![account-switch-state](./assets/switch-state.png) response -> ![account-switch-state-return](./assets/switch-state-return.png)  
 - **[POST]**: ```http://localhost:8101/api-bank-account/accounts/overdraft```: **update** le découvert d'un bank account  
 ![account-customer](./assets/account-customer-post.png)  
 l'api **bank account** verifie que:
@@ -100,6 +95,9 @@ l'api **bank account** verifie que:
     - le compte n'est pas un compte epargne
     - le ***customer api*** de ce bank account est joignable (reachablea/unreachable) sinon une forme de résilience est renvoyée
     - le customer ***state*** (active/archive) de bank account est active
+- **[GET]**: ```http://localhost:8101/api-bank-account/customers/{customerId}/accounts``` : **consulter** les comptes et leurs soldes associés au **customer**
+![account-customer](./assets/account-customer.png)  
+
 
 ### business-microservice-operation
 - **[POST]**: ```http://localhost:8101/api-operation/operations```: **créer** une opération de **dépot** ou de **retrait**  
