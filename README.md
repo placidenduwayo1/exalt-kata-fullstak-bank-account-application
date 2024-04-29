@@ -62,6 +62,8 @@ Pour accéder au business microservices en backend on passe par la ***gateway-se
 
 - **[POST]** / **[PUT]**: ```http://localhost:8101/api-customer/customers```: **créer** / **éditer** un customer  
 request payload -> ![customer-post](./assets/customer-post.png)    request response -> ![customer-post-return](./assets/customer-post-return.png)  
+    - si adresse existe déjà (c-à-d un customer est déja enregistré à cette adresse), enregistrer le nouveau customer à cette même adresse
+    - si adresse n'existe pas, créer la nouvelle adresse et enregistrer le customer à cette adresse.
 - **[GET]**: ```http://localhost:8101/api-customer/customers```: **consulter** tous les customers  
 - **[GET]**: ```http://localhost:8101/api-customer/addresses```: **consulter** les adresses des customers  
 - **[GET]**: ```http://localhost:8101/api-customer/customers/{customerId}/accounts``` : **consulter** les comptes et leurs soldes du ***customer*** depuis le remote ***bank-account***    
