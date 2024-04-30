@@ -95,9 +95,8 @@ l'api **bank account** verifie que:
     - le compte n'est pas un compte epargne
     - le ***customer api*** de ce bank account est joignable (reachablea/unreachable) sinon une forme de résilience est renvoyée
     - le customer ***state*** (active/archive) de bank account est active
-- **[GET]**: ```http://localhost:8101/api-bank-account/customers/{customerId}/accounts``` : **consulter** les comptes et leurs soldes associés au **customer**
+- **[GET]**: ```http://localhost:8101/api-bank-account/customers/{customerId}/accounts``` : **consulter** les comptes associés au **customer** et leurs soldes 
 ![account-customer](./assets/account-customer.png)  
-
 
 ### business-microservice-operation
 - **[POST]**: ```http://localhost:8101/api-operation/operations```: **créer** une opération de **dépot** ou de **retrait**  
