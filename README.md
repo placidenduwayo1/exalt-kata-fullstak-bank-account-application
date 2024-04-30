@@ -116,7 +116,7 @@ Pour enregistrer une opération, l'api operation vérifie que:
 - **[GET]**: ```http://localhost:8101/api-operation/accounts/{accountId}/operations```: consulter les opérations d'un compte  
 l'api operation vérifie que:
     - l'api bank account est joignable / l'id du bank account existe
-    - le bank account est de type **current**
+    - le bank account est de type **current**  
 liste des operations du compte ```98c05563-3f1b-41c3-8bc8-54b6d000b01a```  
 ```[
         {
@@ -165,6 +165,15 @@ liste des operations du compte ```98c05563-3f1b-41c3-8bc8-54b6d000b01a```
         }
     ]
 ```
+- **[POST]**: ```http://localhost:8101/api-operation/operations/transfer```: transfer entre deux comptes
+![operation-request-chain](./assets/operation-post-chain.png)  
+payload -> ![transfer-pos](/assets/transfer-post.png)  response -> ![transfert-post-response](/assets/transfrer-post-return.png)  
+l'api operation verifie que:
+    - le remote **bank account** api est joignable
+    - le remote bank account origin est **différent** du remote bank account destination
+    - les remotes bank account origin et destination ne sont pas **suspended**
+    - le remote customer api est joigable, le **state** des customers n'est pas **archive**
+    - la balance du bank account origin >= mount à transférer: ```origin.getBalance()>= dto.getMount()```
 
 # Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**

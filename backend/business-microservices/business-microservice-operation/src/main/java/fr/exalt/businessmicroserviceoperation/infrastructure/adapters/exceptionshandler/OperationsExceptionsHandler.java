@@ -25,6 +25,8 @@ public class OperationsExceptionsHandler {
                 new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             case RemoteCustomerApiUnreachableException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            case RemoteAccountSuspendedException e ->
+                    new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             default ->
                     new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         };

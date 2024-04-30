@@ -4,10 +4,12 @@ import fr.exalt.businessmicroserviceoperation.domain.entities.Operation;
 import fr.exalt.businessmicroserviceoperation.domain.exceptions.*;
 import fr.exalt.businessmicroserviceoperation.domain.ports.input.InputOperationService;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models.OperationDto;
+import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models.TransferDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api-operation")
@@ -33,5 +35,11 @@ public class OperationController {
     public Collection<Operation> getAccountOperations(@PathVariable(name = "accountId") String accountId) throws
             RemoteBankAccountTypeInaccessibleFromOutsideException, RemoteBankAccountApiUnreachableException {
         return inputOperationService.getAccountOperations(accountId);
+    }
+    @PostMapping(value = "/operations/transfer")
+    public Map<String, Object> transferBetweenAccounts(@RequestBody TransferDto dto) throws
+            RemoteAccountSuspendedException, RemoteBankAccountApiUnreachableException, RemoteCustomerApiUnreachableException,
+            RemoteBankAccountBalanceException, RemoteCustomerStateInvalidException {
+        return inputOperationService.transferBetweenAccounts(dto);
     }
 }
