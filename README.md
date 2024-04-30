@@ -101,16 +101,14 @@ l'api **bank account** verifie que:
 
 ### business-microservice-operation
 - **[POST]**: ```http://localhost:8101/api-operation/operations```: **créer** une opération de **dépot** ou de **retrait**  
-payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/opeation-post-return.png)
+payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/operation-post-return.png)
 ![operation-request-chain](./assets/operation-post-chain.png) 
-- Pour enregistrer une opération:
-    - **(1)** l'api **operation** requête à la remote api **bank-account**: **récupérer** les informations du compté associé à **accountId**
-        - **(1.1)** l'api **operation** vérifie que l'api **bank-account** est joignable, si ok passe à **(1.2)**
-        - **(1.2)** l'api **operation** vérifie que c'est un bank-account **courant** (seuls les bank-account courants autorisent les transactions), si oui passer à **(1.3)**
-        - **(1.3)** si opération de **retrait**, l'api operation vérifie la **balance** du compte ```account.balance + account.overdraft >= operation.amount```, si OK, passer à **(2)**
-    - **(2)** l'api **operation** requête la remote api **customer** moyenant le **customerId** de account reçu à **(1)** (un bank-account est associé à un customer)
-        - **(2.1)** l'api operation vérifie que customer est joignable, si OK, passer à **(2.2)**
-        - **(2.2)** si le **state** du customer est **active** l'opération est sauvegardée en db sinon (customer state **archive**) une **business exception** est renvoyée
+    Pour enregistrer une opération, l'api operation vérifie que: 
+        - **bank-account** est joignable, si ok passe à **(1.2)**
+        - l'api **operation** vérifie que c'est un bank-account **courant**
+        - si opération de **retrait** la **balance** du compte est suffisante```account.balance + account.overdraft >= operation.amount```
+        - la remote api **customer** est joignable
+        - le **state** du customer est **active** 
 
 # Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**
