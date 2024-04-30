@@ -147,7 +147,7 @@ public class InputOperationServiceImpl implements InputOperationService {
         destination.setBalance(dto.getMount());
         BankAccountDto mapped2 = MapperService.fromTo(destination);
         BankAccount updatedDestination = outputOperationService.updateRemoteAccount(destination.getAccountId(), mapped2);
-        updatedDestination.setCustomer(customer1);
+        updatedDestination.setCustomer(customer2);
 
         return Map.of("origin",updatedOrigin, "destination",updatedDestination);
 
