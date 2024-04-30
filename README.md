@@ -109,7 +109,7 @@ Pour enregistrer une opération, l'api operation vérifie que:
     - l'api **operation** vérifie que c'est un bank-account **courant**
     - l'opération est de **retrait** 
     - si opération est **retrait** vérifier que la balance est suffisante: ```account.balance + account.overdraft >= operation.amount```
-        -si OK, l'**api operation** demander à la remote **bank account** de mettre à jour la balance: ```account.balance = account.balance - operation.mount```
+        - si OK, l'**api operation** demander à la remote **bank account** de mettre à jour la balance: ```account.balance = account.balance - operation.mount```
     - si opération est de **depot**
         l'**api operation** demander à la remote **bank account** de mettre à jour la balance: ```account.balance = account.balance + operation.mount```
 
