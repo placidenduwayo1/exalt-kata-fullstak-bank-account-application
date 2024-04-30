@@ -101,8 +101,9 @@ l'api **bank account** verifie que:
 
 ### business-microservice-operation
 - **[POST]**: ```http://localhost:8101/api-operation/operations```: **créer** une opération de **dépot** ou de **retrait**  
-payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/operation-post-return.png)
 ![operation-request-chain](./assets/operation-post-chain.png)  
+payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/operation-post-return.png)
+
 Pour enregistrer une opération, l'**api operation** vérifie que: 
     - le remote api **bank-account** est joignable
     - le remote api **customer** est joignable et que le **state** du customer est **active** 
@@ -167,7 +168,7 @@ liste des **operations** du compte ```98c05563-3f1b-41c3-8bc8-54b6d000b01a```
 ```
 - **[POST]**: ```http://localhost:8101/api-operation/operations/transfer```: **transfert** entre deux comptes origin est destination
 ![operation-request-chain](./assets/operation-post-chain.png)  
-payload -> ![transfer-pos](/assets/transfer-post.png)  response -> ![transfert-post-response](/assets/transfrer-post-return.png)  
+payload -> ![transfer-post](/assets/transfer-post.png)  response -> ![transfert-post-response](/assets/transfrer-post-return.png)  
 l'**api operation** verifie que:
     - le remote **bank account** api est joignable
     - le remote **bank account origin** est **différent** du remote bank account destination
