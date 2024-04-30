@@ -80,13 +80,13 @@ l'api **bank account** verifie que:
 - **[GET]**: ```http://localhost:8101/api-bank-account/accounts```: **consulter** la liste de tous les comptes 
 - **[POST]**: ```http://localhost:8101/api-bank-account/accounts/switch-state```: **suspendre** / **activer** un bank account  
 ![account-customer](./assets/account-customer-post.png)  
+payload ![account-switch-state](./assets/switch-state.png) response -> ![account-switch-state-return](./assets/switch-state-return.png)  
 l'api **bank account** verifie que:
     - le compte existe
     - le compte n'est pas déjà dans le même state que le state fourni
     - le customer api de ce bank account est joignable (reachablea/unreachable) sinon une forme de résilience est renvoyée
     - le customer state est **active**
-    
-payload ![account-switch-state](./assets/switch-state.png) response -> ![account-switch-state-return](./assets/switch-state-return.png)  
+
 - **[POST]**: ```http://localhost:8101/api-bank-account/accounts/overdraft```: **update** le découvert d'un bank account  
 ![account-customer](./assets/account-customer-post.png)  
 l'api **bank account** verifie que:
