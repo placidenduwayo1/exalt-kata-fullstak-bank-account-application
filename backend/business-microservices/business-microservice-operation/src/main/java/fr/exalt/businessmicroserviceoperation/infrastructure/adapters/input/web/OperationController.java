@@ -29,4 +29,9 @@ public class OperationController {
     public Collection<Operation> getAllOperations() {
         return inputOperationService.getAllOperations();
     }
+    @GetMapping(value = "/accounts/{accountId}/operations")
+    public Collection<Operation> getAccountOperations(@PathVariable(name = "accountId") String accountId) throws
+            RemoteBankAccountTypeInaccessibleFromOutsideException, RemoteBankAccountApiUnreachableException {
+        return inputOperationService.getAccountOperations(accountId);
+    }
 }

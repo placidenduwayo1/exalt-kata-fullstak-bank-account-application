@@ -99,7 +99,24 @@ public class InputOperationServiceImpl implements InputOperationService {
 
     @Override
     public Collection<Operation> getAllOperations() {
-        return outputOperationService.getAllOperations().stream()
+        return setOperationDependencies(outputOperationService.getAllOperations());
+    }
+
+    @Override
+    public Collection<Operation> getAccountOperations(String accountId) throws RemoteBankAccountApiUnreachableException, RemoteBankAccountTypeInaccessibleFromOutsideException {
+        BankAccount account = outputOperationService.loadRemoteAccount(accountId);
+        if(OperationValidators.remoteAccountApiUnreachable(account.getAccountId())){
+            throw new RemoteBankAccountApiUnreachableException(String.format(FORMATTER, ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE, account));
+        } else if (!account.getType().equals(BANK_ACCOUNT_TYPE_CURRENT)) {
+            throw new RemoteBankAccountTypeInaccessibleFromOutsideException(ExceptionsMsg.REMOTE_ACCOUNT_NOT_ACCESSIBLE_FROM_OUTSIDE);
+        }
+        else {
+            return setOperationDependencies(outputOperationService.getAccountOperations(accountId));
+        }
+    }
+
+    private Collection<Operation> setOperationDependencies(Collection<Operation> operations){
+        return operations.stream()
                 .map(operation -> {
                     BankAccount bankAccount = outputOperationService.loadRemoteAccount(operation.getAccountId());
                     Customer customer = outputOperationService.loadRemoteCustomer(bankAccount.getCustomerId());

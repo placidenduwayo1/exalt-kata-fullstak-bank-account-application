@@ -32,16 +32,13 @@ public class OutputOperationServiceImpl implements OutputOperationService {
     }
 
     @Override
-    public Operation createOperation(Operation operation) {
-        OperationModel model = operationRepository.save(MapperService.fromTo(operation));
-        return MapperService.fromTo(model);
+    public void createOperation(Operation operation) {
+        operationRepository.save(MapperService.fromTo(operation));
     }
 
     @Override
     public Collection<Operation> getAllOperations() {
-        return operationRepository.findAll().stream()
-                .map(MapperService::fromTo)
-                .toList();
+        return mapToOperation(operationRepository.findAll());
     }
 
     @Override
@@ -60,5 +57,16 @@ public class OutputOperationServiceImpl implements OutputOperationService {
     public BankAccount updateRemoteAccount(String accountId, BankAccountDto bankAccountDto) {
         BankAccountModel model = remoteAccountServiceProxy.updateRemoteAccount(accountId, bankAccountDto);
         return MapperService.fromTo(model);
+    }
+
+    @Override
+    public Collection<Operation> getAccountOperations(String accountId) {
+        return mapToOperation(operationRepository.findByAccountId(accountId));
+    }
+
+    private Collection<Operation> mapToOperation(Collection<OperationModel> models){
+        return models.stream()
+                .map(MapperService::fromTo)
+                .toList();
     }
 }

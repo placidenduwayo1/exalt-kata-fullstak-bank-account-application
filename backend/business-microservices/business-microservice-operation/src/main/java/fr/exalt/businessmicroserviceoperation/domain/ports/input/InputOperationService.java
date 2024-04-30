@@ -14,4 +14,6 @@ public interface InputOperationService {
             RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException;
 
     Collection<Operation> getAllOperations();
+
+    Collection<Operation> getAccountOperations(String accountId) throws RemoteBankAccountApiUnreachableException, RemoteBankAccountTypeInaccessibleFromOutsideException;
 }

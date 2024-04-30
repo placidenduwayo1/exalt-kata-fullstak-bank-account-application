@@ -103,12 +103,64 @@ l'api **bank account** verifie que:
 - **[POST]**: ```http://localhost:8101/api-operation/operations```: **créer** une opération de **dépot** ou de **retrait**  
 payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/operation-post-return.png)
 ![operation-request-chain](./assets/operation-post-chain.png) 
-    Pour enregistrer une opération, l'api operation vérifie que: 
-        - **bank-account** est joignable, si ok passe à **(1.2)**
-        - l'api **operation** vérifie que c'est un bank-account **courant**
-        - si opération de **retrait** la **balance** du compte est suffisante```account.balance + account.overdraft >= operation.amount```
-        - la remote api **customer** est joignable
-        - le **state** du customer est **active** 
+Pour enregistrer une opération, l'api operation vérifie que: 
+    - **bank-account** est joignable, si ok passe à **(1.2)**
+    - l'api **operation** vérifie que c'est un bank-account **courant**
+    - si opération de **retrait** la **balance** du compte est suffisante```account.balance + account.overdraft >= operation.amount```
+    - la remote api **customer** est joignable
+    - le **state** du customer est **active** 
+- **[GET]**: ```http://localhost:8101/api-operation/accounts/{accountId}/operations```: consulter les opérations d'un compte  
+l'api operation vérifie que:
+    - l'api bank account est joignable / l'id du bank account existe
+    - le bank account est de type **current**
+```
+[
+    {
+        "operationId": "501a34d3-78bb-4d28-b2ee-9a88704f3cbf",
+        "type": "depot",
+        "mount": 500.0,
+        "createdAt": "2024-04-30 11:06:22.760990821",
+        "accountId": "98c05563-3f1b-41c3-8bc8-54b6d000b01a",
+        "account": {
+            "accountId": "98c05563-3f1b-41c3-8bc8-54b6d000b01a",
+            "type": "current",
+            "state": "active",
+            "balance": 1300.0,
+            "overdraft": 100.0,
+            "customerId": "3f271852-1868-4230-8b5b-1f9581f17101",
+            "customer": {
+                "customerId": "3f271852-1868-4230-8b5b-1f9581f17101",
+                "firstname": "Placide",
+                "lastname": "Nduwayo",
+                "state": "active",
+                "email": "placide.nd@gmail.com"
+            }
+        }
+    },
+    {
+        "operationId": "363466cb-52f2-42a5-83df-1c97f6a81f55",
+        "type": "retrait",
+        "mount": 200.0,
+        "createdAt": "2024-04-30 11:06:41.026622842",
+        "accountId": "98c05563-3f1b-41c3-8bc8-54b6d000b01a",
+        "account": {
+            "accountId": "98c05563-3f1b-41c3-8bc8-54b6d000b01a",
+            "type": "current",
+            "state": "active",
+            "balance": 1300.0,
+            "overdraft": 100.0,
+            "customerId": "3f271852-1868-4230-8b5b-1f9581f17101",
+            "customer": {
+                "customerId": "3f271852-1868-4230-8b5b-1f9581f17101",
+                "firstname": "Placide",
+                "lastname": "Nduwayo",
+                "state": "active",
+                "email": "placide.nd@gmail.com"
+            }
+        }
+    }
+]
+```
 
 # Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**
