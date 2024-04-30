@@ -63,7 +63,7 @@ Pour accéder au business microservices en backend on passe par la ***gateway-se
 - **[POST]** / **[PUT]**: ```http://localhost:8101/api-customer/customers```: **créer** / **éditer** un customer  
 request payload -> ![customer-post](./assets/customer-post.png)    request response -> ![customer-post-return](/assets/customer-post-return.png)  
     - si adresse existe déjà (c-à-d un customer est déja enregistré à cette adresse), enregistrer le nouveau customer à cette même adresse
-    - si adresse n'existe pas, créer la nouvelle adresse et enregistrer le customer à cette adresse.
+    - si adresse n'existe pas, créer la nouvelle adresse et enregistrer le customer à cette adresse
 - **[GET]**: ```http://localhost:8101/api-customer/customers```: **consulter** tous les customers  
 - **[GET]**: ```http://localhost:8101/api-customer/addresses```: **consulter** les adresses des customers  
 
@@ -72,11 +72,11 @@ request payload -> ![customer-post](./assets/customer-post.png)    request respo
 - **[POST]** / **[PUT]**: ```http://localhost:8101/api-bank-account/accounts```: **créer** / **éditer** un bank account  
     - **bank-account api** intérroge le remote **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le bank account api  
 ![account-post](./assets/account-customer-post.png)  
+payload -> ![account-post](./assets/account-post.png) response -> ![account-post-return](./assets/account-post-return.png)
 l'api **bank account** verifie que:
-    - le ***customer api*** est est ***reachable*** (reachable/unreachable), sinon une business exception et une forme de relience sont retournées à l'utilisateur
-    - le ***customer*** associé au ***customerId*** fourni existe, sinon une business exception est renvoyée 
-    - le customer ***state*** est **active** sinon une business exception est retournées à l'utilisateur  
- payload -> ![account-post](./assets/account-post.png) response -> ![account-post-return](./assets/account-post-return.png)
+    - le remote ***customer api*** est joignable (reachable/unreachable), sinon une business exception et une forme de relience sont retournées à l'utilisateur
+    - le remote ***customer*** associé au ***customerId*** existe, sinon une business exception est renvoyée 
+    - le remote customer ***state*** est **active** sinon une business exception est retournées à l'utilisateur  
 - **[GET]**: ```http://localhost:8101/api-bank-account/accounts```: **consulter** la liste de tous les comptes 
 - **[POST]**: ```http://localhost:8101/api-bank-account/accounts/switch-state```: **suspendre** / **activer** un bank account  
 ![account-customer](./assets/account-customer-post.png)  
