@@ -72,7 +72,7 @@ request payload -> ![customer-post](./assets/customer-post.png)    request respo
 - **[POST]** / **[PUT]**: ```http://localhost:8101/api-bank-account/accounts```: **créer** / **éditer** un bank account  
     - **bank-account api** intérroge le remote **customer api** pour récupérer les infos du customer associé au ***customerId*** fourni par le bank account api  
 ![account-post](./assets/account-customer-post.png)  
-payload -> ![account-post](./assets/account-post.png) response -> ![account-post-return](./assets/account-post-return.png)
+payload -> ![account-post](./assets/account-post.png) response -> ![account-post-return](./assets/account-post-return.png)   
 l'api **bank account** verifie que:
     - le remote ***customer api*** est joignable (reachable/unreachable), sinon une business exception et une forme de relience sont retournées à l'utilisateur
     - le remote ***customer*** associé au ***customerId*** existe, sinon une business exception est renvoyée 
