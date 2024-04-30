@@ -117,8 +117,8 @@ Pour enregistrer une opération, l'api operation vérifie que:
 l'api operation vérifie que:
     - l'api bank account est joignable / l'id du bank account existe
     - le bank account est de type **current**
-    - liste des operations du compte ```98c05563-3f1b-41c3-8bc8-54b6d000b01a```
-    - ```[
+liste des operations du compte ```98c05563-3f1b-41c3-8bc8-54b6d000b01a```
+   ```[
         {
             "operationId": "501a34d3-78bb-4d28-b2ee-9a88704f3cbf",
             "type": "depot",
