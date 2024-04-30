@@ -103,21 +103,21 @@ l'api **bank account** verifie que:
 - **[POST]**: ```http://localhost:8101/api-operation/operations```: **créer** une opération de **dépot** ou de **retrait**  
 payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/operation-post-return.png)
 ![operation-request-chain](./assets/operation-post-chain.png)  
-Pour enregistrer une opération, l'api operation vérifie que: 
+Pour enregistrer une opération, l'**api operation** vérifie que: 
     - le remote api **bank-account** est joignable
     - le remote api **customer** est joignable et que le **state** du customer est **active** 
-    - l'api **operation** vérifie que c'est un bank-account **courant**
+    - le bank-account est de type **current**
     - l'opération est de **retrait** 
     - si opération est **retrait** vérifier que la balance est suffisante: ```account.balance + account.overdraft >= operation.amount```
         - si OK, l'**api operation** demander à la remote **bank account** de mettre à jour la balance: ```account.balance = account.balance - operation.mount```
     - si opération est de **depot**
         l'**api operation** demander à la remote **bank account** de mettre à jour la balance: ```account.balance = account.balance + operation.mount```
 
-- **[GET]**: ```http://localhost:8101/api-operation/accounts/{accountId}/operations```: consulter les opérations d'un compte  
-l'api operation vérifie que:
-    - l'api bank account est joignable / l'id du bank account existe
-    - le bank account est de type **current**  
-liste des operations du compte ```98c05563-3f1b-41c3-8bc8-54b6d000b01a```  
+- **[GET]**: ```http://localhost:8101/api-operation/accounts/{accountId}/operations```: **consulter** les opérations d'un compte  
+l'**api operation** vérifie que:
+    - le remote **api bank account** est joignable / l'id du bank account existe
+    - le remote bank account est de type **current**  
+liste des **operations** du compte ```98c05563-3f1b-41c3-8bc8-54b6d000b01a```  
 ```[
         {
             "operationId": "501a34d3-78bb-4d28-b2ee-9a88704f3cbf",
@@ -165,15 +165,15 @@ liste des operations du compte ```98c05563-3f1b-41c3-8bc8-54b6d000b01a```
         }
     ]
 ```
-- **[POST]**: ```http://localhost:8101/api-operation/operations/transfer```: transfer entre deux comptes
+- **[POST]**: ```http://localhost:8101/api-operation/operations/transfer```: **transfert** entre deux comptes origin est destination
 ![operation-request-chain](./assets/operation-post-chain.png)  
 payload -> ![transfer-pos](/assets/transfer-post.png)  response -> ![transfert-post-response](/assets/transfrer-post-return.png)  
-l'api operation verifie que:
+l'**api operation** verifie que:
     - le remote **bank account** api est joignable
-    - le remote bank account origin est **différent** du remote bank account destination
-    - les remotes bank account origin et destination ne sont pas **suspended**
-    - le remote customer api est joigable, le **state** des customers n'est pas **archive**
-    - la balance du bank account origin >= mount à transférer: ```origin.getBalance()>= dto.getMount()```
+    - le remote **bank account origin** est **différent** du remote bank account destination
+    - les remotes **bank account origin** et **destination** ne sont pas **suspended**
+    - le remote **customer api** est joigable, le **state** des customers n'est pas **archive**
+    - la balance du remote **bank account origin** >= mount à transférer: ```origin.getBalance()>= dto.getMount()```
 
 # Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**
