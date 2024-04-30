@@ -24,7 +24,7 @@ public class InputCustomerImpl implements InputCustomerService {
 
     @Override
     public Customer createCustomer(RequestDto requestDto) throws CustomerStateInvalidException,
-            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException {
+            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException, CustomerEmailInvalidException {
 
         validateCustomer(requestDto);
         Address mappedAddress = MapperService.fromTo(requestDto.getAddressDto());
@@ -73,7 +73,7 @@ public class InputCustomerImpl implements InputCustomerService {
 
     @Override
     public Customer updateCustomer(String customerId, RequestDto requestDto) throws CustomerStateInvalidException,
-            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException, CustomerNotFoundException {
+            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException, CustomerNotFoundException, CustomerEmailInvalidException {
         validateCustomer(requestDto);
 
         Customer customer = getCustomer(customerId);
@@ -111,12 +111,15 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     private void validateCustomer(RequestDto requestDto) throws CustomerStateInvalidException,
-            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException {
+            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException, CustomerEmailInvalidException {
 
         CustomerValidators.formatter(requestDto);
 
         if (!CustomerValidators.isValidCustomerState(requestDto.getCustomerDto().getState())) {
             throw new CustomerStateInvalidException(ExceptionMsg.CUSTOMER_STATE_INVALID);
+        }
+        if(!CustomerValidators.isValidEmail(requestDto.getCustomerDto().getEmail())){
+            throw new CustomerEmailInvalidException(ExceptionMsg.CUSTOMER_EMAIL_INVALID);
         }
         if (CustomerValidators.invalidRequest(requestDto)) {
             throw new CustomerOneOrMoreFieldsInvalidException(ExceptionMsg.CUSTOMER_FIELD_INVALID);

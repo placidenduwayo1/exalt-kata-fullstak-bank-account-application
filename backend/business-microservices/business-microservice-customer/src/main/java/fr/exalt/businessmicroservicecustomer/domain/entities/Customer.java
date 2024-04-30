@@ -5,6 +5,7 @@ public class Customer {
     private String firstname;
     private String lastname;
     private String state;
+    private String email;
     private String createdAt;
     private Address address;
 
@@ -13,6 +14,7 @@ public class Customer {
         this.firstname = builder.firstname;
         this.lastname = builder.lastname;
         this.state = builder.state;
+        this.email = builder.email;
         this.createdAt = builder.createdAt;
         this.address = builder.address;
     }
@@ -45,6 +47,14 @@ public class Customer {
         return state;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setState(String state) {
         this.state = state;
     }
@@ -70,6 +80,7 @@ public class Customer {
         private String firstname;
         private String lastname;
         private String state;
+        private String email;
         private String createdAt;
         private Address address;
 
@@ -90,6 +101,10 @@ public class Customer {
 
         public CustomerBuilder state(String state) {
             this.state = state;
+            return this;
+        }
+        public CustomerBuilder email(String email){
+            this.email = email;
             return this;
         }
 

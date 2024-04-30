@@ -13,6 +13,6 @@ public class CustomerModel {
     private String customerId;
     private String firstname;
     private String lastname;
-    private String createdAt;
     private String state;
+    private String email;
 }

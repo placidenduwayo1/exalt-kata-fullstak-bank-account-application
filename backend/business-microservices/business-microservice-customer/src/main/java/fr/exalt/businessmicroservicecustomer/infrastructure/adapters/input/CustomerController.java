@@ -19,7 +19,7 @@ public class CustomerController {
 
     @PostMapping(value = "/customers")
     public Customer createCustomer(@RequestBody RequestDto dto) throws CustomerStateInvalidException,
-            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException {
+            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException, CustomerEmailInvalidException {
         return inputCustomerService.createCustomer(dto);
     }
 
@@ -35,7 +35,7 @@ public class CustomerController {
     @PutMapping(value = "/customers/{customerId}")
     public Customer updateCustomer(@PathVariable(name = "customerId") String customerId, @RequestBody RequestDto dto) throws
             CustomerStateInvalidException, CustomerOneOrMoreFieldsInvalidException, CustomerNotFoundException,
-            CustomerAlreadyExistsException {
+            CustomerAlreadyExistsException, CustomerEmailInvalidException {
         return inputCustomerService.updateCustomer(customerId, dto);
     }
     @PutMapping(value = "/addresses/{addressId}")

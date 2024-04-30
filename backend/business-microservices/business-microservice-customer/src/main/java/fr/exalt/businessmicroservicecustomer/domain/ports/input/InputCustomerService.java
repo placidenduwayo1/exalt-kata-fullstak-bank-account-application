@@ -10,7 +10,7 @@ import java.util.Collection;
 
 public interface InputCustomerService {
     Customer createCustomer(RequestDto requestDto) throws CustomerStateInvalidException, CustomerOneOrMoreFieldsInvalidException,
-            CustomerAlreadyExistsException;
+            CustomerAlreadyExistsException, CustomerEmailInvalidException;
 
     Collection<Customer> getAllCustomers();
 
@@ -22,7 +22,7 @@ public interface InputCustomerService {
     Collection<Address> getAllAddresses();
 
     Customer updateCustomer(String customerId, RequestDto dto) throws CustomerStateInvalidException, CustomerOneOrMoreFieldsInvalidException,
-            CustomerAlreadyExistsException, CustomerNotFoundException;
+            CustomerAlreadyExistsException, CustomerNotFoundException, CustomerEmailInvalidException;
 
     Address updateAddress(String addressId, AddressDto addressDto) throws AddressFieldsInvalidException, AddressNotFoundException;
 }

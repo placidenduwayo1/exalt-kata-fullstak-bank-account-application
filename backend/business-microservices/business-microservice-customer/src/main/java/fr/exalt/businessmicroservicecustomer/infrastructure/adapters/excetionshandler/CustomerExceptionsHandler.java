@@ -21,6 +21,8 @@ public class CustomerExceptionsHandler {
                    new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
            case AddressNotFoundException e ->
                    new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+           case CustomerEmailInvalidException e ->
+                   new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
            default -> new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_GATEWAY);
        };
     }

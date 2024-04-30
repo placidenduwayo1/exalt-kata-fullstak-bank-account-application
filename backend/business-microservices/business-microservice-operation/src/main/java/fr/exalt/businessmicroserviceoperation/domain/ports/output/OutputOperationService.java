@@ -11,6 +11,6 @@ public interface OutputOperationService {
     Operation createOperation(Operation operation);
     Collection<Operation> getAllOperations();
     BankAccount loadRemoteAccount(String accountId);
-    Customer loaddRemoteCustomer(String customerId);
+    Customer loadRemoteCustomer(String customerId);
     BankAccount updateRemoteAccount(String accountId, BankAccountDto bankAccountDto);
 }

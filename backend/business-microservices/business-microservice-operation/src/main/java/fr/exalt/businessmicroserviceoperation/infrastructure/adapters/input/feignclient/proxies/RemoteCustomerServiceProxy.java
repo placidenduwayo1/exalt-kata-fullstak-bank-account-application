@@ -24,10 +24,10 @@ public interface RemoteCustomerServiceProxy {
         public CustomerModel loadRemoteCustomer(String customerId) {
             CustomerModel resilience = CustomerModel.builder()
                     .customerId(ExceptionsMsg.REMOTE_CUSTOMER_UNREACHABLE)
-                    .firstname(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)
-                    .lastname(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)
-                    .createdAt(ExceptionsMsg.REMOTE_CUSTOMER_UNREACHABLE)
+                    .firstname(ExceptionsMsg.REMOTE_CUSTOMER_UNREACHABLE)
+                    .lastname(ExceptionsMsg.REMOTE_CUSTOMER_UNREACHABLE)
                     .state(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)
+                    .email(ExceptionsMsg.REMOTE_CUSTOMER_UNREACHABLE)
                     .build();
             log.error("[Fallback] customer load {}", resilience);
             return resilience;

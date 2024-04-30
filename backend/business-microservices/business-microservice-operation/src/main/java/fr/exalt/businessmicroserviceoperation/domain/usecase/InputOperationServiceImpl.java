@@ -50,7 +50,7 @@ public class InputOperationServiceImpl implements InputOperationService {
         validateOperation(operationDto);
         BankAccount bankAccount = outputOperationService.loadRemoteAccount(operationDto.getAccountId());
         BankAccount updatedBankAccount = null;
-        Customer customer = outputOperationService.loaddRemoteCustomer(bankAccount.getCustomerId());
+        Customer customer = outputOperationService.loadRemoteCustomer(bankAccount.getCustomerId());
         if (bankAccount.getAccountId().equals(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)
                 || bankAccount.getState().equals(BANK_ACCOUNT_STATE_SUSPEND)) {
             throw new RemoteBankAccountApiUnreachableException(String.format(FORMATTER,
@@ -102,7 +102,7 @@ public class InputOperationServiceImpl implements InputOperationService {
         return outputOperationService.getAllOperations().stream()
                 .map(operation -> {
                     BankAccount bankAccount = outputOperationService.loadRemoteAccount(operation.getAccountId());
-                    Customer customer = outputOperationService.loaddRemoteCustomer(bankAccount.getCustomerId());
+                    Customer customer = outputOperationService.loadRemoteCustomer(bankAccount.getCustomerId());
                     bankAccount.setCustomer(customer);
                     operation.setAccount(bankAccount);
                     return operation;

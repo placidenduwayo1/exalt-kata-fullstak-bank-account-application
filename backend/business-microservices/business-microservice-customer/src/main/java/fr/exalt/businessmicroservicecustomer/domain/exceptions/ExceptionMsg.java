@@ -8,4 +8,5 @@ public class ExceptionMsg {
     public static final String CUSTOMER_ALREADY_EXISTS ="Customer already exists Exception" ;
     public static final String ADDRESS_FIELDS = "Address one or more fields invalid Exception";
     public static final String ADDRESS_NOT_FOUND = "Address not found Exception";
+    public static final String CUSTOMER_EMAIL_INVALID = "Customer Email invalid Exception";
 }

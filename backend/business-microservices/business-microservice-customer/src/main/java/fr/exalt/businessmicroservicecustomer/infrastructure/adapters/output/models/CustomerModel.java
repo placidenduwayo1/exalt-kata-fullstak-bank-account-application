@@ -19,6 +19,7 @@ public class CustomerModel {
     private String firstname;
     private String lastname;
     private String state;
+    private String email;
     private String createdAt;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "address_id")

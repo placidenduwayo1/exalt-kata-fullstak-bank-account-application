@@ -51,7 +51,7 @@ public class OutputOperationServiceImpl implements OutputOperationService {
     }
 
     @Override
-    public Customer loaddRemoteCustomer(String customerId) {
+    public Customer loadRemoteCustomer(String customerId) {
         CustomerModel model = remoteCustomerServiceProxy.loadRemoteCustomer(customerId);
         return MapperService.fromTo(model);
     }

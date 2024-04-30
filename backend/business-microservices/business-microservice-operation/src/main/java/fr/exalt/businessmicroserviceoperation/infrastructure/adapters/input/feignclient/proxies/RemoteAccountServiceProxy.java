@@ -44,8 +44,10 @@ public interface RemoteAccountServiceProxy {
             return BankAccountModel.builder()
                     .accountId(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)
                     .type(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)
+                    .state(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)
                     .balance(-1)
                     .overdraft(-1)
+                    .customerId(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)
                     .build();
         }
     }

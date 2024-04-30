@@ -8,6 +8,7 @@ public class BankAccount {
     private double overdraft;
     private String customerId;
     private Customer customer;
+
     private BankAccount(AccountBuilder builder) {
         this.accountId = builder.accountId;
         this.type = builder.type;
@@ -92,6 +93,7 @@ public class BankAccount {
             this.type = type;
             return this;
         }
+
         public AccountBuilder state(String state) {
             this.state = state;
             return this;
@@ -125,11 +127,13 @@ public class BankAccount {
 
     @Override
     public String toString() {
-        return "Account [" +
+        return "Bank Account [" +
                 "account id='" + accountId + '\'' +
                 ", type='" + type + '\'' +
+                ", state='" + state + '\'' +
                 ", balance=" + balance +
                 ", overdraft=" + overdraft +
-                ']';
+                ", customer=" + customer +
+                '}';
     }
 }

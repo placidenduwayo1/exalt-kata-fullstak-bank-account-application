@@ -1,58 +1,58 @@
 package fr.exalt.businessmicroserviceoperation.domain.entities;
 
 public class Customer {
-    private String customerId;
-    private String firstname;
-    private String lastname;
-    private String state;
-    private String createdAt;
+    private  String customerId;
+    private  String firstname;
+    private  String lastname;
+    private  String state;
+    private  String email;
 
-    private Customer(CustomerBuilder builder){
+    private Customer(CustomerBuilder builder) {
         this.customerId = builder.customerId;
         this.firstname = builder.firstname;
         this.lastname = builder.lastname;
-        this.customerId = builder.createdAt;
         this.state = builder.state;
+        this.email = builder.email;
     }
 
     public String getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
-        this.customerId = customerId;
-    }
-
     public String getFirstname() {
         return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
     }
 
     public String getLastname() {
         return lastname;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(String createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public String getState() {
         return state;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
     public void setState(String state) {
         this.state = state;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public static class CustomerBuilder {
@@ -60,7 +60,7 @@ public class Customer {
         private String firstname;
         private String lastname;
         private String state;
-        private String createdAt;
+        private String email;
 
         public CustomerBuilder customerId(String customerId) {
             this.customerId = customerId;
@@ -81,11 +81,11 @@ public class Customer {
             this.state = state;
             return this;
         }
-        public CustomerBuilder createdAt(String createdAt) {
-            this.createdAt = createdAt;
+
+        public CustomerBuilder email(String email) {
+            this.email = email;
             return this;
         }
-
         public Customer build(){
             return new Customer(this);
         }
@@ -98,7 +98,7 @@ public class Customer {
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", state='" + state + '\'' +
-                ", created at='" + createdAt + '\'' +
+                ", email='" + email + '\'' +
                 ']';
     }
 }
