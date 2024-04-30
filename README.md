@@ -102,13 +102,17 @@ l'api **bank account** verifie que:
 ### business-microservice-operation
 - **[POST]**: ```http://localhost:8101/api-operation/operations```: **créer** une opération de **dépot** ou de **retrait**  
 payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/operation-post-return.png)
-![operation-request-chain](./assets/operation-post-chain.png) 
+![operation-request-chain](./assets/operation-post-chain.png)  
 Pour enregistrer une opération, l'api operation vérifie que: 
-    - **bank-account** est joignable, si ok passe à **(1.2)**
+    - le remote api **bank-account** est joignable
+    - le remote api **customer** est joignable et que le **state** du customer est **active** 
     - l'api **operation** vérifie que c'est un bank-account **courant**
-    - si opération de **retrait** la **balance** du compte est suffisante```account.balance + account.overdraft >= operation.amount```
-    - la remote api **customer** est joignable
-    - le **state** du customer est **active** 
+    - l'opération est de **retrait** 
+    - si opération est **retrait** vérifier que la balance est suffisante: ```account.balance + account.overdraft >= operation.amount```
+        -si OK, l'**api operation** demander à la remote **bank account** de mettre à jour la balance: ```account.balance = account.balance - operation.mount```
+    - si opération est de **depot**
+        l'**api operation** demander à la remote **bank account** de mettre à jour la balance: ```account.balance = account.balance + operation.mount```
+
 - **[GET]**: ```http://localhost:8101/api-operation/accounts/{accountId}/operations```: consulter les opérations d'un compte  
 l'api operation vérifie que:
     - l'api bank account est joignable / l'id du bank account existe
