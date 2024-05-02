@@ -8,7 +8,7 @@ import fr.exalt.businessmicroserviceaccount.domain.ports.input.InputBankAccountS
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountInterestRateDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountOverdraftDto;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountSuspendDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountSwitchStatedDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,7 +49,7 @@ public class BankAccountController {
         return inputBankAccountService.updateAccount(accountId, dto);
     }
     @PostMapping(value = "/accounts/switch-state")
-    public BankAccount switchAccountState(@RequestBody BankAccountSuspendDto dto) throws BankAccountNotFoundException,
+    public BankAccount switchAccountState(@RequestBody BankAccountSwitchStatedDto dto) throws BankAccountNotFoundException,
             BankAccountStateInvalidException, BankAccountSameStateException, RemoteCustomerApiUnreachableException,
             RemoteCustomerStateInvalidException {
         return inputBankAccountService.switchAccountState(dto);

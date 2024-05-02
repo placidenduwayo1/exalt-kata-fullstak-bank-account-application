@@ -11,7 +11,7 @@ import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.mappe
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountInterestRateDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountOverdraftDto;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountSuspendDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountSwitchStatedDto;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -19,8 +19,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 public class InputBankAccountServiceImpl implements InputBankAccountService {
-    //output adapter
-    private final OutputAccountService outputAccountService;
+    private final OutputAccountService outputAccountService;//output adapter
     private static final String BANK_ACCOUNT_CURRENT = "current";
     private static final String BANK_ACCOUNT_SAVING = "saving";
     private static final String BANK_ACCOUNT_ACTIVE = "active";
@@ -133,7 +132,7 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
     }
 
     @Override
-    public BankAccount switchAccountState(BankAccountSuspendDto dto) throws BankAccountNotFoundException,
+    public BankAccount switchAccountState(BankAccountSwitchStatedDto dto) throws BankAccountNotFoundException,
             BankAccountStateInvalidException, BankAccountSameStateException, RemoteCustomerApiUnreachableException,
             RemoteCustomerStateInvalidException {
 
@@ -168,7 +167,7 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
         }
 
         if (bankAccount instanceof SavingBankAccount account) {
-            throw new BankAccountTypeNotAcceptedException(String.format(FORMATTER, ExceptionMsg.BANK_ACCOUNT_TYPE_NOT_ACCEPTED,account));
+            throw new BankAccountTypeNotAcceptedException(String.format(FORMATTER, ExceptionMsg.BANK_ACCOUNT_TYPE_NOT_ACCEPTED, account));
         } else if (dto.getOverdraft() < 0) {
             throw new BankAccountOverdraftInvalidException(ExceptionMsg.BANK_ACCOUNT_OVERDRAFT);
         } else {
@@ -198,8 +197,7 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
         }
         if (bankAccount instanceof CurrentBankAccount account) {
             throw new BankAccountTypeNotAcceptedException(String.format(FORMATTER, ExceptionMsg.BANK_ACCOUNT_TYPE_NOT_ACCEPTED, account));
-        }
-        else {
+        } else {
             SavingBankAccount saving = new SavingBankAccount.SavingAccountBuilder()
                     .interestRate(dto.getInterestRate())
                     .build();

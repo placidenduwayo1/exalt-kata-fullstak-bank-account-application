@@ -7,7 +7,7 @@ import fr.exalt.businessmicroserviceaccount.domain.exceptions.*;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountInterestRateDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountOverdraftDto;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountSuspendDto;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountSwitchStatedDto;
 
 import java.util.Collection;
 
@@ -24,7 +24,7 @@ public interface InputBankAccountService {
     BankAccount updateAccount(String accountId, BankAccountDto bankAccountDto) throws BankAccountTypeInvalidException,
             BankAccountFieldsInvalidException, BankAccountNotFoundException, RemoteCustomerStateInvalidException,
             RemoteCustomerApiUnreachableException, BankAccountStateInvalidException;
-    BankAccount switchAccountState(BankAccountSuspendDto dto) throws BankAccountNotFoundException,
+    BankAccount switchAccountState(BankAccountSwitchStatedDto dto) throws BankAccountNotFoundException,
             BankAccountStateInvalidException, BankAccountSameStateException, RemoteCustomerApiUnreachableException,
             RemoteCustomerStateInvalidException;
 

@@ -1,15 +1,13 @@
 package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-public class BankAccountSuspendDto {
+@Builder
+public class BankAccountSwitchStatedDto {
     private String accountId;
     private String state;
 }

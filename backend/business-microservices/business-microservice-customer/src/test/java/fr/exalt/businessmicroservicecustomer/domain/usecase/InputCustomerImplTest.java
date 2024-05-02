@@ -200,6 +200,5 @@ class InputCustomerImplTest {
             verify(mock, atLeast(1)).updateAddress(address);
             assertNotNull(actual);
         });
-
     }
 }
