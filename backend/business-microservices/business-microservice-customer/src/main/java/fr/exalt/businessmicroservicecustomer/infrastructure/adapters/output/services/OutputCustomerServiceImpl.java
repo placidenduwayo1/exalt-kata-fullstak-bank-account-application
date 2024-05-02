@@ -33,6 +33,7 @@ public class OutputCustomerServiceImpl implements OutputCustomerService {
         AddressModel savedAddress = addressRepository.save(MapperService.fromTo(address));
         CustomerModel customerModel = customerRepository.save(MapperService.fromTo(customer));
         customerModel.setAddress(savedAddress);
+
         return Request.builder()
                 .address(MapperService.fromTo(savedAddress))
                 .customer(MapperService.fromTo(customerModel))

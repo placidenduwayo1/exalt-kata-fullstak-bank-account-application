@@ -7,7 +7,6 @@ import fr.exalt.businessmicroservicecustomer.domain.ports.input.InputCustomerSer
 import fr.exalt.businessmicroservicecustomer.domain.ports.output.OutputCustomerService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mapper.MapperService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.Request;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
 
 import java.sql.Timestamp;
@@ -39,11 +38,8 @@ public class InputCustomerImpl implements InputCustomerService {
         customer.setAddress(savedAddress);
         customer.setCustomerId(UUID.randomUUID().toString());
         customer.setCreatedAt(Timestamp.from(Instant.now()).toString());
-
-        Request request = outputCustomerService.createCustomer(customer, savedAddress);
-        request.setAddress(savedAddress);
-        request.setCustomer(customer);
-        return request.getCustomer();
+        outputCustomerService.createCustomer(customer, savedAddress);
+        return customer;
     }
 
     @Override
@@ -86,10 +82,8 @@ public class InputCustomerImpl implements InputCustomerService {
         customer.setLastname(requestDto.getCustomerDto().getLastname());
         customer.setState(requestDto.getCustomerDto().getState());
 
-        Request request = outputCustomerService.updateCustomer(customer, address);
-        request.setCustomer(customer);
-        request.setAddress(address);
-        return request.getCustomer();
+        outputCustomerService.updateCustomer(customer, address);
+        return customer;
 
     }
 
@@ -118,7 +112,7 @@ public class InputCustomerImpl implements InputCustomerService {
         if (!CustomerValidators.isValidCustomerState(requestDto.getCustomerDto().getState())) {
             throw new CustomerStateInvalidException(ExceptionMsg.CUSTOMER_STATE_INVALID);
         }
-        if(!CustomerValidators.isValidEmail(requestDto.getCustomerDto().getEmail())){
+        if (!CustomerValidators.isValidEmail(requestDto.getCustomerDto().getEmail())) {
             throw new CustomerEmailInvalidException(ExceptionMsg.CUSTOMER_EMAIL_INVALID);
         }
         if (CustomerValidators.invalidRequest(requestDto)) {

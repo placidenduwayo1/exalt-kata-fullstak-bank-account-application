@@ -130,6 +130,7 @@ public class Customer {
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", state='" + state + '\'' +
+                ", email='" + email + '\'' +
                 ", created at='" + createdAt + '\'' +
                 ", address=" + address +
                 '}';

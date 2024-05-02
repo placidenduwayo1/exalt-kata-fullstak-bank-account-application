@@ -13,7 +13,7 @@ import java.util.Collection;
 public interface OutputCustomerService {
     Request createCustomer(Customer customer, Address address);
    Address getAddress(AddressDto dto);
-    Address getAddress(String addressIdo) throws AddressNotFoundException;
+    Address getAddress(String addressId) throws AddressNotFoundException;
     Collection<Customer> getAllCustomers();
     Customer getCustomer(String customerId) throws CustomerNotFoundException;
     Address createAddress(Address address);

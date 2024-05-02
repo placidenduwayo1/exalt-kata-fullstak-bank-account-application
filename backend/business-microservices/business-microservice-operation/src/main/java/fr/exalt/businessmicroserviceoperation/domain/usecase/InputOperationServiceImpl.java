@@ -18,8 +18,8 @@ import java.util.*;
 
 @Slf4j
 public class InputOperationServiceImpl implements InputOperationService {
-    // adapter outputOperationService comme interface entre le domain et la sortie extérieure
-    private final OutputOperationService outputOperationService;
+    private final OutputOperationService outputOperationService;/* outputOperationService is an interface adapter
+      entre le domain et la sortie extérieure, cette adapter est utilisé  pour tout qui est à l'extérieur du domain en output */
     private static final String FORMATTER = "%s,%n%s";
     private static final String BANK_ACCOUNT_TYPE_CURRENT = "current";
     private static final String BANK_ACCOUNT_STATE_SUSPEND = "suspended";
@@ -116,6 +116,7 @@ public class InputOperationServiceImpl implements InputOperationService {
     public Map<String, Object> transferBetweenAccounts(TransferDto dto) throws RemoteBankAccountApiUnreachableException,
             RemoteAccountSuspendedException, RemoteCustomerApiUnreachableException, RemoteBankAccountBalanceException,
             RemoteCustomerStateInvalidException {
+        // call output adapter to get remote bank accounts from bank account api
         BankAccount origin = outputOperationService.loadRemoteAccount(dto.getOrigin());
         BankAccount destination = outputOperationService.loadRemoteAccount(dto.getDestination());
 
@@ -127,6 +128,7 @@ public class InputOperationServiceImpl implements InputOperationService {
         if (origin.getState().equals(BANK_ACCOUNT_STATE_SUSPEND) || destination.getState().equals(BANK_ACCOUNT_STATE_SUSPEND)) {
             throw new RemoteAccountSuspendedException(ExceptionsMsg.REMOTE_BANK_ACCOUNT_SUSPENDED);
         }
+        // call output adapter to get remote customers from customer api
         Customer customer1 = outputOperationService.loadRemoteCustomer(origin.getCustomerId());
         Customer customer2 = outputOperationService.loadRemoteCustomer(destination.getCustomerId());
         if(customer1.getCustomerId().equals(ExceptionsMsg.REMOTE_CUSTOMER_UNREACHABLE)
@@ -142,10 +144,12 @@ public class InputOperationServiceImpl implements InputOperationService {
 
         origin.setBalance(- dto.getMount());
         BankAccountDto mapped1= MapperService.fromTo(origin);
+        // call output adapter to update origin account balance from remote bank account
         BankAccount updatedOrigin = outputOperationService.updateRemoteAccount(origin.getAccountId(), mapped1);
         updatedOrigin.setCustomer(customer1);
         destination.setBalance(dto.getMount());
         BankAccountDto mapped2 = MapperService.fromTo(destination);
+        // call output adapter to update destination account balance from remote bank account
         BankAccount updatedDestination = outputOperationService.updateRemoteAccount(destination.getAccountId(), mapped2);
         updatedDestination.setCustomer(customer2);
 
