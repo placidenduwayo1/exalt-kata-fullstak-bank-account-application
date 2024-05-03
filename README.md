@@ -103,6 +103,7 @@ l'api **bank account** verifie que:
 ![operation-request-chain](./assets/operation-post-chain.png)  
 payload -> ![operation-post](./assets/operation-post.png)   response -> ![operation-post-return](./assets/operation-post-return.png)  
 payload -> ![operation-post](./assets/operation-post-2.png)   response -> ![operation-post-return](./assets/operation-post-2-return.png)  
+payload -> ![operation-post](./assets/operation-post-3.png)   response -> ![operation-post-return](./assets/operation-post-3-return.png)  
 Pour enregistrer une opération de **dépot** ou de **retrait**, l'**api operation** vérifie que: 
     - le remote api **bank-account** est joignable
     - le remote api **customer** est joignable et que le **state** du customer est **active** 
