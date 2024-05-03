@@ -96,13 +96,15 @@ public class OutputAccountServiceImpl implements OutputAccountService {
     }
 
     @Override
-    public void changeOverdraft(CurrentBankAccount current) {
-       bankAccountRepository.save(MapperService.mapToCurrentAccountModel(current));
+    public BankAccount changeOverdraft(CurrentBankAccount current) {
+      CurrentBankAccountModel model= bankAccountRepository.save(MapperService.mapToCurrentAccountModel(current));
+      return MapperService.mapToCurrentAccount(model);
     }
 
     @Override
-    public void changeInterestRate(SavingBankAccount saving) {
-        bankAccountRepository.save(MapperService.mapToSavingAccountModel(saving));
+    public BankAccount changeInterestRate(SavingBankAccount saving) {
+       SavingBankAccountModel model = bankAccountRepository.save(MapperService.mapToSavingAccountModel(saving));
+       return MapperService.mapToSavingAccount(model);
     }
 
     private Collection<BankAccount> mapBankAccounts(Collection<BankAccountModel> bankAccountModels){

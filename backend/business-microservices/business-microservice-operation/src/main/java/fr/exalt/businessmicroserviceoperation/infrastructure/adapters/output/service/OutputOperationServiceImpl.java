@@ -32,8 +32,9 @@ public class OutputOperationServiceImpl implements OutputOperationService {
     }
 
     @Override
-    public void createOperation(Operation operation) {
-        operationRepository.save(MapperService.fromTo(operation));
+    public Operation createOperation(Operation operation) {
+        OperationModel model = operationRepository.save(MapperService.fromTo(operation));
+        return MapperService.fromTo(model);
     }
 
     @Override

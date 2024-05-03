@@ -12,6 +12,7 @@ import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.model
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.entities.CurrentBankAccountModel;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.entities.SavingBankAccountModel;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.repository.BankAccountRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -24,7 +25,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+@Slf4j
 class OutputAccountServiceImplTest {
     @Mock
     private BankAccountRepository mock1;
@@ -33,14 +34,13 @@ class OutputAccountServiceImplTest {
     @InjectMocks
     private OutputAccountServiceImpl underTest;
     private static final String ID = "1";
-    private static final String TYPE = "current";
     private static final String STATE = "active";
     private static final double BALANCE = 2000;
     private static final String CREATED_AT = "now";
     private static final String CUSTOMER_ID = "1";
-    private CurrentBankAccountModel currentBankAccount = new CurrentBankAccountModel();
-    private SavingBankAccountModel savingBankAccount = new SavingBankAccountModel();
-    private CustomerModel customer = CustomerModel.builder()
+    private final CurrentBankAccountModel currentBankAccount = new CurrentBankAccountModel();
+    private final SavingBankAccountModel savingBankAccount = new SavingBankAccountModel();
+    private final CustomerModel customer = CustomerModel.builder()
             .customerId("1")
             .firstname("placide")
             .lastname("nduwayo")
@@ -102,25 +102,27 @@ class OutputAccountServiceImplTest {
         when(mock1.findAll()).thenReturn(models);
         Collection<BankAccount> actual = underTest.getAllAccounts();
         //VERIFY
-        assertAll("",()->{
+        assertAll("", () -> {
             verify(mock1, atLeast(1)).findAll();
             assertFalse(actual.isEmpty());
-            assertEquals(2,actual.size());
+            assertEquals(2, actual.size());
         });
     }
 
     @Test
     void getAccount() throws BankAccountNotFoundException {
         //PREPARE
-        final String id1="1";
-        final String id2="2";
+        final String id1 = "1";
+        final String id2 = "2";
+        final String id3 = "3";
         //EXECUTE
-        when(mock1.findById(id1)).thenReturn(Optional.ofNullable(currentBankAccount));
-        when(mock1.findById(id2)).thenReturn(Optional.ofNullable(savingBankAccount));
-        BankAccount actual1 = underTest.getAccount(id2);
-        BankAccount actual2 = underTest.getAccount(id1);
+        when(mock1.findById(id1)).thenReturn(Optional.of(currentBankAccount));
+        when(mock1.findById(id2)).thenReturn(Optional.of(savingBankAccount));
+
+        BankAccount actual1 = underTest.getAccount(id1);
+        BankAccount actual2 = underTest.getAccount(id2);
         //VERIFY
-        assertAll("",()->{
+        assertAll("", () -> {
             verify(mock1, atLeast(1)).findById(id1);
             verify(mock1, atLeast(1)).findById(id2);
             assertNotNull(actual1);
@@ -137,7 +139,7 @@ class OutputAccountServiceImplTest {
         when(mock1.findByCustomerId(CUSTOMER_ID)).thenReturn(models);
         Collection<BankAccount> actual = underTest.getAccountOfGivenCustomer(CUSTOMER_ID);
         //VERIFY
-        assertAll("",()->{
+        assertAll("", () -> {
             verify(mock1, atLeast(1)).findByCustomerId(CUSTOMER_ID);
             assertFalse(actual.isEmpty());
             assertEquals(2, actual.size());
@@ -147,7 +149,7 @@ class OutputAccountServiceImplTest {
     @Test
     void loadRemoteCustomer() {
         //PREPARE
-        final String customerId="2";
+        final String customerId = "2";
         final CustomerModel model = CustomerModel.builder()
                 .customerId(customerId)
                 .firstname("customer firstname")
@@ -156,10 +158,10 @@ class OutputAccountServiceImplTest {
                 .state("customer state")
                 .build();
         //EXECUTE
-        when(mock2.loadRemoteCustomer(customerId)).thenReturn(customer);
+        when(mock2.loadRemoteCustomer(customerId)).thenReturn(model);
         Customer actual = underTest.loadRemoteCustomer(customerId);
         //VERIFY
-        assertAll("",()->{
+        assertAll("", () -> {
             verify(mock2, atLeast(1)).loadRemoteCustomer(customerId);
             assertNotNull(actual);
         });
@@ -167,21 +169,86 @@ class OutputAccountServiceImplTest {
 
     @Test
     void updateCurrentAccount() {
+        //PREPARE
+        CurrentBankAccount account = MapperService.mapToCurrentAccount(currentBankAccount);
+        //EXECUTE
+        when(mock1.save(any(CurrentBankAccountModel.class))).thenReturn(currentBankAccount);
+        CurrentBankAccount actual = underTest.updateCurrentAccount(account);
+        //VERIFY
+        assertAll("", () -> {
+            verify(mock1, atLeast(1)).save(any(CurrentBankAccountModel.class));
+            assertNotNull(actual);
+        });
     }
 
     @Test
     void updateSavingAccount() {
+        //PREPARE
+        SavingBankAccount account = MapperService.mapToSavingAccount(savingBankAccount);
+        //EXECUTE
+        when(mock1.save(any(SavingBankAccountModel.class))).thenReturn(savingBankAccount);
+        SavingBankAccount actual = underTest.updateSavingAccount(account);
+        //VERIFY
+        assertAll("", () -> {
+            verify(mock1, atLeast(1)).save(any(SavingBankAccountModel.class));
+            assertNotNull(actual);
+        });
     }
 
     @Test
     void switchAccountState() {
+        //PREPARE
+        final String state = "suspended";
+        currentBankAccount.setState(state);
+        savingBankAccount.setState(state);
+        BankAccount currentAccount = MapperService.mapToCurrentAccount(currentBankAccount);
+        BankAccount savingAccount = MapperService.mapToSavingAccount(savingBankAccount);
+        //EXECUTE
+        when(mock1.save(any(CurrentBankAccountModel.class))).thenReturn(currentBankAccount);
+        when(mock1.save(any(SavingBankAccountModel.class))).thenReturn(savingBankAccount);
+        BankAccount actual1 = underTest.switchAccountState(currentAccount);
+        BankAccount actual2 = underTest.switchAccountState(savingAccount);
+        BankAccount actual3 = underTest.switchAccountState(null);
+        //VERIFY
+        assertAll("", () -> {
+            verify(mock1, atLeast(1)).save(any(CurrentBankAccountModel.class));
+            verify(mock1, atLeast(1)).save(any(SavingBankAccountModel.class));
+            assertEquals("suspended", actual1.getState());
+            assertEquals("suspended", actual2.getState());
+            assertNull(actual3);
+        });
     }
 
     @Test
     void changeOverdraft() {
+        //PREPARE
+        final double newOverdraft = 350;
+        currentBankAccount.setOverdraft(newOverdraft);
+        log.info("{}",currentBankAccount);
+        CurrentBankAccount bankAccount = MapperService.mapToCurrentAccount(currentBankAccount);
+        //EXECUTE
+        when(mock1.save(any(CurrentBankAccountModel.class))).thenReturn(currentBankAccount);
+        BankAccount actual = underTest.changeOverdraft(bankAccount);
+        //VERIFY
+        assertAll("",()->{
+            verify(mock1, atLeast(1)).save(any(CurrentBankAccountModel.class));
+            assertNotNull(actual);
+        });
     }
 
     @Test
     void changeInterestRate() {
+        //PREPARE
+        final double newInterestRate = 3.8;
+        savingBankAccount.setInterestRate(newInterestRate);
+        SavingBankAccount bankAccount = MapperService.mapToSavingAccount(savingBankAccount);
+        //EXECUTE
+        when(mock1.save(any(SavingBankAccountModel.class))).thenReturn(savingBankAccount);
+        BankAccount actual = underTest.changeInterestRate(bankAccount);
+        //VERIFY
+        assertAll("",()->{
+            verify(mock1, atLeast(1)).save(any(SavingBankAccountModel.class));
+            assertNotNull(actual);
+        });
     }
 }

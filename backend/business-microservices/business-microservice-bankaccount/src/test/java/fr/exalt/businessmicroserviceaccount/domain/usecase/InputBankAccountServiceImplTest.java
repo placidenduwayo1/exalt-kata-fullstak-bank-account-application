@@ -240,7 +240,7 @@ class InputBankAccountServiceImplTest {
         //EXECUTE
         when(mock.loadRemoteCustomer(CUSTOMER_ID)).thenReturn(customer);
         when(mock.getAccount(ID)).thenReturn(currentBankAccount);
-        doNothing().when(mock).changeOverdraft(any(CurrentBankAccount.class));
+        when(mock.changeOverdraft(any(CurrentBankAccount.class))).thenReturn(currentBankAccount);
         BankAccount actual = underTest.changeOverdraft(dto);
         //VERIFY
         assertAll("", () -> {
@@ -261,7 +261,7 @@ class InputBankAccountServiceImplTest {
         //EXECUTE
         when(mock.loadRemoteCustomer(CUSTOMER_ID)).thenReturn(customer);
         when(mock.getAccount(ID)).thenReturn(savingBankAccount);
-        doNothing().when(mock).changeInterestRate(any(SavingBankAccount.class));
+        when(mock.changeInterestRate(any(SavingBankAccount.class))).thenReturn(savingBankAccount);
         BankAccount actual = underTest.changeInterestRate(dto);
         //VERIFY
         assertAll("", () -> {

@@ -1,17 +1,16 @@
-package fr.exalt.businessmicroserviceaccount.domain.entities;
+package fr.exalt.businessmicroserviceoperation.domain.entities;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class CustomerTest {
-
     private static final String ID = "1";
     private static final String FIRSTNAME = "placide";
     private static final String LASTNAME = "nduwayo";
     private static final String STATE = "active";
     private static final String EMAIL = "placide.nd@gmail.com";
-    private Customer customer = new Customer.CustomerBuilder()
+    private final Customer customer = new Customer.CustomerBuilder()
             .customerId("1")
             .firstname(FIRSTNAME)
             .lastname(LASTNAME)
@@ -25,6 +24,7 @@ class CustomerTest {
             assertEquals("1", customer.getCustomerId());
             assertEquals("placide", customer.getFirstname());
             assertEquals("nduwayo", customer.getLastname());
+            assertEquals("placide.nd@gmail.com", customer.getEmail());
             assertEquals("active", customer.getState());
         });
     }
@@ -35,6 +35,8 @@ class CustomerTest {
         newCustomer.setFirstname(FIRSTNAME);
         newCustomer.setLastname(LASTNAME);
         newCustomer.setState(STATE);
+        newCustomer.setEmail(EMAIL);
         assertEquals(customer.toString(), newCustomer.toString());
     }
+
 }

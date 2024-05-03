@@ -57,11 +57,11 @@ public class Operation {
         this.accountId = accountId;
     }
 
-    public BankAccount getAccount() {
+    public BankAccount getBankAccount() {
         return bankAccount;
     }
 
-    public void setAccount(BankAccount bankAccount) {
+    public void setBankAccount(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
     }
 

@@ -24,7 +24,7 @@ public interface OutputAccountService {
     SavingBankAccount updateSavingAccount(SavingBankAccount savingBankAccount);
     BankAccount switchAccountState(BankAccount bankAccount);
 
-    void changeOverdraft(CurrentBankAccount current);
+    BankAccount changeOverdraft(CurrentBankAccount current);
 
-    void changeInterestRate(SavingBankAccount saving);
+    BankAccount changeInterestRate(SavingBankAccount saving);
 }

@@ -1,8 +1,6 @@
 package fr.exalt.businessmicroserviceaccount.infrastructure.adapters.input.web;
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccount;
-import fr.exalt.businessmicroserviceaccount.domain.entities.CurrentBankAccount;
-import fr.exalt.businessmicroserviceaccount.domain.entities.SavingBankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.exceptions.*;
 import fr.exalt.businessmicroserviceaccount.domain.ports.input.InputBankAccountService;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountDto;
@@ -45,23 +43,26 @@ public class BankAccountController {
     @PutMapping(value = "/accounts/{accountId}")
     public BankAccount updateAccount(@PathVariable(name = "accountId") String accountId, @RequestBody BankAccountDto dto)
             throws BankAccountTypeInvalidException, BankAccountFieldsInvalidException, BankAccountNotFoundException,
-            RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException, BankAccountStateInvalidException{
+            RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException, BankAccountStateInvalidException {
         return inputBankAccountService.updateAccount(accountId, dto);
     }
+
     @PostMapping(value = "/accounts/switch-state")
     public BankAccount switchAccountState(@RequestBody BankAccountSwitchStatedDto dto) throws BankAccountNotFoundException,
             BankAccountStateInvalidException, BankAccountSameStateException, RemoteCustomerApiUnreachableException,
             RemoteCustomerStateInvalidException {
         return inputBankAccountService.switchAccountState(dto);
     }
+
     @PostMapping(value = "/accounts/overdraft")
-    public CurrentBankAccount changeOverdraft(@RequestBody BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
+    public BankAccount changeOverdraft(@RequestBody BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
             BankAccountOverdraftInvalidException, BankAccountTypeNotAcceptedException, RemoteCustomerStateInvalidException,
             BankAccountSuspendException, RemoteCustomerApiUnreachableException {
         return inputBankAccountService.changeOverdraft(dto);
     }
+
     @PostMapping(value = "/accounts/interest-rate")
-    public SavingBankAccount changeInterestRate(@RequestBody BankAccountInterestRateDto dto) throws BankAccountNotFoundException,
+    public BankAccount changeInterestRate(@RequestBody BankAccountInterestRateDto dto) throws BankAccountNotFoundException,
             BankAccountSuspendException, RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException,
             BankAccountTypeNotAcceptedException {
         return inputBankAccountService.changeInterestRate(dto);

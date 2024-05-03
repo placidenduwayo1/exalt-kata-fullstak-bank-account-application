@@ -1,8 +1,6 @@
 package fr.exalt.businessmicroserviceaccount.domain.ports.input;
 
 import fr.exalt.businessmicroserviceaccount.domain.entities.BankAccount;
-import fr.exalt.businessmicroserviceaccount.domain.entities.CurrentBankAccount;
-import fr.exalt.businessmicroserviceaccount.domain.entities.SavingBankAccount;
 import fr.exalt.businessmicroserviceaccount.domain.exceptions.*;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountDto;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.dtos.BankAccountInterestRateDto;
@@ -28,11 +26,11 @@ public interface InputBankAccountService {
             BankAccountStateInvalidException, BankAccountSameStateException, RemoteCustomerApiUnreachableException,
             RemoteCustomerStateInvalidException;
 
-    CurrentBankAccount changeOverdraft(BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
+    BankAccount changeOverdraft(BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
             BankAccountOverdraftInvalidException, RemoteCustomerStateInvalidException, BankAccountSuspendException,
             BankAccountTypeNotAcceptedException, RemoteCustomerApiUnreachableException;
 
-    SavingBankAccount changeInterestRate(BankAccountInterestRateDto dto) throws BankAccountNotFoundException, BankAccountSuspendException,
+    BankAccount changeInterestRate(BankAccountInterestRateDto dto) throws BankAccountNotFoundException, BankAccountSuspendException,
             RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException, BankAccountTypeNotAcceptedException;
 }
 

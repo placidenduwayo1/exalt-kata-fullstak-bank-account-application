@@ -8,7 +8,7 @@ import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feig
 import java.util.Collection;
 
 public interface OutputOperationService {
-    void createOperation(Operation operation);
+    Operation createOperation(Operation operation);
     Collection<Operation> getAllOperations();
     BankAccount loadRemoteAccount(String accountId);
     Customer loadRemoteCustomer(String customerId);

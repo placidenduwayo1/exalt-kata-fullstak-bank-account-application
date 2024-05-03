@@ -155,7 +155,7 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
     }
 
     @Override
-    public CurrentBankAccount changeOverdraft(BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
+    public BankAccount changeOverdraft(BankAccountOverdraftDto dto) throws BankAccountNotFoundException,
             RemoteCustomerStateInvalidException, BankAccountSuspendException, BankAccountTypeNotAcceptedException,
             RemoteCustomerApiUnreachableException, BankAccountOverdraftInvalidException {
 
@@ -179,15 +179,15 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
             current.setState(bankAccount.getState());
             current.setBalance(bankAccount.getBalance());
             current.setCreatedAt(bankAccount.getCreatedAt());
-            current.setCustomer(bankAccount.getCustomer());
-            outputAccountService.changeOverdraft(current);
-            return current;
+           BankAccount savedCurrent = outputAccountService.changeOverdraft(current);
+           savedCurrent.setCustomer(customer);
+            return savedCurrent;
         }
 
     }
 
     @Override
-    public SavingBankAccount changeInterestRate(BankAccountInterestRateDto dto) throws BankAccountNotFoundException,
+    public BankAccount changeInterestRate(BankAccountInterestRateDto dto) throws BankAccountNotFoundException,
             BankAccountSuspendException, RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException, BankAccountTypeNotAcceptedException {
         BankAccount bankAccount = getAccount(dto.getAccountId());
         Customer customer = outputAccountService.loadRemoteCustomer(bankAccount.getCustomerId());
@@ -207,10 +207,10 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
             saving.setBalance(bankAccount.getBalance());
             saving.setCreatedAt(bankAccount.getCreatedAt());
             saving.setCustomerId(bankAccount.getCustomerId());
-            saving.setCustomer(bankAccount.getCustomer());
             //call output adapter to save update account
-            outputAccountService.changeInterestRate(saving);
-            return saving;
+            BankAccount savingBankAccount = outputAccountService.changeInterestRate(saving);
+            savingBankAccount.setCustomer(bankAccount.getCustomer());
+            return savingBankAccount;
         }
     }
 
