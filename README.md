@@ -109,8 +109,8 @@ Pour enregistrer une opération de **dépot** ou de **retrait**, l'**api operati
     - le remote api **customer** est joignable et que le **state** du customer est **active** 
     - le bank-account est de type **current**
     - si opération est **retrait** vérifier que la balance est suffisante: ```account.balance + account.overdraft >= operation.amount```
-        - si OK, l'**api operation** demander à la remote **bank account** de mettre à jour la balance: ```account.balance = account.balance - operation.mount```
-    - si opération est de **depot**,l'**api operation** demander à la remote **bank account** de mettre à jour la balance: ```account.balance = account.balance + operation.mount```
+        - si OK, l'**api operation** demander à le **remote bank account** de mettre à jour la balance: ```account.balance = account.balance - operation.mount```
+    - si opération est de **depot**,l'**api operation** demander à le **remote bank account** de mettre à jour la balance: ```account.balance = account.balance + operation.mount```
 
 - **[GET]**: ```http://localhost:8101/api-operation/accounts/{accountId}/operations```: **consulter** les opérations d'un compte  
 l'**api operation** vérifie que:
@@ -173,6 +173,8 @@ l'**api operation** verifie que:
     - les remotes **bank account origin** et **destination** ne sont pas **suspended**
     - le remote **customer api** est joigable, le **state** des customers n'est pas **archive**
     - la balance du remote **bank account origin** >= mount à transférer: ```origin.getBalance()>= dto.getMount()```
+    - si bank accounts origin / destination l'un est *current* et l'autre *saving*:
+        - l'**api operation** vérfie que les deux comptes appartiennent au **même customer**: saving bank account accessible par son propriétaire
 
 # Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**

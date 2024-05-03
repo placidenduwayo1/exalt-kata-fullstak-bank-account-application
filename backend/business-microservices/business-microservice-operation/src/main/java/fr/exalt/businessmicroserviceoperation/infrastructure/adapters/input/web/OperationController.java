@@ -39,7 +39,7 @@ public class OperationController {
     @PostMapping(value = "/operations/transfer")
     public Map<String, Object> transferBetweenAccounts(@RequestBody TransferDto dto) throws
             RemoteAccountSuspendedException, RemoteBankAccountApiUnreachableException, RemoteCustomerApiUnreachableException,
-            RemoteBankAccountBalanceException, RemoteCustomerStateInvalidException {
+            RemoteBankAccountBalanceException, RemoteCustomerStateInvalidException, RemoteBankAccountTypeInaccessibleFromOutsideException {
         return inputOperationService.transferBetweenAccounts(dto);
     }
 }
