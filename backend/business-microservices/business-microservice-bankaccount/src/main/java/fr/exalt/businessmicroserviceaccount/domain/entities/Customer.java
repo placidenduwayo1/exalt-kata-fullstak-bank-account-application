@@ -4,12 +4,14 @@ public class Customer {
     private String customerId;
     private String firstname;
     private String lastname;
+    private String email;
     private String state;
 
     private Customer(CustomerBuilder builder) {
         this.customerId = builder.customerId;
         this.firstname = builder.firstname;
         this.lastname = builder.lastname;
+        this.email = builder.email;
         this.state = builder.state;
     }
 
@@ -37,6 +39,14 @@ public class Customer {
         this.lastname = lastname;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getState() {
         return state;
     }
@@ -49,6 +59,7 @@ public class Customer {
         private String customerId;
         private String firstname;
         private String lastname;
+        private String email;
         private String state;
 
         public CustomerBuilder customerId(String customerId) {
@@ -63,6 +74,10 @@ public class Customer {
 
         public CustomerBuilder lastname(String lastname) {
             this.lastname = lastname;
+            return this;
+        }
+        public CustomerBuilder email(String email){
+            this.email = email;
             return this;
         }
 
@@ -81,6 +96,7 @@ public class Customer {
                 "customer id='" + customerId + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
                 ", state='" + state + '\'' +
                 ']';
     }

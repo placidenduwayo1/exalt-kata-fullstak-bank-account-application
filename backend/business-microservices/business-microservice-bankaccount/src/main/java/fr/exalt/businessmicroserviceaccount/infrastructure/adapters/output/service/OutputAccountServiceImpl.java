@@ -13,7 +13,7 @@ import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.mappe
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.entities.BankAccountModel;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.entities.CurrentBankAccountModel;
 import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.models.entities.SavingBankAccountModel;
-import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.repository.AccountRepository;
+import fr.exalt.businessmicroserviceaccount.infrastructure.adapters.output.repository.BankAccountRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -21,45 +21,45 @@ import java.util.Collection;
 @Service
 @Slf4j
 public class OutputAccountServiceImpl implements OutputAccountService {
-    private final AccountRepository accountRepository;
+    private final BankAccountRepository bankAccountRepository;
     private final  RemoteCustomerServiceProxy remoteCustomerService;
 
     public OutputAccountServiceImpl(
-            AccountRepository accountRepository,
+            BankAccountRepository bankAccountRepository,
             @Qualifier(value = "remoteCustomerService") RemoteCustomerServiceProxy remoteCustomerService) {
-        this.accountRepository = accountRepository;
+        this.bankAccountRepository = bankAccountRepository;
         this.remoteCustomerService = remoteCustomerService;
     }
 
     @Override
     public CurrentBankAccount createCurrentAccount(CurrentBankAccount currentAccount) {
-        CurrentBankAccountModel model= accountRepository.save(MapperService.mapToCurrentAccountModel(currentAccount));
+        CurrentBankAccountModel model= bankAccountRepository.save(MapperService.mapToCurrentAccountModel(currentAccount));
         return MapperService.mapToCurrentAccount(model);
     }
 
 
     @Override
     public SavingBankAccount createSavingAccount(SavingBankAccount savingAccount) {
-        SavingBankAccountModel model = accountRepository.save(MapperService.mapToSavingAccountModel(savingAccount));
+        SavingBankAccountModel model = bankAccountRepository.save(MapperService.mapToSavingAccountModel(savingAccount));
         return MapperService.mapToSavingAccount(model);
     }
 
 
     @Override
     public Collection<BankAccount> getAllAccounts() {
-        return mapBankAccounts(accountRepository.findAll());
+        return mapBankAccounts(bankAccountRepository.findAll());
     }
 
     @Override
     public BankAccount getAccount(String accountId) throws BankAccountNotFoundException {
-        BankAccountModel model = accountRepository.findById(accountId)
+        BankAccountModel model = bankAccountRepository.findById(accountId)
                 .orElseThrow(()->new BankAccountNotFoundException(ExceptionMsg.BANK_ACCOUNT_NOT_FOUND));
         return mapBankAccount(model);
     }
 
     @Override
     public Collection<BankAccount> getAccountOfGivenCustomer(String customerId) {
-        return mapBankAccounts(accountRepository.findByCustomerId(customerId));
+        return mapBankAccounts(bankAccountRepository.findByCustomerId(customerId));
     }
 
 
@@ -71,13 +71,13 @@ public class OutputAccountServiceImpl implements OutputAccountService {
 
     @Override
     public CurrentBankAccount updateCurrentAccount(CurrentBankAccount currentAccount) {
-        CurrentBankAccountModel updatedModel = accountRepository.save(MapperService.mapToCurrentAccountModel(currentAccount));
+        CurrentBankAccountModel updatedModel = bankAccountRepository.save(MapperService.mapToCurrentAccountModel(currentAccount));
        return MapperService.mapToCurrentAccount(updatedModel);
     }
 
     @Override
     public SavingBankAccount updateSavingAccount(SavingBankAccount savingBankAccount) {
-        SavingBankAccountModel model = accountRepository.save(MapperService.mapToSavingAccountModel(savingBankAccount));
+        SavingBankAccountModel model = bankAccountRepository.save(MapperService.mapToSavingAccountModel(savingBankAccount));
         return MapperService.mapToSavingAccount(model);
     }
 
@@ -85,11 +85,11 @@ public class OutputAccountServiceImpl implements OutputAccountService {
     public BankAccount switchAccountState(BankAccount bankAccount) {
         if(bankAccount instanceof CurrentBankAccount current) {
             CurrentBankAccountModel model = MapperService.mapToCurrentAccountModel(current);
-            CurrentBankAccountModel savedAccount = accountRepository.save(model);
+            CurrentBankAccountModel savedAccount = bankAccountRepository.save(model);
             return MapperService.mapToCurrentAccount(savedAccount);
         } else if (bankAccount instanceof SavingBankAccount saving) {
             SavingBankAccountModel model = MapperService.mapToSavingAccountModel(saving);
-            SavingBankAccountModel savedAccount = accountRepository.save(model);
+            SavingBankAccountModel savedAccount = bankAccountRepository.save(model);
             return MapperService.mapToSavingAccount(savedAccount);
         }
         return null;
@@ -97,12 +97,12 @@ public class OutputAccountServiceImpl implements OutputAccountService {
 
     @Override
     public void changeOverdraft(CurrentBankAccount current) {
-       accountRepository.save(MapperService.mapToCurrentAccountModel(current));
+       bankAccountRepository.save(MapperService.mapToCurrentAccountModel(current));
     }
 
     @Override
     public void changeInterestRate(SavingBankAccount saving) {
-        accountRepository.save(MapperService.mapToSavingAccountModel(saving));
+        bankAccountRepository.save(MapperService.mapToSavingAccountModel(saving));
     }
 
     private Collection<BankAccount> mapBankAccounts(Collection<BankAccountModel> bankAccountModels){

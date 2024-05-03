@@ -115,7 +115,7 @@ public class InputOperationServiceImpl implements InputOperationService {
     @Override
     public Map<String, Object> transferBetweenAccounts(TransferDto dto) throws RemoteBankAccountApiUnreachableException,
             RemoteAccountSuspendedException, RemoteCustomerApiUnreachableException, RemoteBankAccountBalanceException,
-            RemoteCustomerStateInvalidException {
+            RemoteCustomerStateInvalidException, RemoteBankAccountTypeInaccessibleFromOutsideException {
         // call output adapter to get remote bank accounts from bank account api
         BankAccount origin = outputOperationService.loadRemoteAccount(dto.getOrigin());
         BankAccount destination = outputOperationService.loadRemoteAccount(dto.getDestination());
@@ -140,6 +140,12 @@ public class InputOperationServiceImpl implements InputOperationService {
         }
         if(origin.getBalance()<=dto.getMount()){
             throw new RemoteBankAccountBalanceException(ExceptionsMsg.REMOTE_ACCOUNT_BALANCE);
+        }
+
+        // money transfer between current and saving only possible for the same customer
+        if((origin.getType().equals("saving") && !customer2.getCustomerId().equals(origin.getCustomerId()))
+                || (destination.getType().equals("saving") && !customer1.getCustomerId().equals(destination.getCustomerId()))){
+            throw new RemoteBankAccountTypeInaccessibleFromOutsideException(ExceptionsMsg.REMOTE_ACCOUNT_NOT_ACCESSIBLE_FROM_OUTSIDE);
         }
 
         origin.setBalance(- dto.getMount());

@@ -22,5 +22,5 @@ public interface InputOperationService {
 
     Map<String, Object> transferBetweenAccounts(TransferDto dto) throws RemoteBankAccountApiUnreachableException,
             RemoteAccountSuspendedException, RemoteCustomerApiUnreachableException,
-            RemoteBankAccountBalanceException, RemoteCustomerStateInvalidException;
+            RemoteBankAccountBalanceException, RemoteCustomerStateInvalidException, RemoteBankAccountTypeInaccessibleFromOutsideException;
 }

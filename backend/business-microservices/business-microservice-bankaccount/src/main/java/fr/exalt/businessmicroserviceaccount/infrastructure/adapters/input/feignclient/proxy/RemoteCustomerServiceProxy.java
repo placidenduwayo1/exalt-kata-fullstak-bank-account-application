@@ -27,6 +27,7 @@ public interface RemoteCustomerServiceProxy {
                     .customerId(ExceptionMsg.REMOTE_CUSTOMER_API)
                     .firstname(ExceptionMsg.REMOTE_CUSTOMER_API)
                     .lastname(ExceptionMsg.REMOTE_CUSTOMER_API)
+                    .email(ExceptionMsg.REMOTE_CUSTOMER_API)
                     .state(ExceptionMsg.REMOTE_CUSTOMER_API)
                     .build();
             log.error("[Fallback] resilience management {}", resilience);
