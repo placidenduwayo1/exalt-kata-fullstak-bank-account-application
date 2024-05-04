@@ -60,11 +60,11 @@ public class InputOperationServiceImpl implements InputOperationService {
                     ExceptionsMsg.REMOTE_CUSTOMER_UNREACHABLE, customer));
         }
 
-        if (customer.getState().equals(CUSTOMER_STATE_ARCHIVE)){
+        if (customer.getState().equals(CUSTOMER_STATE_ARCHIVE)) {
             throw new RemoteCustomerStateInvalidException(ExceptionsMsg.REMOTE_CUSTOMER_STATE);
         }
 
-        if(bankAccount.getType().equals(BANK_ACCOUNT_TYPE_SAVING)){
+        if (bankAccount.getType().equals(BANK_ACCOUNT_TYPE_SAVING)) {
             throw new RemoteBankAccountTypeInaccessibleFromOutsideException(ExceptionsMsg.REMOTE_ACCOUNT_NOT_ACCESSIBLE_FROM_OUTSIDE);
         }
 
@@ -98,7 +98,6 @@ public class InputOperationServiceImpl implements InputOperationService {
             Operation savedOp = outputOperationService.createOperation(operation);
             savedOp.setBankAccount(updatedBankAccount);
             return savedOp;
-
         }
 
         return null;
@@ -116,13 +115,12 @@ public class InputOperationServiceImpl implements InputOperationService {
             throw new RemoteBankAccountApiUnreachableException(String.format(FORMATTER, ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE, account));
         } else if (account.getType().equals(BANK_ACCOUNT_TYPE_SAVING)) {
             throw new RemoteBankAccountTypeInaccessibleFromOutsideException(ExceptionsMsg.REMOTE_ACCOUNT_NOT_ACCESSIBLE_FROM_OUTSIDE);
-        } else {
-            return setOperationDependencies(outputOperationService.getAccountOperations(accountId));
         }
+        return setOperationDependencies(outputOperationService.getAccountOperations(accountId));
     }
 
     @Override
-    public Map<String, Object> transferBetweenAccounts(TransferDto dto) throws RemoteBankAccountApiUnreachableException,
+    public Map<String, BankAccount> transferBetweenAccounts(TransferDto dto) throws RemoteBankAccountApiUnreachableException,
             RemoteAccountSuspendedException, RemoteCustomerApiUnreachableException, RemoteBankAccountBalanceException,
             RemoteCustomerStateInvalidException, RemoteBankAccountTypeInaccessibleFromOutsideException {
         // call output adapter to get remote bank accounts from bank account api
@@ -158,17 +156,17 @@ public class InputOperationServiceImpl implements InputOperationService {
         }
 
         origin.setBalance(-dto.getMount());
-        BankAccountDto mapped1 = MapperService.fromTo(origin);
+        BankAccountDto mappedOrigin = MapperService.fromTo(origin);
         // call output adapter to update origin account balance from remote bank account
-        BankAccount updatedOrigin = outputOperationService.updateRemoteAccount(origin.getAccountId(), mapped1);
+        BankAccount updatedOrigin = outputOperationService.updateRemoteAccount(origin.getAccountId(), mappedOrigin);
         updatedOrigin.setCustomer(customer1);
         destination.setBalance(dto.getMount());
-        BankAccountDto mapped2 = MapperService.fromTo(destination);
+        BankAccountDto mappedDestination = MapperService.fromTo(destination);
         // call output adapter to update destination account balance from remote bank account
-        BankAccount updatedDestination = outputOperationService.updateRemoteAccount(destination.getAccountId(), mapped2);
+        BankAccount updatedDestination = outputOperationService.updateRemoteAccount(destination.getAccountId(), mappedDestination);
         updatedDestination.setCustomer(customer2);
 
-        return Map.of("origin", updatedOrigin, "destination", updatedDestination);
+        return Map.of("origin", origin, "destination", destination);
 
     }
 

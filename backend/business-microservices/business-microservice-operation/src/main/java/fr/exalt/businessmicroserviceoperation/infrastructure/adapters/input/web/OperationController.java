@@ -1,5 +1,6 @@
 package fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.web;
 
+import fr.exalt.businessmicroserviceoperation.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceoperation.domain.entities.Operation;
 import fr.exalt.businessmicroserviceoperation.domain.exceptions.*;
 import fr.exalt.businessmicroserviceoperation.domain.ports.input.InputOperationService;
@@ -37,7 +38,7 @@ public class OperationController {
         return inputOperationService.getAccountOperations(accountId);
     }
     @PostMapping(value = "/operations/transfer")
-    public Map<String, Object> transferBetweenAccounts(@RequestBody TransferDto dto) throws
+    public Map<String, BankAccount> transferBetweenAccounts(@RequestBody TransferDto dto) throws
             RemoteAccountSuspendedException, RemoteBankAccountApiUnreachableException, RemoteCustomerApiUnreachableException,
             RemoteBankAccountBalanceException, RemoteCustomerStateInvalidException, RemoteBankAccountTypeInaccessibleFromOutsideException {
         return inputOperationService.transferBetweenAccounts(dto);

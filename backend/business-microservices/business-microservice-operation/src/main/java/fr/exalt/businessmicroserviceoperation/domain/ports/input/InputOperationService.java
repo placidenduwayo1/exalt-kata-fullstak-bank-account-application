@@ -1,5 +1,6 @@
 package fr.exalt.businessmicroserviceoperation.domain.ports.input;
 
+import fr.exalt.businessmicroserviceoperation.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceoperation.domain.entities.Operation;
 
 import fr.exalt.businessmicroserviceoperation.domain.exceptions.*;
@@ -20,7 +21,7 @@ public interface InputOperationService {
     Collection<Operation> getAccountOperations(String accountId) throws RemoteBankAccountApiUnreachableException,
             RemoteBankAccountTypeInaccessibleFromOutsideException;
 
-    Map<String, Object> transferBetweenAccounts(TransferDto dto) throws RemoteBankAccountApiUnreachableException,
+    Map<String, BankAccount> transferBetweenAccounts(TransferDto dto) throws RemoteBankAccountApiUnreachableException,
             RemoteAccountSuspendedException, RemoteCustomerApiUnreachableException,
             RemoteBankAccountBalanceException, RemoteCustomerStateInvalidException, RemoteBankAccountTypeInaccessibleFromOutsideException;
 }
