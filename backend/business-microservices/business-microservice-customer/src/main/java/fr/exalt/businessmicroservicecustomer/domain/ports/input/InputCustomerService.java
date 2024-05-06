@@ -4,6 +4,7 @@ import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.*;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
+import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerArchiveDto;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
 
 import java.util.Collection;
@@ -25,4 +26,6 @@ public interface InputCustomerService {
             CustomerAlreadyExistsException, CustomerNotFoundException, CustomerEmailInvalidException;
 
     Address updateAddress(String addressId, AddressDto addressDto) throws AddressFieldsInvalidException, AddressNotFoundException;
+
+    Customer archiveCustomer(CustomerArchiveDto dto) throws CustomerNotFoundException, CustomerStateInvalidException;
 }

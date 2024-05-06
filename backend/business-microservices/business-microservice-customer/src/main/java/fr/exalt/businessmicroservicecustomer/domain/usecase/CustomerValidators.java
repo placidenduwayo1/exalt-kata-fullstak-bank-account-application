@@ -13,7 +13,6 @@ public class CustomerValidators {
     public static void formatter(RequestDto requestDto) {
         requestDto.getCustomerDto().setFirstname(requestDto.getCustomerDto().getFirstname().strip());
         requestDto.getCustomerDto().setLastname(requestDto.getCustomerDto().getLastname().strip());
-        requestDto.getCustomerDto().setState(requestDto.getCustomerDto().getState().strip());
         requestDto.getCustomerDto().setEmail(requestDto.getCustomerDto().getEmail().strip());
         requestDto.getAddressDto().setStreetName(requestDto.getAddressDto().getStreetName().strip());
         requestDto.getAddressDto().setCity(requestDto.getAddressDto().getCity().strip());
@@ -37,7 +36,6 @@ public class CustomerValidators {
     public static boolean invalidRequest(RequestDto dto) {
         return dto.getCustomerDto().getFirstname().isBlank()
                 || dto.getCustomerDto().getLastname().isBlank()
-                || dto.getCustomerDto().getState().isBlank()
                 || dto.getCustomerDto().getEmail().isBlank()
                 || dto.getAddressDto().getStreetNum() < 1
                 || dto.getAddressDto().getStreetName().isBlank()

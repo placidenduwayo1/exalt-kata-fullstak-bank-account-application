@@ -173,16 +173,15 @@ class OutputCustomerServiceImplTest {
                 .firstname("placide")
                 .lastname("nduwayo")
                 .email("placide.nd@gmail.com")
-                .state("active")
                 .build();
         //EXECUTE
-        when(mock1.findByFirstnameAndLastnameAndState(
-                dto.getFirstname(), dto.getLastname(), dto.getState())).thenReturn(customer);
+        when(mock1.findByFirstnameAndLastnameAndEmail(
+                dto.getFirstname(), dto.getLastname(), dto.getEmail())).thenReturn(customer);
         Customer actual = underTest.getCustomer(dto);
         //VERIFY
         assertAll("",()->{
-            verify(mock1, atLeast(1)).findByFirstnameAndLastnameAndState(
-                    dto.getFirstname(), dto.getLastname(), dto.getState());
+            verify(mock1, atLeast(1)).findByFirstnameAndLastnameAndEmail(
+                    dto.getFirstname(), dto.getLastname(), dto.getEmail());
             assertNotNull(actual);
         });
     }

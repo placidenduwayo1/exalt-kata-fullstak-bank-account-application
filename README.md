@@ -115,7 +115,7 @@ Pour enregistrer une opération de **dépot** ou de **retrait**, l'**api operati
 - **[GET]**: ```http://localhost:8101/api-operation/accounts/{accountId}/operations```: **consulter** les opérations d'un compte  
 l'**api operation** vérifie que:
     - le **remote api bank account** est joignable / l'id du bank account existe
-- le résultat retourné est la **liste des opérations**, le **compte** et le **customer** associé au compte
+    - le résultat retourné est: la **liste des opérations**, le **compte** et le **customer** associé à ce compte
 
 - **[POST]**: ```http://localhost:8101/api-operation/operations/transfer```: **transfert** entre deux comptes origin est destination
 ![operation-request-chain](./assets/operation-post-chain.png)  
@@ -128,6 +128,7 @@ l'**api operation** verifie que:
     - la balance du remote **bank account origin** >= mount à transférer: ```origin.getBalance()>= dto.getMount()```
     - si bank accounts origin / destination l'un est *current* et l'autre *saving*:
         - l'**api operation** vérfie que les deux comptes appartiennent au **même customer**: saving bank account accessible par son propriétaire
+
 
 # Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**

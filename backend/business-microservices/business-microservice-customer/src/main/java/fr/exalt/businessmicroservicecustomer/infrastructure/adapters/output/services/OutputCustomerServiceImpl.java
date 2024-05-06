@@ -88,8 +88,8 @@ public class OutputCustomerServiceImpl implements OutputCustomerService {
 
     @Override
     public Customer getCustomer(CustomerDto dto) {
-        CustomerModel model = customerRepository.findByFirstnameAndLastnameAndState(
-                dto.getFirstname(), dto.getLastname(), dto.getState());
+        CustomerModel model = customerRepository.findByFirstnameAndLastnameAndEmail(
+                dto.getFirstname(), dto.getLastname(), dto.getEmail());
         if (model != null) {
             return MapperService.fromTo(model);
         }
@@ -117,5 +117,11 @@ public class OutputCustomerServiceImpl implements OutputCustomerService {
     public Address updateAddress(Address address) {
         AddressModel addressModel = addressRepository.save(MapperService.fromTo(address));
         return MapperService.fromTo(addressModel);
+    }
+
+    @Override
+    public Customer archiveCustomer(Customer customer) {
+        CustomerModel model = customerRepository.save(MapperService.fromTo(customer));
+        return MapperService.fromTo(model);
     }
 }

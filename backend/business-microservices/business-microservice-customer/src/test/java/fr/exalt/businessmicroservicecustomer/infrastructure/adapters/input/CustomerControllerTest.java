@@ -33,7 +33,6 @@ class CustomerControllerTest {
             .firstname(FIRSTNAME)
             .lastname(LASTNAME)
             .email(EMAIL)
-            .state(STATE)
             .build();
     private final AddressDto addressDto = AddressDto.builder()
             .streetNum(184)

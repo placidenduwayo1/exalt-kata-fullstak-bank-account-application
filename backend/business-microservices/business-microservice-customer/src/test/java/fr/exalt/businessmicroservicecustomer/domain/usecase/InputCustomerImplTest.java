@@ -5,10 +5,7 @@ import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.*;
 import fr.exalt.businessmicroservicecustomer.domain.ports.output.OutputCustomerService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mapper.MapperService;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerDto;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.Request;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
+import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,13 +28,11 @@ class InputCustomerImplTest {
     private InputCustomerImpl underTest;
     private static final String FIRSTNAME = "placide";
     private static final String LASTNAME = "nduwayo";
-    private static final String STATE = "active";
     private static final String EMAIL = "placide.nd@gmail.com";
     private final CustomerDto customerDto = CustomerDto.builder()
             .firstname(FIRSTNAME)
             .lastname(LASTNAME)
             .email(EMAIL)
-            .state(STATE)
             .build();
     private final AddressDto addressDto = AddressDto.builder()
             .streetNum(184)
@@ -48,6 +43,10 @@ class InputCustomerImplTest {
             .build();
     private final Customer customer = MapperService.fromTo(customerDto);
     private final Address address = MapperService.fromTo(addressDto);
+    private final RequestDto requestDto = RequestDto.builder()
+            .addressDto(addressDto)
+            .customerDto(customerDto)
+            .build();
 
     @BeforeEach
     void setUp() {
@@ -58,10 +57,6 @@ class InputCustomerImplTest {
     void createCustomer() throws CustomerStateInvalidException, CustomerOneOrMoreFieldsInvalidException,
             CustomerEmailInvalidException, CustomerAlreadyExistsException {
         // PREPARE
-        RequestDto requestDto = RequestDto.builder()
-                .addressDto(addressDto)
-                .customerDto(customerDto)
-                .build();
         Request request = Request.builder()
                 .address(address)
                 .customer(customer)
@@ -199,6 +194,53 @@ class InputCustomerImplTest {
             verify(mock, atLeast(1)).getAddress(id);
             verify(mock, atLeast(1)).updateAddress(address);
             assertNotNull(actual);
+        });
+    }
+    @Test
+    void archiveCustomer() throws CustomerStateInvalidException, CustomerNotFoundException {
+        //PREPARE
+        CustomerArchiveDto dto = CustomerArchiveDto.builder()
+                .customerId("id")
+                .state("archive")
+                .build();
+        Customer c = customer;
+        c.setState("archive");
+        //EXECUTE
+        when(mock.getCustomer("id")).thenReturn(customer);
+        when(mock.archiveCustomer(any(Customer.class))).thenReturn(c);
+        Customer actual = underTest.archiveCustomer(dto);
+        //VERIFY
+        assertAll("",()->{
+            verify(mock, atLeast(1)).archiveCustomer(any(Customer.class));
+            assertNotNull(actual);
+            assertEquals("archive",actual.getState());
+        });
+    }
+    @Test
+    void testCustomerBusinessExceptions(){
+        RequestDto dto1 = RequestDto.builder()
+                .addressDto(addressDto)
+                .customerDto(customerDto)
+                .build();
+        dto1.getCustomerDto().setEmail("");
+        InputCustomerImpl inputCustomerBusinessExceptions = new InputCustomerImpl(mock);
+        Exception exception1 = assertThrows(CustomerOneOrMoreFieldsInvalidException.class, ()->{
+            inputCustomerBusinessExceptions.createCustomer(dto1);
+        });
+
+        RequestDto dto2 = RequestDto.builder()
+                .addressDto(addressDto)
+                .customerDto(customerDto)
+                .build();
+        dto2.getCustomerDto().setEmail("placide.nd");
+
+        Exception exception2 = assertThrows(CustomerEmailInvalidException.class, ()->{
+            inputCustomerBusinessExceptions.createCustomer(dto2);
+        });
+
+        assertAll("exceptions",()->{
+            assertNotNull(exception1);
+            assertNotNull(exception2);
         });
     }
 }

@@ -5,6 +5,7 @@ import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.*;
 import fr.exalt.businessmicroservicecustomer.domain.ports.input.InputCustomerService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
+import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerArchiveDto;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -32,19 +33,27 @@ public class CustomerController {
     public Collection<Address> getAllAddresses() {
         return inputCustomerService.getAllAddresses();
     }
+
     @PutMapping(value = "/customers/{customerId}")
     public Customer updateCustomer(@PathVariable(name = "customerId") String customerId, @RequestBody RequestDto dto) throws
             CustomerStateInvalidException, CustomerOneOrMoreFieldsInvalidException, CustomerNotFoundException,
             CustomerAlreadyExistsException, CustomerEmailInvalidException {
         return inputCustomerService.updateCustomer(customerId, dto);
     }
+
     @PutMapping(value = "/addresses/{addressId}")
     public Address updateAddress(@PathVariable(name = "addressId") String addressId, @RequestBody AddressDto addressDto) throws
             AddressFieldsInvalidException, AddressNotFoundException {
         return inputCustomerService.updateAddress(addressId, addressDto);
     }
+
     @GetMapping(value = "/customers/{customerId}")
     public Customer getCustomer(@PathVariable(name = "customerId") String customerId) throws CustomerNotFoundException {
         return inputCustomerService.getCustomer(customerId);
     }
- }
+
+    @PostMapping(value = "/customers/archive")
+    public Customer archiveCustomer(@RequestBody CustomerArchiveDto dto) throws CustomerStateInvalidException, CustomerNotFoundException {
+        return inputCustomerService.archiveCustomer(dto);
+    }
+}

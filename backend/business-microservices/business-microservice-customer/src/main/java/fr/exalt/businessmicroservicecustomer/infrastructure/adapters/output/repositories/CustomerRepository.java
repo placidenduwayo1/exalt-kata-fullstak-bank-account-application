@@ -4,5 +4,5 @@ import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mode
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CustomerRepository extends JpaRepository<CustomerModel, String> {
-    CustomerModel findByFirstnameAndLastnameAndState(String firstname, String lastname, String state);
+    CustomerModel findByFirstnameAndLastnameAndEmail(String firstname, String lastname, String email);
 }
