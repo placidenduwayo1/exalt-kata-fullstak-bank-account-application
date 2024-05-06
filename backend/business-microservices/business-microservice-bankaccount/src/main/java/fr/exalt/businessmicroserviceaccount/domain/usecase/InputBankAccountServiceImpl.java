@@ -167,7 +167,8 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
         }
 
         if (bankAccount instanceof SavingBankAccount account) {
-            throw new BankAccountTypeNotAcceptedException(String.format(FORMATTER, ExceptionMsg.BANK_ACCOUNT_TYPE_NOT_ACCEPTED, account));
+            throw new BankAccountTypeNotAcceptedException(String.format(FORMATTER,
+                    ExceptionMsg.BANK_ACCOUNT_TYPE_NOT_ACCEPTED, account));
         } else if (dto.getOverdraft() < 0) {
             throw new BankAccountOverdraftInvalidException(ExceptionMsg.BANK_ACCOUNT_OVERDRAFT);
         } else {
@@ -196,7 +197,8 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
             throw new BankAccountSuspendException(ExceptionMsg.BANK_ACCOUNT_STATE_SUSPENDED);
         }
         if (bankAccount instanceof CurrentBankAccount account) {
-            throw new BankAccountTypeNotAcceptedException(String.format(FORMATTER, ExceptionMsg.BANK_ACCOUNT_TYPE_NOT_ACCEPTED, account));
+            throw new BankAccountTypeNotAcceptedException(String.format(FORMATTER,
+                    ExceptionMsg.BANK_ACCOUNT_TYPE_NOT_ACCEPTED, account));
         } else {
             SavingBankAccount saving = new SavingBankAccount.SavingAccountBuilder()
                     .interestRate(dto.getInterestRate())
@@ -217,11 +219,11 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
     private void validateAccount(BankAccountDto dto) throws BankAccountTypeInvalidException,
             BankAccountFieldsInvalidException {
         BankAccountValidators.formatter(dto);
-        if (!BankAccountValidators.validAccountSType(dto.getType()))
-            throw new BankAccountTypeInvalidException(ExceptionMsg.BANK_ACCOUNT_TYPE_INVALID);
 
         if (BankAccountValidators.invalidFields(dto))
             throw new BankAccountFieldsInvalidException(ExceptionMsg.BANK_ACCOUNT_FIELDS_INVALID);
+        if (!BankAccountValidators.validAccountSType(dto.getType()))
+            throw new BankAccountTypeInvalidException(ExceptionMsg.BANK_ACCOUNT_TYPE_INVALID);
     }
 
     private void validateRemoteCustomer(String customerId, String customerState) throws RemoteCustomerApiUnreachableException,

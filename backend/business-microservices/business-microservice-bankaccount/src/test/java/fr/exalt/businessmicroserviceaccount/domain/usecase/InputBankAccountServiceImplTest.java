@@ -268,6 +268,130 @@ class InputBankAccountServiceImplTest {
             verify(mock, atLeast(1)).changeInterestRate(any(SavingBankAccount.class));
             assertNotNull(actual);
         });
+    }
+    @Test
+    void testBankAccountExceptions(){
+        BankAccountDto dto1 = BankAccountDto.builder()
+                .customerId(ID)
+                .type("")
+                .build();
+        InputBankAccountServiceImpl underTestBankAccount = new InputBankAccountServiceImpl(mock);
+        Exception exception1 = assertThrows(BankAccountFieldsInvalidException.class, ()->
+                underTestBankAccount.createAccount(dto1)
+        );
+        BankAccountDto dto2 = BankAccountDto.builder()
+                .customerId(ID)
+                .type("unknown")
+                .build();
+        Exception exception2 = assertThrows(BankAccountTypeInvalidException.class, ()->
+                underTestBankAccount.createAccount(dto2)
+        );
+        BankAccountSwitchStatedDto dto3 = BankAccountSwitchStatedDto.builder()
+                .accountId(ID)
+                .state("unknown")
+                .build();
+        Exception exception3 = assertThrows(BankAccountStateInvalidException.class,()->{
+            when(mock.getAccount(ID)).thenReturn(currentBankAccount);
+            when(mock.loadRemoteCustomer(currentBankAccount.getCustomerId())).thenReturn(customer);
+            underTestBankAccount.switchAccountState(dto3);
+        });
 
+        BankAccountSwitchStatedDto dto4 = BankAccountSwitchStatedDto.builder()
+                .accountId(ID)
+                .state("active")
+                .build();
+        Exception exception4 = assertThrows(BankAccountSameStateException.class,()->{
+            when(mock.getAccount(ID)).thenReturn(currentBankAccount);
+            when(mock.loadRemoteCustomer(currentBankAccount.getCustomerId())).thenReturn(customer);
+            underTestBankAccount.switchAccountState(dto4);
+        });
+
+        BankAccountOverdraftDto dto5 = BankAccountOverdraftDto.builder()
+                .accountId(ID)
+                .overdraft(500)
+                .build();
+        BankAccount bankAccount1 = currentBankAccount;
+        bankAccount1.setState("suspended");
+        Exception exception5 = assertThrows(BankAccountSuspendException.class,()->{
+            when(mock.loadRemoteCustomer(bankAccount1.getCustomerId())).thenReturn(customer);
+            when(mock.getAccount(ID)).thenReturn(bankAccount1);
+            underTestBankAccount.changeOverdraft(dto5);
+        });
+        BankAccount bankAccount2 = savingBankAccount;
+        Exception exception6 = assertThrows(BankAccountTypeNotAcceptedException.class,()->{
+            when(mock.loadRemoteCustomer(bankAccount2.getCustomerId())).thenReturn(customer);
+            when(mock.getAccount(ID)).thenReturn(bankAccount2);
+            underTestBankAccount.changeOverdraft(dto5);
+        });
+
+        BankAccountOverdraftDto dto6 = BankAccountOverdraftDto.builder()
+                .accountId(ID)
+                .overdraft(-1)
+                .build();
+        BankAccount currentBankAccount1 = new CurrentBankAccount.CurrentAccountBuilder()
+                .overdraft(200)
+                .build();
+        currentBankAccount1.setAccountId(ID);
+        currentBankAccount1.setState(STATE);
+        currentBankAccount1.setType(TYPE);
+        currentBankAccount1.setCustomer(customer);
+        currentBankAccount1.setBalance(BALANCE);
+        bankAccount2.setCreatedAt(CREATED_AT);
+        Exception exception7 = assertThrows(BankAccountOverdraftInvalidException.class,()->{
+            when(mock.loadRemoteCustomer(currentBankAccount1.getCustomerId())).thenReturn(customer);
+            when(mock.getAccount(ID)).thenReturn(currentBankAccount1);
+            underTestBankAccount.changeOverdraft(dto6);
+        });
+        Customer c1 = new Customer.CustomerBuilder()
+                .customerId(ExceptionMsg.REMOTE_CUSTOMER_API)
+                .build();
+        BankAccountDto dto7 = BankAccountDto.builder()
+                .customerId(ID)
+                .type(TYPE)
+                .build();
+        Exception exception8 = assertThrows(RemoteCustomerApiUnreachableException.class, ()->{
+            when(mock.loadRemoteCustomer(dto7.getCustomerId())).thenReturn(c1);
+            underTestBankAccount.createAccount(dto7);
+        });
+        Customer c2 = new Customer.CustomerBuilder()
+                .customerId(ID)
+                .state("archive")
+                .build();
+        Exception exception9 = assertThrows(RemoteCustomerStateInvalidException.class,()->{
+            when(mock.loadRemoteCustomer(dto7.getCustomerId())).thenReturn(c2);
+            underTestBankAccount.createAccount(dto7);
+        });
+
+        BankAccountInterestRateDto rateDto = BankAccountInterestRateDto.builder()
+                .accountId(ID)
+                .interestRate(5.0)
+                .build();
+        BankAccount bankAccount3 = savingBankAccount;
+        bankAccount3.setState("suspended");
+        Exception exception10 = assertThrows(BankAccountSuspendException.class,()->{
+            when(mock.loadRemoteCustomer(bankAccount3.getCustomerId())).thenReturn(customer);
+            when(mock.getAccount(rateDto.getAccountId())).thenReturn(bankAccount3);
+            underTestBankAccount.changeInterestRate(rateDto);
+        });
+
+        Exception exception11 = assertThrows(BankAccountTypeNotAcceptedException.class, ()->{
+            when(mock.loadRemoteCustomer(currentBankAccount1.getCustomerId())).thenReturn(customer);
+            when(mock.getAccount(rateDto.getAccountId())).thenReturn(currentBankAccount1);
+            underTestBankAccount.changeInterestRate(rateDto);
+        });
+
+        assertAll("exceptions",()->{
+            assertNotNull(exception1);
+            assertNotNull(exception2);
+            assertNotNull(exception3);
+            assertNotNull(exception4);
+            assertNotNull(exception5);
+            assertNotNull(exception6);
+            assertNotNull(exception7);
+            assertNotNull(exception8);
+            assertNotNull(exception9);
+            assertNotNull(exception10);
+            assertNotNull(exception11);
+        });
     }
 }

@@ -35,6 +35,7 @@ class CustomerTest {
         newCustomer.setFirstname(FIRSTNAME);
         newCustomer.setLastname(LASTNAME);
         newCustomer.setState(STATE);
+        newCustomer.setEmail(EMAIL);
         assertEquals(customer.toString(), newCustomer.toString());
     }
 }

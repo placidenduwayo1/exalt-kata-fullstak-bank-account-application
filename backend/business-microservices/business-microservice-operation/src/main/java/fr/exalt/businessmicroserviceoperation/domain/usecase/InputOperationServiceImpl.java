@@ -68,9 +68,9 @@ public class InputOperationServiceImpl implements InputOperationService {
             throw new RemoteBankAccountTypeInaccessibleFromOutsideException(ExceptionsMsg.REMOTE_ACCOUNT_NOT_ACCESSIBLE_FROM_OUTSIDE);
         }
 
-        BankAccountDto bankAccountDto;
         //operation de retrait from the remote account api
         Operation operation = MapperService.fromTo(operationDto);
+
         if (operationDto.getType().equals(OPERATION_TYPE_RETRAIT) &&
                 (!OperationValidators.enoughBalance(bankAccount, operationDto.getMount()))) {
             throw new RemoteBankAccountBalanceException(ExceptionsMsg.REMOTE_ACCOUNT_BALANCE);
@@ -78,26 +78,27 @@ public class InputOperationServiceImpl implements InputOperationService {
                 (OperationValidators.enoughBalance(bankAccount, operationDto.getMount()))) {
 
             bankAccount.setBalance(-operationDto.getMount());
-            bankAccountDto = MapperService.fromTo(bankAccount);
+            BankAccountDto bankAccountDto = MapperService.fromTo(bankAccount);
             BankAccount updatedBankAccount = outputOperationService.updateRemoteAccount(bankAccount.getAccountId(), bankAccountDto);
             updatedBankAccount.setCustomer(customer);
 
             operation.setOperationId(UUID.randomUUID().toString());
             operation.setCreatedAt(Timestamp.from(Instant.now()).toString());
-            Operation savedOp = outputOperationService.createOperation(operation);
-            savedOp.setBankAccount(updatedBankAccount);
-            return savedOp;
+            Operation savedOp1 = outputOperationService.createOperation(operation);
+            savedOp1.setBankAccount(updatedBankAccount);
+            return savedOp1;
         }
         //operation de depot sur le remote account api
         else if (operationDto.getType().equals(OPERATION_TYPE_DEPOSIT)) {
             bankAccount.setBalance(operationDto.getMount());
-            bankAccountDto = MapperService.fromTo(bankAccount);
+            BankAccountDto bankAccountDto = MapperService.fromTo(bankAccount);
             BankAccount updatedBankAccount = outputOperationService.updateRemoteAccount(bankAccount.getAccountId(), bankAccountDto);
+            updatedBankAccount.setCustomer(customer);
             operation.setOperationId(UUID.randomUUID().toString());
             operation.setCreatedAt(Timestamp.from(Instant.now()).toString());
-            Operation savedOp = outputOperationService.createOperation(operation);
-            savedOp.setBankAccount(updatedBankAccount);
-            return savedOp;
+            Operation savedOp2 = outputOperationService.createOperation(operation);
+            savedOp2.setBankAccount(updatedBankAccount);
+            return savedOp2;
         }
 
         return null;
