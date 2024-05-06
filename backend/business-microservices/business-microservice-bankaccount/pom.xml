@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>org.example</groupId>
-    <artifactId>b-account</artifactId>
+    <artifactId>bank-account</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>business-microservice-bankAccount</name>
     <description>business-microservice-bankAccount</description>

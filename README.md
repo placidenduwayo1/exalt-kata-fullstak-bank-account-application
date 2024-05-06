@@ -129,6 +129,12 @@ l'**api operation** verifie que:
     - si bank accounts origin / destination l'un est *current* et l'autre *saving*:
         - l'**api operation** vérfie que les deux comptes appartiennent au **même customer**: saving bank account accessible par son propriétaire
 
+# La couverture du code source par les tests
+## business-microservice-customer (88%,90%)
+![jacoco-customer](./assets/jacoco-customer.png)
+## business-microservice-account
+![jacoco-bank-account](./assets/jacoco-bank-account.png)
+## business-microservice-operation
 
 # Deploiement en containers docker
 - Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**

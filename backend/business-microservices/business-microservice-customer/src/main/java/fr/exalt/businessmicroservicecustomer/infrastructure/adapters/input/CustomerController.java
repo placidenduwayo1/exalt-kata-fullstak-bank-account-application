@@ -53,7 +53,8 @@ public class CustomerController {
     }
 
     @PostMapping(value = "/customers/archive")
-    public Customer archiveCustomer(@RequestBody CustomerArchiveDto dto) throws CustomerStateInvalidException, CustomerNotFoundException {
+    public Customer archiveCustomer(@RequestBody CustomerArchiveDto dto) throws CustomerStateInvalidException, CustomerNotFoundException,
+            CustomerAlreadyArchivedException {
         return inputCustomerService.archiveCustomer(dto);
     }
 }

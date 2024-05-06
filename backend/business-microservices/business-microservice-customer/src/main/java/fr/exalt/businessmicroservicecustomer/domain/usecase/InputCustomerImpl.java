@@ -106,11 +106,14 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     @Override
-    public Customer archiveCustomer(CustomerArchiveDto dto) throws CustomerNotFoundException, CustomerStateInvalidException {
+    public Customer archiveCustomer(CustomerArchiveDto dto) throws CustomerNotFoundException, CustomerStateInvalidException, CustomerAlreadyArchivedException {
         if(!CustomerValidators.isValidCustomerState(dto.getState())){
             throw new CustomerStateInvalidException(ExceptionMsg.CUSTOMER_STATE_INVALID);
         }
+
         Customer customer = getCustomer(dto.getCustomerId());
+        if(customer.getState().equals("archive"))
+            throw new CustomerAlreadyArchivedException(ExceptionMsg.CUSTOMER_ALREADY_ARCHIVED);
         customer.setState(dto.getState());
         return outputCustomerService.archiveCustomer(customer);
     }

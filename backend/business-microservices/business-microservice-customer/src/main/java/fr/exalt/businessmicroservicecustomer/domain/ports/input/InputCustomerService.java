@@ -27,5 +27,5 @@ public interface InputCustomerService {
 
     Address updateAddress(String addressId, AddressDto addressDto) throws AddressFieldsInvalidException, AddressNotFoundException;
 
-    Customer archiveCustomer(CustomerArchiveDto dto) throws CustomerNotFoundException, CustomerStateInvalidException;
+    Customer archiveCustomer(CustomerArchiveDto dto) throws CustomerNotFoundException, CustomerStateInvalidException, CustomerAlreadyArchivedException;
 }

@@ -51,13 +51,14 @@ class InputCustomerImplTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        customer.setState("active");
     }
 
     @Test
     void createCustomer() throws CustomerStateInvalidException, CustomerOneOrMoreFieldsInvalidException,
             CustomerEmailInvalidException, CustomerAlreadyExistsException {
         // PREPARE
-        Request request = Request.builder()
+       final Request request = Request.builder()
                 .address(address)
                 .customer(customer)
                 .build();
@@ -65,7 +66,7 @@ class InputCustomerImplTest {
         when(mock.createAddress(any(Address.class))).thenReturn(address);
         when(mock.createCustomer(any(Customer.class), any(Address.class)))
                 .thenReturn(request);
-        Customer actual = underTest.createCustomer(requestDto);
+        final Customer actual = underTest.createCustomer(requestDto);
         //VERIFY
         assertAll("", () -> {
             verify(mock, atLeast(1)).createAddress(any(Address.class));
@@ -78,7 +79,7 @@ class InputCustomerImplTest {
     @Test
     void getAllCustomers() {
         //PREPARE
-        Collection<Customer> customers = List.of(customer);
+        final Collection<Customer> customers = List.of(customer);
         //EXECUTE
         when(mock.getAllCustomers()).thenReturn(customers);
         Collection<Customer> actual = underTest.getAllCustomers();
@@ -109,7 +110,7 @@ class InputCustomerImplTest {
         final String id = "1";
         //EXECUTE
         when(mock.getAddress(id)).thenReturn(address);
-        Address actual = underTest.getAddress(id);
+        final Address actual = underTest.getAddress(id);
         //VERIFY
         assertAll("", () -> {
             verify(mock, atLeast(1)).getAddress(id);
@@ -122,7 +123,7 @@ class InputCustomerImplTest {
     @Test
     void testGetAddress() {
         //PREPARE
-        Address newAddress = new Address.AddressBuilder()
+        final Address newAddress = new Address.AddressBuilder()
                 .addressId("1")
                 .streetNum(184)
                 .streetName("avenue de liège")
@@ -141,7 +142,7 @@ class InputCustomerImplTest {
     @Test
     void getAllAddresses() {
         //PREPARE
-        Collection<Address> addresses = List.of(address);
+        final Collection<Address> addresses = List.of(address);
         //EXECUTE
         when(mock.getAllAddresses()).thenReturn(addresses);
         Collection<Address> actual = underTest.getAllAddresses();
@@ -158,11 +159,11 @@ class InputCustomerImplTest {
             CustomerEmailInvalidException, CustomerAlreadyExistsException {
         //PREPARE
         final String id = "1";
-        RequestDto requestDto = RequestDto.builder()
+        final RequestDto requestDto = RequestDto.builder()
                 .customerDto(customerDto)
                 .addressDto(addressDto)
                 .build();
-        Request request = Request.builder()
+        final Request request = Request.builder()
                 .customer(customer)
                 .address(address)
                 .build();
@@ -184,63 +185,133 @@ class InputCustomerImplTest {
     @Test
     void updateAddress() throws AddressNotFoundException, AddressFieldsInvalidException {
         //PREPARE
-        final String id ="1";
+        final String id = "1";
         //EXECUTE
         when(mock.getAddress(id)).thenReturn(address);
         when(mock.updateAddress(any(Address.class))).thenReturn(address);
-        Address actual = underTest.updateAddress(id,addressDto);
+        Address actual = underTest.updateAddress(id, addressDto);
         //VERIFY
-        assertAll("",()->{
+        assertAll("", () -> {
             verify(mock, atLeast(1)).getAddress(id);
             verify(mock, atLeast(1)).updateAddress(address);
             assertNotNull(actual);
         });
     }
+
     @Test
-    void archiveCustomer() throws CustomerStateInvalidException, CustomerNotFoundException {
+    void archiveCustomer() throws CustomerStateInvalidException, CustomerNotFoundException, CustomerAlreadyArchivedException {
         //PREPARE
-        CustomerArchiveDto dto = CustomerArchiveDto.builder()
+        final CustomerArchiveDto dto = CustomerArchiveDto.builder()
                 .customerId("id")
                 .state("archive")
                 .build();
-        Customer c = customer;
-        c.setState("archive");
+        final Customer c = new Customer.CustomerBuilder()
+                .customerId(customer.getCustomerId())
+                .firstname(customer.getFirstname())
+                .lastname(customer.getLastname())
+                .createdAt(customer.getCreatedAt())
+                .state("archive")
+                .address(customer.getAddress())
+                .email(customer.getEmail())
+                .build();;
         //EXECUTE
         when(mock.getCustomer("id")).thenReturn(customer);
-        when(mock.archiveCustomer(any(Customer.class))).thenReturn(c);
+        when(mock.archiveCustomer(customer)).thenReturn(c);
         Customer actual = underTest.archiveCustomer(dto);
         //VERIFY
-        assertAll("",()->{
+        assertAll("", () -> {
+            verify(mock, atLeast(1)).getCustomer("id");
             verify(mock, atLeast(1)).archiveCustomer(any(Customer.class));
             assertNotNull(actual);
-            assertEquals("archive",actual.getState());
+            assertEquals("archive", actual.getState());
         });
     }
+
     @Test
-    void testCustomerBusinessExceptions(){
-        RequestDto dto1 = RequestDto.builder()
+    void testCustomerBusinessExceptions() {
+        final RequestDto dto1 = RequestDto.builder()
                 .addressDto(addressDto)
                 .customerDto(customerDto)
                 .build();
         dto1.getCustomerDto().setEmail("");
         InputCustomerImpl inputCustomerBusinessExceptions = new InputCustomerImpl(mock);
-        Exception exception1 = assertThrows(CustomerOneOrMoreFieldsInvalidException.class, ()->{
+        Exception exception1 = assertThrows(CustomerOneOrMoreFieldsInvalidException.class, () -> {
             inputCustomerBusinessExceptions.createCustomer(dto1);
         });
 
-        RequestDto dto2 = RequestDto.builder()
+        final RequestDto dto2 = RequestDto.builder()
                 .addressDto(addressDto)
                 .customerDto(customerDto)
                 .build();
         dto2.getCustomerDto().setEmail("placide.nd");
 
-        Exception exception2 = assertThrows(CustomerEmailInvalidException.class, ()->{
+        Exception exception2 = assertThrows(CustomerEmailInvalidException.class, () -> {
             inputCustomerBusinessExceptions.createCustomer(dto2);
         });
+        final RequestDto dto3 = RequestDto.builder()
+                .addressDto(addressDto)
+                .customerDto(CustomerDto.builder()
+                        .firstname(FIRSTNAME)
+                        .lastname(LASTNAME)
+                        .email(EMAIL)
+                        .build())
+                .build();
 
-        assertAll("exceptions",()->{
+        Exception exception3 = assertThrows(CustomerAlreadyExistsException.class, () -> {
+            when(mock.getCustomer(dto3.getCustomerDto())).thenReturn(customer);
+            inputCustomerBusinessExceptions.createCustomer(dto3);
+        });
+
+        final RequestDto dto4 = RequestDto.builder()
+                .addressDto(AddressDto.builder()
+                        .streetNum(-1)
+                        .streetName("")
+                        .poBox(-1)
+                        .city("")
+                        .country("")
+                        .build())
+                .customerDto(customerDto)
+                .build();
+
+        Exception exception4 = assertThrows(AddressFieldsInvalidException.class, () -> {
+            when(mock.getAddress(address.getAddressId())).thenReturn(address);
+            inputCustomerBusinessExceptions.updateAddress(address.getAddressId(), dto4.getAddressDto());
+        });
+
+        final CustomerArchiveDto dto5 = CustomerArchiveDto.builder()
+                .state("unknown")
+                .customerId("id")
+                .build();
+        Exception exception5 = assertThrows(CustomerStateInvalidException.class, ()->{
+            when(mock.getCustomer(dto5.getCustomerId())).thenReturn(customer);
+            inputCustomerBusinessExceptions.archiveCustomer(dto5);
+        });
+
+        final Customer customer1 = new Customer.CustomerBuilder()
+                .customerId(customer.getCustomerId())
+                .firstname(customer.getFirstname())
+                .lastname(customer.getLastname())
+                .createdAt(customer.getCreatedAt())
+                .state("archive")
+                .address(customer.getAddress())
+                .email(customer.getEmail())
+                .build();
+        final CustomerArchiveDto dto6 = CustomerArchiveDto.builder()
+                .state("archive")
+                .customerId("id")
+                .build();
+        Exception exception6 = assertThrows(CustomerAlreadyArchivedException.class, ()->{
+           when(mock.getCustomer(dto6.getCustomerId())).thenReturn(customer1);
+           inputCustomerBusinessExceptions.archiveCustomer(dto6);
+        });
+
+        assertAll("exceptions", () -> {
             assertNotNull(exception1);
             assertNotNull(exception2);
+            assertNotNull(exception3);
+            assertNotNull(exception4);
+            assertNotNull(exception5);
+            assertNotNull(exception6);
         });
     }
 }
