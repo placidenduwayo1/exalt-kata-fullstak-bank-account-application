@@ -3,9 +3,8 @@ fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/repositorie
 fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/RequestDto$RequestDtoBuilder.class
 fr/exalt/businessmicroservicecustomer/domain/exceptions/CustomerAlreadyExistsException.class
 fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/AddressDto.class
-fr/exalt/businessmicroservicecustomer/domain/entities/BankAccount$AccountBuilder.class
-fr/exalt/businessmicroservicecustomer/domain/entities/BankAccount.class
 fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/Request$RequestBuilder.class
+fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/CustomerArchiveDto.class
 fr/exalt/businessmicroservicecustomer/BusinessMicroserviceCustomerApplication.class
 fr/exalt/businessmicroservicecustomer/domain/exceptions/CustomerOneOrMoreFieldsInvalidException.class
 fr/exalt/businessmicroservicecustomer/domain/exceptions/AddressFieldsInvalidException.class
@@ -26,8 +25,11 @@ fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/Addr
 fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/mapper/MapperService.class
 fr/exalt/businessmicroservicecustomer/domain/usecase/CustomerValidators.class
 fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/services/OutputCustomerServiceImpl.class
+fr/exalt/businessmicroservicecustomer/domain/exceptions/CustomerEmailInvalidException.class
 fr/exalt/businessmicroservicecustomer/domain/entities/Address.class
+fr/exalt/businessmicroservicecustomer/domain/exceptions/CustomerAlreadyArchivedException.class
 fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/CustomerModel$CustomerModelBuilder.class
+fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/CustomerArchiveDto$CustomerArchiveDtoBuilder.class
 fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/Request.class
 fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/models/AddressModel$AddressModelBuilder.class
 fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/repositories/CustomerRepository.class

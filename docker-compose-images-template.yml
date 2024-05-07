@@ -15,6 +15,11 @@ services:
     restart: always
     volumes:
       - postgres_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
   
 # ---------------- utils microservices---------------------
   microservices-configuration-server:
@@ -61,11 +66,60 @@ services:
     build:
       context: ./backend/utils-microservices/gateway-service-proxy
       dockerfile: Dockerfile
+    ports:
+      - 8101:8101
     depends_on:
       microservices-registration-server:
         condition: service_healthy
+    networks:
+      - bank-account-apis
+
+# business microservices: customer, bank-account, operation
+  business-microservice-customer:
+    image: placidenduwayo1/business-microservice-customer:1.0.0
+    container_name: business-microservice-customer
+    build:
+      context: ./backend/business-microservices/business-microservice-customer
+      dockerfile: Dockerfile
     ports:
-      - 8101:8101
+      - 8102:8102
+    depends_on:
+      postgresql-db:
+        condition: service_healthy
+      microservices-registration-server:
+        condition: service_healthy
+    networks:
+      - bank-account-apis
+
+  business-microservice-bank-account:
+    image: placidenduwayo1/business-microservice-bank-account:1.0.0
+    container_name: business-microservice-bank-account
+    build:
+      context: ./backend/business-microservices/business-microservice-bankaccount
+      dockerfile: Dockerfile
+    ports:
+      - 8103:8103
+    depends_on:
+      postgresql-db:
+        condition: service_healthy
+      microservices-registration-server:
+        condition: service_healthy
+    networks:
+      - bank-account-apis
+
+  business-microservice-operation:
+    image: placidenduwayo1/business-microservice-operation:1.0.0
+    container_name: business-microservice-operation
+    build:
+      context: ./backend/business-microservices/business-microservice-operation
+      dockerfile: Dockerfile
+    ports:
+      - 8104:8104
+    depends_on:
+      postgresql-db:
+        condition: service_healthy
+      microservices-registration-server:
+        condition: service_healthy
     networks:
       - bank-account-apis
 

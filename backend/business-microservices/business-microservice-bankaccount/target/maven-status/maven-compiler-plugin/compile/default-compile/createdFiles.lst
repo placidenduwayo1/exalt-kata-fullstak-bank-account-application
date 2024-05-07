@@ -15,6 +15,7 @@ fr/exalt/businessmicroserviceaccount/domain/exceptions/BankAccountStateInvalidEx
 fr/exalt/businessmicroserviceaccount/domain/exceptions/ExceptionMsg.class
 fr/exalt/businessmicroserviceaccount/domain/entities/BankAccount.class
 fr/exalt/businessmicroserviceaccount/infrastructure/adapters/input/feignclient/proxy/RemoteCustomerServiceProxy$RemoteCustomerFallback.class
+fr/exalt/businessmicroserviceaccount/infrastructure/adapters/output/repository/BankAccountRepository.class
 fr/exalt/businessmicroserviceaccount/infrastructure/adapters/output/models/dtos/BankAccountInterestRateDto.class
 fr/exalt/businessmicroserviceaccount/domain/exceptions/RemoteCustomerApiUnreachableException.class
 fr/exalt/businessmicroserviceaccount/domain/entities/Customer$CustomerBuilder.class
@@ -36,7 +37,6 @@ fr/exalt/businessmicroserviceaccount/domain/exceptions/BankAccountTypeInvalidExc
 fr/exalt/businessmicroserviceaccount/domain/exceptions/BankAccountSuspendException.class
 fr/exalt/businessmicroserviceaccount/domain/ports/output/OutputAccountService.class
 fr/exalt/businessmicroserviceaccount/infrastructure/adapters/input/feignclient/models/CustomerModel.class
-fr/exalt/businessmicroserviceaccount/infrastructure/adapters/output/repository/AccountRepository.class
 fr/exalt/businessmicroserviceaccount/domain/exceptions/RemoteCustomerStateInvalidException.class
 fr/exalt/businessmicroserviceaccount/domain/exceptions/BankAccountNotFoundException.class
 fr/exalt/businessmicroserviceaccount/domain/ports/input/InputBankAccountService.class
