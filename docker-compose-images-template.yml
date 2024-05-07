@@ -1,0 +1,75 @@
+services:
+
+#-------------- database instance-------------------
+  #postgreslq
+  postgresql-db:
+    image: postgres:latest
+    container_name: postgresql-db
+    ports:
+      - "5432:5432"
+    networks:
+      - bank-account-apis
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin123
+    restart: always
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+  
+# ---------------- utils microservices---------------------
+  microservices-configuration-server:
+    image: placidenduwayo1/microservices-configuration-server:1.0.0
+    container_name: microservices-configuration-server
+    build:
+      context: ./backend/utils-microservices/microservices-configuration-server
+      dockerfile: Dockerfile
+    ports:
+      - 8100:8100
+    networks:
+      - bank-account-apis
+    restart: always
+    healthcheck:
+      test: [ "CMD", "curl", "-I", "http://microservices-configuration-server:8100" ]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+      
+  microservices-registration-server:
+    image: placidenduwayo1/microservices-registration-server:1.0.0
+    container_name: microservices-registration-server
+    build:
+      context: ./backend/utils-microservices/microservices-registration-server
+      dockerfile: Dockerfile
+    depends_on:
+      microservices-configuration-server:
+        condition: service_healthy
+    ports:
+      - 8761:8761
+    healthcheck:
+      test: [ "CMD", "curl", "-I", "http://microservices-registration-server:8761" ]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - bank-account-apis
+
+  gateway-service-proxy:
+    image: placidenduwayo1/gateway-service-proxy:1.0.0
+    container_name: gateway-service-proxy
+    build:
+      context: ./backend/utils-microservices/gateway-service-proxy
+      dockerfile: Dockerfile
+    depends_on:
+      microservices-registration-server:
+        condition: service_healthy
+    ports:
+      - 8101:8101
+    networks:
+      - bank-account-apis
+
+networks:
+  bank-account-apis:
+volumes:
+  postgres_db:

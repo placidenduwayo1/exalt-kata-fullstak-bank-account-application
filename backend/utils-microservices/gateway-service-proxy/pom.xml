@@ -58,6 +58,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>gateway-service-proxy</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
