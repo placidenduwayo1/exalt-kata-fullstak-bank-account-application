@@ -94,6 +94,7 @@ public class InputOperationServiceImpl implements InputOperationService {
             BankAccountDto bankAccountDto = MapperService.fromTo(bankAccount);
             BankAccount updatedBankAccount = outputOperationService.updateRemoteAccount(bankAccount.getAccountId(), bankAccountDto);
             updatedBankAccount.setCustomer(customer);
+
             operation.setOperationId(UUID.randomUUID().toString());
             operation.setCreatedAt(Timestamp.from(Instant.now()).toString());
             Operation savedOp2 = outputOperationService.createOperation(operation);
@@ -110,12 +111,15 @@ public class InputOperationServiceImpl implements InputOperationService {
     }
 
     @Override
-    public Collection<Operation> getAccountOperations(String accountId) throws RemoteBankAccountApiUnreachableException, RemoteBankAccountTypeInaccessibleFromOutsideException {
+    public Collection<Operation> getAccountOperations(String accountId) throws RemoteBankAccountApiUnreachableException,
+            RemoteBankAccountTypeInaccessibleFromOutsideException {
         BankAccount account = outputOperationService.loadRemoteAccount(accountId);
         if (OperationValidators.remoteAccountApiUnreachable(account.getAccountId())) {
-            throw new RemoteBankAccountApiUnreachableException(String.format(FORMATTER, ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE, account));
+            throw new RemoteBankAccountApiUnreachableException(
+                    String.format(FORMATTER, ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE, account));
         } else if (account.getType().equals(BANK_ACCOUNT_TYPE_SAVING)) {
-            throw new RemoteBankAccountTypeInaccessibleFromOutsideException(ExceptionsMsg.REMOTE_ACCOUNT_NOT_ACCESSIBLE_FROM_OUTSIDE);
+            throw new RemoteBankAccountTypeInaccessibleFromOutsideException(
+                    ExceptionsMsg.REMOTE_ACCOUNT_NOT_ACCESSIBLE_FROM_OUTSIDE);
         }
         return setOperationDependencies(outputOperationService.getAccountOperations(accountId));
     }

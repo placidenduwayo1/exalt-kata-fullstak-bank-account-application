@@ -16,7 +16,8 @@ public class OperationValidators {
 
     public static boolean invalidOperationRequest(OperationDto dto) {
         return dto.getType().isBlank()
-                || dto.getMount() < 10;
+                || dto.getMount() < 10
+                || dto.getAccountId().isBlank();
     }
 
     public static boolean invalidOperationType(String type) {
@@ -33,6 +34,6 @@ public class OperationValidators {
     }
 
     public static boolean remoteAccountApiUnreachable(String accountId) {
-        return accountId.strip().equals(ExceptionsMsg.REMOTE_CUSTOMER_UNREACHABLE);
+        return accountId.strip().equals(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE);
     }
 }

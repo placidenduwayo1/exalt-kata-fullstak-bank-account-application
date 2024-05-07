@@ -130,8 +130,8 @@ l'**api operation** verifie que:
         - l'**api operation** vérfie que les deux comptes appartiennent au **même customer**: saving bank account accessible par son propriétaire
 
 # La couverture du code source par les tests
-## bs-ms-customer (88%,90%), bs-ms-bank-account (90%,87%), bs-ms-operation
-![jacoco-customer](./assets/jacoco-customer.png) ![jacoco-bank-account](./assets/jacoco-bank-account.png)
+**bs-ms-customer** (88%,90%), **bs-ms-bank-account** (90%,87%), **bs-ms-operation** (94%,83%)  
+![jacoco-customer](./assets/jacoco-customer.png) ![jacoco-bank-account](./assets/jacoco-bank-account.png) ![jacoco-operation](./assets/jacoco-operation.png) 
 ## business-microservice-operation
 
 # Deploiement en containers docker
