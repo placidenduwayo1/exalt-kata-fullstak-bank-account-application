@@ -32,7 +32,6 @@ services:
       - 8100:8100
     networks:
       - bank-account-apis
-    restart: always
     healthcheck:
       test: [ "CMD", "curl", "-I", "http://microservices-configuration-server:8100" ]
       interval: 15s
