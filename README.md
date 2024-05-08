@@ -141,13 +141,13 @@ l'**api operation** verifie que:
 
 # Deploiement en containers docker
 - Nous utilisons l'environnement **dev**: **application-dev.yml**, **bootstrap-dev.yml** pour lancer tous les microservices du **BankAccount** en local:
-    - ***http:localhost:gateway-port/backend-api/endpoint***
+    - ***http://localhost:gateway-port/backend-api/endpoint***, gateway port: ***8101***
 - Après nous déployons tous les microservices de **Bank Account** dans des containers docker
     - Nous utilisons pour cela l'environement **integ**: **application-integ.yml**, **bootstrap-integ.yml**
     - le fichier ***docker-compose-images-template.yml*** est un template de deploiement de tous les containers docker composant **Bank Account**
     - pour construirer (builder) les images docker de Bank Account: ```docker compose -f docker-compose-images-template.yml build```
     - après le build des images dockers, pour lancer les containers docker de ces images: ```docker compose -f docker-compose-images-template.yml up --detach```
-- running bank account docker containers:
+- L'interface web Portainer permet de voir les running **Bank Account** docker **containers**:
 ![containers](./assets/bankk-account-containers.png)
 
 # Orchestrer les containers docker avec Kubernetes
