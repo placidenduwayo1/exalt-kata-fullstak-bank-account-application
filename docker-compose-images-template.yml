@@ -39,6 +39,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+    restart: always
       
   microservices-registration-server:
     image: placidenduwayo1/microservices-registration-server:1.0.0
@@ -59,6 +60,7 @@ services:
       start_period: 40s
     networks:
       - bank-account-apis
+    restart: always
 
   gateway-service-proxy:
     image: placidenduwayo1/gateway-service-proxy:1.0.0
@@ -73,6 +75,7 @@ services:
         condition: service_healthy
     networks:
       - bank-account-apis
+    restart: always
 
 # business microservices: customer, bank-account, operation
   business-microservice-customer:
@@ -90,6 +93,7 @@ services:
         condition: service_healthy
     networks:
       - bank-account-apis
+    restart: always
 
   business-microservice-bank-account:
     image: placidenduwayo1/business-microservice-bank-account:1.0.0
@@ -106,6 +110,7 @@ services:
         condition: service_healthy
     networks:
       - bank-account-apis
+    restart: always
 
   business-microservice-operation:
     image: placidenduwayo1/business-microservice-operation:1.0.0
@@ -122,6 +127,7 @@ services:
         condition: service_healthy
     networks:
       - bank-account-apis
+    restart: always
 
 networks:
   bank-account-apis:

@@ -3,7 +3,7 @@
 - ***backend*** contient 2 types de microservices de l'application Bank Account: ***microservices métiers*** et **microservices utils**
 - ***configuration-center*** est un dossier externe contenant les fichiers de configuration des microservices
 - ***frontend-app*** est l'application angular à développer
-- ***postgresql.yml*** est un template de lancement de la db PostgreSQL dans un container docker
+- ***docker-compose-images-template.yml*** est un template de lancement de tous les containers de l'application Kata
 
 # Description
 
@@ -29,7 +29,7 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
 
 # Backend
 - 3 business microservices ou microservices métiers
-- chaque microservice métier mappe une base données ***PostgreSQL*** déployée dans  un ***docker container***: ```docker compose -f ./postgresql.yml up -d```
+- chaque microservice métier mappe une base données ***PostgreSQL*** déployée dans  un ***docker container***
 - 3 utils microservices ou microservices utilitaires
 
 ## Business microservices
@@ -140,10 +140,13 @@ l'**api operation** verifie que:
 ![jacoco-operation](./assets/jacoco-operation.png) 
 
 # Deploiement en containers docker
-- Nous utilisons actuellement l'environnement *dev*: **application-dev.yml**, **bootstrap-dev.yml**
+- Nous utilisons l'environnement **dev**: **application-dev.yml**, **bootstrap-dev.yml** pour lancer tous les microservices du **BankAccount** en local:
+    - ***http:localhost:gateway-port/backend-api/endpoint***
 - Après nous déployons tous les microservices de **Bank Account** dans des containers docker
-    - Nous allons pour cela utiliser l'environement *integ*: **application-integ.yml**, **bootstrap-integ.yml**
-- voir les fichiers de configurations de chaque microservice
+    - Nous utilisons pour cela l'environement **integ**: **application-integ.yml**, **bootstrap-integ.yml**
+    - le fichier ***docker-compose-images-template.yml*** est un template de deploiement de tous les containers docker composant **Bank Account**
+    - pour construirer (builder) les images docker de Bank Account: ```docker compose -f docker-compose-images-template.yml build```
+    - après le build des images dockers, pour lancer les containers docker de ces images: ```docker compose -f docker-compose-images-template.yml up --detach```
 
 
 # Frontend
