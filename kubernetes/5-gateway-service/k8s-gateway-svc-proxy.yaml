@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service-proxy
+  labels:
+    app: gateway-service-proxy
+  namespace: bank-account-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-service-proxy
+  template:
+    metadata:
+      name: gateway-service-proxy
+      labels:
+        app: gateway-service-proxy
+    spec:
+      serviceAccountName: pn-svc-account
+      initContainers:
+        - name: ms-config-service
+          image: busybox
+          command:
+            - 'sh'
+            - '-c'
+            - 'until nc -z microservices-configuration-server 8100; do echo waiting for microservices-config-service ready; sleep 5; done;'
+      containers:
+        - name: gateway-service-proxy
+          image: placidenduwayo1/gateway-service-proxy:1.0.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8101
+              name: gateway-proxy
+          startupProbe:
+            tcpSocket:
+              port: gateway-proxy
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: gateway-proxy
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: gateway-proxy
+            initialDelaySeconds: 15
+            periodSeconds: 10
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service-proxy
+  labels:
+    app: gateway-service-proxy
+  namespace: bank-account-ns
+spec:
+  selector:
+    app: gateway-service-proxy
+  ports:
+    - port: 8101
+      protocol: TCP
+      targetPort: 8101
+  type: NodePort

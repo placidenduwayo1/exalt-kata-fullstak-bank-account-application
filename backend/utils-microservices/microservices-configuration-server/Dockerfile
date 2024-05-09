@@ -13,4 +13,4 @@ COPY --from=builder /build/target/snapshot-dependencies/ ./
 COPY --from=builder /build/target/application/ ./
 
 EXPOSE 8100
-ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=default", "org.springframework.boot.loader.launch.JarLauncher"]

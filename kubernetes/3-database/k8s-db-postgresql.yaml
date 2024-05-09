@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql-db
+  labels:
+    app: postgresql-db
+  namespace: bank-account-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql-db
+  template:
+    metadata:
+      name: postgresql-db
+      labels:
+        app: postgresql-db
+    spec:
+      serviceAccountName: pn-svc-account
+      containers:
+        - name: postgresql-db
+          image: postgres
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5432
+              name: psql-port
+          startupProbe:
+            tcpSocket:
+              port: psql-port
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            tcpSocket:
+              port: psql-port
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          livenessProbe:
+            tcpSocket:
+              port: psql-port
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          envFrom:
+            - configMapRef:
+                name: db-secret-credentials
+          volumeMounts:
+            - mountPath: /var/lib/postgres/data
+              name: db-data
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: db-persistent-volume-claim
+      restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-db
+  labels:
+    app: postgresql-db
+  namespace: bank-account-ns
+spec:
+  selector:
+    app: postgresql-db
+  ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+  type: ClusterIP
+
+
+      

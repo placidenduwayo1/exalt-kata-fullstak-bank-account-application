@@ -1,7 +1,0 @@
-fr/exalt/businessmicroservicecustomer/infrastructure/adapters/input/CustomerControllerTest.class
-fr/exalt/businessmicroservicecustomer/infrastructure/adapters/output/services/OutputCustomerServiceImplTest.class
-fr/exalt/businessmicroservicecustomer/domain/usecase/InputCustomerImplTest.class
-fr/exalt/businessmicroservicecustomer/domain/entities/AddressTest.class
-fr/exalt/businessmicroservicecustomer/domain/entities/CustomerTest.class
-fr/exalt/businessmicroservicecustomer/domain/entities/CustomerStateTest.class
-fr/exalt/businessmicroservicecustomer/BusinessMicroserviceCustomerApplicationTests.class

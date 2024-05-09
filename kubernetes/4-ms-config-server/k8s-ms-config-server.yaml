@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservices-configuration-server
+  labels:
+    app: microservices-configuration-server
+  namespace: bank-account-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microservices-configuration-server
+  template:
+    metadata:
+      name: microservices-configuration-server
+      labels:
+        app: microservices-configuration-server
+    spec:
+      serviceAccountName: pn-svc-account
+      containers:
+        - name: microservices-configuration-server
+          image: placidenduwayo1/microservices-configuration-server:1.0.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8100
+              name: ms-config-svc
+          startupProbe:
+            tcpSocket:
+              port: ms-config-svc
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            tcpSocket:
+              port: ms-config-svc
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          livenessProbe:
+            tcpSocket:
+              port: ms-config-svc
+            initialDelaySeconds: 30
+            periodSeconds: 15
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservices-configuration-server
+  labels:
+    app: microservices-configuration-server
+  namespace: bank-account-ns
+spec:
+  selector:
+    app: microservices-configuration-server
+  ports:
+    - port: 8100
+      protocol: TCP
+      targetPort: 8100
+  type: ClusterIP

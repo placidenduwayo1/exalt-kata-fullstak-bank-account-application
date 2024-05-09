@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: business-microservice-customer
+  labels:
+    app: business-microservice-customer
+  namespace: bank-account-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: business-microservice-customer
+  template:
+    metadata:
+      name: business-microservice-customer
+      labels:
+        app: business-microservice-customer
+    spec:
+      serviceAccountName: pn-svc-account
+      initContainers:
+        - name: ms-config-service
+          image: busybox
+          command:
+            - 'sh'
+            - '-c'
+            - 'until nc -z microservices-configuration-server 8100; do echo waiting for microservices-config-service ready; sleep 5; done;'
+        - name: database
+          image: busybox
+          command:
+            - 'sh'
+            - '-c'
+            - 'until nc -z postgresql-db 5432; do echo waiting for database to be ready; sleep 5; done;'
+      containers:
+        - name: business-microservice-customer
+          image: placidenduwayo1/business-microservice-customer:1.0.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8102
+              name: customer-api
+          startupProbe:
+            tcpSocket:
+              port: customer-api
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: customer-api
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: customer-api
+            initialDelaySeconds: 15
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: business-microservice-customer
+  labels:
+    app: business-microservice-customer
+  namespace: bank-account-ns
+spec:
+  selector:
+    app: business-microservice-customer
+  ports:
+    - protocol: TCP
+      port: 8102
+      targetPort: 8102
+  type: NodePort
+      

@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: role-admin-binding
+  labels:
+    app: role-admin-binding
+  namespace: bank-account-ns
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: role-admin
+subjects:
+  - kind: ServiceAccount
+    name: pn-svc-account
+    namespace: bank-account-ns
