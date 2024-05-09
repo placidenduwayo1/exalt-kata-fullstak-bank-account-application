@@ -39,7 +39,6 @@ spec:
               port: ms-config-svc
             initialDelaySeconds: 30
             periodSeconds: 15
-      restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
