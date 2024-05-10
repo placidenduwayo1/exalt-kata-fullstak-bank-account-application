@@ -1,8 +1,0 @@
-# create service account in bank-account-ns namespace
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: pn-svc-account
-  labels:
-    app: pn-svc-account
-  namespace: bank-account-ns
