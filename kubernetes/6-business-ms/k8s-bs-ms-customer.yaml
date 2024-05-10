@@ -33,7 +33,7 @@ spec:
       containers:
         - name: business-microservice-customer
           image: placidenduwayo1/business-microservice-customer:1.0.0
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - containerPort: 8102
               name: customer-api

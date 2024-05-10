@@ -20,7 +20,7 @@ spec:
       containers:
         - name: microservices-configuration-server
           image: placidenduwayo1/microservices-configuration-server:1.0.0
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - containerPort: 8100
               name: ms-config-svc

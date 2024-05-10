@@ -27,7 +27,7 @@ spec:
       containers:
         - name: gateway-service-proxy
           image: placidenduwayo1/gateway-service-proxy:1.0.0
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - containerPort: 8101
               name: gateway-proxy
@@ -46,7 +46,6 @@ spec:
               port: gateway-proxy
             initialDelaySeconds: 15
             periodSeconds: 10
-      restartPolicy: Always
 ---
 apiVersion: v1
 kind: Service
