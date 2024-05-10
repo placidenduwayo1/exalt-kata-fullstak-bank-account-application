@@ -1,25 +1,23 @@
 services:
 
 #-------------- database instance-------------------
-  #postgreslq
-  postgresql-db:
-    image: postgres:latest
-    container_name: postgresql-db
-    ports:
-      - "5432:5432"
-    networks:
-      - bank-account-apis
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin123
+ mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
     restart: always
-    volumes:
-      - postgres_db:/var/lib/postgresql/data
+    ports:
+      - "3307:3306"
+    networks:
+      - kafka-avro-network
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin"]
-      interval: 10s
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-proot" ]
+      interval: 5s
       timeout: 5s
-      retries: 5
+      retries: 20
+    volumes:
+      - persistence-dbs:/var/lib/mysql
   
 # ---------------- utils microservices---------------------
   microservices-configuration-server:
@@ -86,7 +84,7 @@ services:
     ports:
       - 8102:8102
     depends_on:
-      postgresql-db:
+      mysql-db:
         condition: service_healthy
       microservices-registration-server:
         condition: service_healthy
@@ -103,7 +101,7 @@ services:
     ports:
       - 8103:8103
     depends_on:
-      postgresql-db:
+      postmysql-db:
         condition: service_healthy
       microservices-registration-server:
         condition: service_healthy
@@ -120,7 +118,7 @@ services:
     ports:
       - 8104:8104
     depends_on:
-      postgresql-db:
+      mysql-db:
         condition: service_healthy
       microservices-registration-server:
         condition: service_healthy

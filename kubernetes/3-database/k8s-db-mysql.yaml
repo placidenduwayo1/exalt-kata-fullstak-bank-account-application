@@ -1,49 +1,49 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgresql-db
+  name: mysql-db
   labels:
-    app: postgresql-db
+    app: mysql-db
   namespace: bank-account-ns
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgresql-db
+      app: mysql-db
   template:
     metadata:
-      name: postgresql-db
+      name: mysql-db
       labels:
-        app: postgresql-db
+        app: mysql-db
     spec:
       serviceAccountName: pn-svc-account
       containers:
-        - name: postgresql-db
-          image: postgres
+        - name: mysql-db
+          image: mysql:8.0
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 5432
-              name: psql-port
+            - containerPort: 3306
+              name: mysql-port
           startupProbe:
             tcpSocket:
-              port: psql-port
+              port: mysql-port
             initialDelaySeconds: 30
             periodSeconds: 15
           readinessProbe:
             tcpSocket:
-              port: psql-port
+              port: mysql-port
             initialDelaySeconds: 30
             periodSeconds: 15
           livenessProbe:
             tcpSocket:
-              port: psql-port
+              port: mysql-port
             initialDelaySeconds: 30
             periodSeconds: 15
           envFrom:
             - configMapRef:
                 name: db-secret-credentials
           volumeMounts:
-            - mountPath: /var/lib/postgres/data
+            - mountPath: /var/lib/mysql
               name: db-data
       volumes:
         - name: db-data
@@ -55,17 +55,17 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgresql-db
+  name: mysql-db
   labels:
-    app: postgresql-db
+    app: mysql-db
   namespace: bank-account-ns
 spec:
   selector:
-    app: postgresql-db
+    app: mysql-db
   ports:
-    - port: 5432
+    - port: 3306
       protocol: TCP
-      targetPort: 5432
+      targetPort: 3306
   type: ClusterIP
 
 
