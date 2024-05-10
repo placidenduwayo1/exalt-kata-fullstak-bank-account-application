@@ -141,27 +141,28 @@ l'**api operation** verifie que:
 ![jacoco-operation](./assets/jacoco-operation.png) 
 
 # Deploiement en containers docker
-- Nous utilisons l'environnement **dev**: **application-dev.yml**, **bootstrap-dev.yml** pour lancer tous les microservices du **BankAccount** en local:
+- J'utilise l'environnement **dev**: **application-dev.yml**, **bootstrap-dev.yml** pour lancer tous les microservices du **BankAccount** en local:
     - ***http://localhost:gateway-port/backend-api/endpoint***, gateway port: ***8101***
-- Après nous déployons tous les microservices de **Bank Account** dans des containers docker
-    - Nous utilisons pour cela l'environement **integ**: **application-integ.yml**, **bootstrap-integ.yml**
+- Après je déploie tous les microservices de **Bank Account** dans des containers docker
+    - J'utilise pour cela l'environement **integ**: **application-integ.yml**, **bootstrap-integ.yml**
     - le fichier ***docker-compose-images-template.yml*** est un template de deploiement de tous les containers docker composant **Bank Account**
     - pour construirer (builder) les images docker de Bank Account: ```docker compose -f docker-compose-images-template.yml build```
     - après le build des images dockers, pour lancer les containers docker de ces images: ```docker compose -f docker-compose-images-template.yml up --detach```
 - L'interface web Portainer permet de voir les running **Bank Account** docker **containers**:
 ![containers](./assets/bankk-account-containers.png)
 
-Nous déployons par la suite ces containers docker de l'application **Bank Account** dans un **cluster Kubernetes**.  
-Le dossier **kubernetes** contient les fichiers yaml de deploiement des containers docker de **Bank Account**.  
-Les containers docker déployés dans le cluster  kubernetes **minikube** sont: 
+- Je déploie par la suite ces containers docker de l'application **Bank Account** dans un **Cluster Kubernetes**.  
 # Orchestrer les containers docker avec Kubernetes
-- Dans cette partie, nous déployons les containers docker de **Bank Account** en haut dans un **cluster minikube**.
-- Nous utilisons l'orchestrateur **Kubernetes** (K8s)
-- Kubernets possédant son système de discovery, plus besoin du microservices dédié d'enregistrement et de loadbalancing. 
-    - ici on utilisais eureka-server comme serveur d'enregistrement
+- Dans cette partie, je déploie les containers docker de l'application **Bank Account** dans un cluster **minikube**.
+- J'utilise l'orchestrateur **Kubernetes** (K8s) pour le deploiement des containers docker.
+- Kubernets possédant son système de discovery et de loadbalancing, on n'a plus besoin du microservices dédié d'enregistrement et de loadbalancing. 
+    - ici j' avait utilisé eureka-server comme serveur d'enregistrement
     - Dans chaque microservice qui utilisais un service d'enregistrement via eureka-clent dependency, on remplace cette pendance par la dépendance kubernetes
 - La nouvelle architecture devient comme suit:
-    ![k8s-application-archi](./assets/exalt-bank-account-archi-2.png)
+    ![k8s-application-archi](./assets/exalt-bank-account-archi-2.png)  
+
+- Les containers docker de l'application **Bank Account** déployés dans le cluster Minikube de Kubernetes sont:
+![k8s-deloy](/assets/k8s-deploy.png)
 
 # Frontend
 Le frontend est une ***application en Angular*** (V16) utilisant le pattern ***observeur de RxJs***

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: business-microservice-operation
+  labels:
+    app: business-microservice-operation
+  namespace: bank-account-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: business-microservice-operation
+  template:
+    metadata:
+      name: business-microservice-operation
+      labels:
+        app: business-microservice-operation
+    spec:
+      serviceAccountName: pn-svc-account
+      containers:
+        - name: business-microservice-operation
+          image: placidenduwayo1/business-microservice-operation:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8104
+              name: operation-api
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: business-microservice-operation
+  labels:
+    app: business-microservice-operation
+  namespace: bank-account-ns
+spec:
+  selector:
+    app: business-microservice-operation
+  ports:
+    - protocol: TCP
+      port: 8104
+      targetPort: 8104
+  type: NodePort
+      

@@ -1,16 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: business-microservice-bank-account
+  name: business-microservice-operation
   labels:
-    app: business-microservice-bank-account
+    app: business-microservice-operation
   namespace: bank-account-ns
 spec:
   selector:
-    app: business-microservice-bank-account
+    app: business-microservice-operation
   ports:
     - protocol: TCP
-      port: 8103
-      targetPort: 8103
+      port: 8104
+      targetPort: 8104
   type: NodePort
-  
