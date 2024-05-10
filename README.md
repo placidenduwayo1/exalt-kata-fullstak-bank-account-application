@@ -4,6 +4,7 @@
 - ***configuration-center*** est un dossier externe contenant les fichiers de configuration des microservices
 - ***frontend-app*** est l'application angular à développer
 - ***docker-compose-images-template.yml*** est un template de lancement de tous les containers de l'application Kata
+- ***kubernetes*** contient tous les fichiers de deploiement des containers docker de l'application **Bank Account** dans un cluster **Kubernetes**
 
 # Description
 
