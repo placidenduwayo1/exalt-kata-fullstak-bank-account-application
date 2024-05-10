@@ -30,7 +30,7 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
 
 # Backend
 - 3 business microservices ou microservices métiers
-- chaque microservice métier mappe une base données ***PostgreSQL*** déployée dans  un ***docker container***
+- chaque microservice métier mappe une base données ***MySQL*** déployée dans  un ***docker container***
 - 3 utils microservices ou microservices utilitaires
 
 ## Business microservices
@@ -151,8 +151,11 @@ l'**api operation** verifie que:
 - L'interface web Portainer permet de voir les running **Bank Account** docker **containers**:
 ![containers](./assets/bankk-account-containers.png)
 
+Nous déployons par la suite ces containers docker de l'application **Bank Account** dans un **cluster Kubernetes**.  
+Le dossier **kubernetes** contient les fichiers yaml de deploiement des containers docker de **Bank Account**.  
+Les containers docker déployés dans le cluster  kubernetes **minikube** sont: 
 # Orchestrer les containers docker avec Kubernetes
-- Dans cette partie, nous déployons les containers docker créés en haut dans un **cluster minikube**.
+- Dans cette partie, nous déployons les containers docker de **Bank Account** en haut dans un **cluster minikube**.
 - Nous utilisons l'orchestrateur **Kubernetes** (K8s)
 - Kubernets possédant son système de discovery, plus besoin du microservices dédié d'enregistrement et de loadbalancing. 
     - ici on utilisais eureka-server comme serveur d'enregistrement
