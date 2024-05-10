@@ -1,14 +1,14 @@
 services:
 
 #-------------- database instance-------------------
- mysql-db:
+  mysql-db:
     image: mysql:8.0
     container_name: mysql-db
     restart: always
     ports:
       - "3307:3306"
     networks:
-      - kafka-avro-network
+      - bank-account-apis
     environment:
       MYSQL_ROOT_PASSWORD: root
     healthcheck:
@@ -17,7 +17,7 @@ services:
       timeout: 5s
       retries: 20
     volumes:
-      - persistence-dbs:/var/lib/mysql
+      - mysql_volume:/var/lib/mysql
   
 # ---------------- utils microservices---------------------
   microservices-configuration-server:
@@ -101,7 +101,7 @@ services:
     ports:
       - 8103:8103
     depends_on:
-      postmysql-db:
+      mysql-db:
         condition: service_healthy
       microservices-registration-server:
         condition: service_healthy
@@ -129,4 +129,4 @@ services:
 networks:
   bank-account-apis:
 volumes:
-  postgres_db:
+  mysql_volume:

@@ -1,3 +1,51 @@
+# persistence volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: db-persistent-volume
+  labels:
+    app: db-persistent-volume
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 500M
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/db"
+---
+# persistence volume claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-persistent-volume-claim
+  labels:
+    app: db-persistent-volume-claim
+  namespace: bank-account-ns
+spec:
+  storageClassName: manual
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500M
+---
+# database pwd
+apiVersion: v1
+kind: Secret
+metadata:
+  namespace: bank-account-ns
+  name: db-credentials
+  labels:
+    app: db-credentials
+type: Opaque
+data:
+  mysql-mdp: "cm9vdA=="
+---
+# database deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -39,9 +87,12 @@ spec:
               port: mysql-port
             initialDelaySeconds: 30
             periodSeconds: 15
-          envFrom:
-            - configMapRef:
-                name: db-secret-credentials
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: mysql-mdp
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: db-data
@@ -52,6 +103,7 @@ spec:
       restartPolicy: Always
 
 ---
+# database service
 apiVersion: v1
 kind: Service
 metadata:

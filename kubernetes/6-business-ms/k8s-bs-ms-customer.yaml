@@ -29,7 +29,7 @@ spec:
           command:
             - 'sh'
             - '-c'
-            - 'until nc -z postgresql-db 5432; do echo waiting for database to be ready; sleep 5; done;'
+            - 'until nc -z mysql-db 3306; do echo waiting for database to be ready; sleep 5; done;'
       containers:
         - name: business-microservice-customer
           image: placidenduwayo1/business-microservice-customer:1.0.0
