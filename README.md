@@ -165,13 +165,13 @@ l'**api operation** verifie que:
 ![k8s-deloy](/assets/k8s-deploy.png)
 
 ## Ingress Controller Service
-- Dans le cluster **Minikube**, je configure un service **Ingress** pour exposer les Services (ClusterIP Service) de chaque microservice qu'on souhaite accéder à l'extérieur.
+- Dans le cluster **Minikube**, je configure un service **Ingress**  avec ```minikube addons enable ingress```  pour exposer le Service K8s de la gateway-service-proxy à l'extérieur.
     - Dans K8s, un **Service K8s** expose un **deployment K8s**, un **Ingress Controller** expose un **Service K8s**
-- Dans le fichier **kubernetes/7-k8s-ingress-gateway-service-proxy.yaml**, je définis un service **Ingress Controller** pour le gateway-service-proxy avec le dns: ***gateway.com***  
+- Dans le fichier **kubernetes/7-k8s-ingress-gateway-service-proxy.yaml**, je définis un service **Ingress Controller** pour le gateway-service-proxy
+    - Je définis ***gateway.com***   comme DNS lié au Service K8s de la gateway   
 ![ingress-controller](./assets/ingress-controller.png)  
-- L'adresse url de la gateway  ```http://localhost:8101/path/endpoint```, est remplacée par le dns de la gateway définie dans le Ingress Controller ```http://gateway.com/path/endpoint```
+- L'adresse url de la gateway : ```http://localhost:8101/path/endpoint```, est desormais remplacée par le DNS de la gateway défini dans le **Ingress Controller**: ```http://gateway.com/path/endpoint```
     - exemple: ```http://gateway.com/api-bank-account/accounts/``` renvoie la liste de tous les comptes associés avec leur customers
-
 
 # Frontend
 Le frontend est une ***application en Angular*** (V16) utilisant le pattern ***observeur de RxJs***
