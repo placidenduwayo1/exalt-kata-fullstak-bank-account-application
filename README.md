@@ -164,5 +164,15 @@ l'**api operation** verifie que:
 - Les containers docker de l'application **Bank Account** déployés dans le cluster Minikube de Kubernetes sont:
 ![k8s-deloy](/assets/k8s-deploy.png)
 
+## Ingress Controller Service
+- Dans le cluster minikube, je configure un service **Ingress** pour exposer les K8s ClusterIP services de chaque microservice qu'on souhaite accéder depuis l'extérieur.
+- Dans le fichier **kubernetes/7-k8s-ingress-gateway-service-proxy.yaml**, je définit un service **Ingress Controller** pour le gateway-service-proxy avec le dns: ***gateway.com*** 
+![ingress-controller](./assets/ingress-controller.png)
+- J'ai définit dans **Ingress Controller**
+
+- L'adresse url de la gateway  ```http://localhost:8101/path/endpoint```, est remplacée par le dns de la gateway définie dans le Ingress Controller ```http://gateway.com/path/endpoint```
+    - exemple: ```http://gateway.com/api-bank-account/accounts/``` renvoie la liste de tous les comptes associés avec leur customers
+
+
 # Frontend
 Le frontend est une ***application en Angular*** (V16) utilisant le pattern ***observeur de RxJs***

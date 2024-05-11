@@ -52,5 +52,5 @@ spec:
     - protocol: TCP
       port: 8102
       targetPort: 8102
-  type: NodePort
+  type: ClusterIP
       

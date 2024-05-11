@@ -39,5 +39,5 @@ spec:
     - protocol: TCP
       port: 8103
       targetPort: 8103
-  type: NodePort
+  type: ClusterIP
       
