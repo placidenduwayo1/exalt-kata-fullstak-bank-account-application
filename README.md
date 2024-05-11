@@ -172,6 +172,7 @@ l'**api operation** verifie que:
 ![ingress-controller](./assets/ingress-controller.png)  
 - L'adresse url de la gateway : **```http://localhost:8101/path/endpoint```**, est desormais remplacée par le DNS de la gateway défini dans le **Ingress Controller**: **```http://gateway.com/path/endpoint```**
     - exemple: **```http://gateway.com/api-bank-account/accounts/```** renvoie la liste de tous les comptes associés avec leur customers
+    ![accounts](./assets/ingress-controller-2.png)
 
 # Frontend
 Le frontend est une ***application en Angular*** (V16) utilisant le pattern ***observeur de RxJs***

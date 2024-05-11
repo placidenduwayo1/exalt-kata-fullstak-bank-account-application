@@ -83,6 +83,7 @@ public class InputCustomerImpl implements InputCustomerService {
         customer.setAddress(address);
         customer.setFirstname(requestDto.getCustomerDto().getFirstname());
         customer.setLastname(requestDto.getCustomerDto().getLastname());
+        customer.setEmail(requestDto.getCustomerDto().getEmail());
         outputCustomerService.updateCustomer(customer, address);
         return customer;
 
