@@ -154,10 +154,10 @@ l'**api operation** verifie que:
 - Je déploie par la suite ces containers docker de l'application **Bank Account** dans un **Cluster Kubernetes**.  
 # Orchestrer les containers docker avec Kubernetes
 - Dans cette partie, je déploie les containers docker de l'application **Bank Account** dans un cluster **minikube**.
-- J'utilise l'orchestrateur **Kubernetes** (K8s) pour le deploiement des containers docker.
-- Kubernets possédant son système de discovery et de loadbalancing, on n'a plus besoin du microservices dédié d'enregistrement et de loadbalancing. 
-    - ici j' avait utilisé eureka-server comme serveur d'enregistrement
-    - Dans chaque microservice qui utilisais un service d'enregistrement via eureka-clent dependency, on remplace cette pendance par la dépendance kubernetes
+- J'utilise l'orchestrateur **Kubernetes** (K8s) pour le deploiement des containers docker de l'application **Bank Account**.
+- Kubernets possédant son système de **discovery** et de **loadbalancing**, on n'a plus besoin du microservices dédié d'enregistrement et de loadbalancing. 
+    - ici j' avait utilisé **eureka-server** comme serveur d'enregistrement et de loadbalancing
+    - Dans chaque microservice qui utilisais un service d'enregistrement via **eureka-clent dependency**, on remplace cette pendance par la dépendance kubernetes ***spring-cloud-starter-kubernetes-client-all***
 - La nouvelle architecture devient comme suit:
     ![k8s-application-archi](./assets/exalt-bank-account-archi-2.png)  
 
