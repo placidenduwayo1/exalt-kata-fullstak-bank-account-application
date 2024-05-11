@@ -158,18 +158,17 @@ l'**api operation** verifie que:
 - Kubernets possédant son système de **discovery** et de **loadbalancing**, on n'a plus besoin du microservices dédié d'enregistrement et de loadbalancing. 
     - ici j' avait utilisé **eureka-server** comme serveur d'enregistrement et de loadbalancing
     - Dans chaque microservice qui utilisais un service d'enregistrement via **eureka-clent dependency**, on remplace cette pendance par la dépendance kubernetes ***spring-cloud-starter-kubernetes-client-all***
-- La nouvelle architecture devient comme suit:
+- La nouvelle architecture de l'application **Bank Account** devient comme suit:
     ![k8s-application-archi](./assets/exalt-bank-account-archi-2.png)  
 
-- Les containers docker de l'application **Bank Account** déployés dans le cluster Minikube de Kubernetes sont:
+- Les containers docker de l'application **Bank Account** déployés dans le cluster **Minikube de Kubernetes** sont:
 ![k8s-deloy](/assets/k8s-deploy.png)
 
 ## Ingress Controller Service
-- Dans le cluster minikube, je configure un service **Ingress** pour exposer les K8s ClusterIP services de chaque microservice qu'on souhaite accéder depuis l'extérieur.
-- Dans le fichier **kubernetes/7-k8s-ingress-gateway-service-proxy.yaml**, je définit un service **Ingress Controller** pour le gateway-service-proxy avec le dns: ***gateway.com*** 
-![ingress-controller](./assets/ingress-controller.png)
-- J'ai définit dans **Ingress Controller**
-
+- Dans le cluster **Minikube**, je configure un service **Ingress** pour exposer les Services (ClusterIP Service) de chaque microservice qu'on souhaite accéder à l'extérieur.
+    - Dans K8s, un **Service K8s** expose un **deployment K8s**, un **Ingress Controller** expose un **Service K8s**
+- Dans le fichier **kubernetes/7-k8s-ingress-gateway-service-proxy.yaml**, je définis un service **Ingress Controller** pour le gateway-service-proxy avec le dns: ***gateway.com***  
+![ingress-controller](./assets/ingress-controller.png)  
 - L'adresse url de la gateway  ```http://localhost:8101/path/endpoint```, est remplacée par le dns de la gateway définie dans le Ingress Controller ```http://gateway.com/path/endpoint```
     - exemple: ```http://gateway.com/api-bank-account/accounts/``` renvoie la liste de tous les comptes associés avec leur customers
 
