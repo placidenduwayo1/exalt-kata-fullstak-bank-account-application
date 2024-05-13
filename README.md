@@ -143,7 +143,7 @@ l'**api operation** verifie que:
 # Deploiement en containers docker
 - J'utilise l'environnement **dev**: **application-dev.yml**, **bootstrap-dev.yml** pour lancer tous les microservices du **BankAccount** en local:
     - ***http://localhost:gateway-port/backend-api/endpoint***, gateway port: ***8101***
-- Après je déploie tous les microservices de **Bank Account** dans des containers docker
+- Après je déploie tous les microservices de **Bank Account** dans des **containers docker**
     - J'utilise pour cela l'environement **integ**: **application-integ.yml**, **bootstrap-integ.yml**
     - le fichier ***docker-compose-images-template.yml*** est un template de deploiement de tous les containers docker composant **Bank Account**
     - pour construirer (builder) les images docker de Bank Account: ```docker compose -f docker-compose-images-template.yml build```
@@ -155,9 +155,9 @@ l'**api operation** verifie que:
 # Orchestrer les containers docker avec Kubernetes
 - Dans cette partie, je déploie les containers docker de l'application **Bank Account** dans un cluster **minikube**.
 - J'utilise l'orchestrateur **Kubernetes** (K8s) pour le deploiement des containers docker de l'application **Bank Account**.
-- Kubernets possédant son système de **discovery** et de **loadbalancing**, on n'a plus besoin du microservices dédié d'enregistrement et de loadbalancing. 
-    - ici j' avait utilisé **eureka-server** comme serveur d'enregistrement et de loadbalancing
-    - Dans chaque microservice qui utilisais un service d'enregistrement via **eureka-clent dependency**, on remplace cette pendance par la dépendance kubernetes ***spring-cloud-starter-kubernetes-client-all***
+- Ce qui est bien avec Kubernetes, c'est que possédant son système de **discovery** et de **loadbalancing**, on n'a plus besoin du microservices dédié d'enregistrement et de loadbalancing. 
+    - J'avais utilisé **eureka-server** comme serveur d'**enregistrement** et de **loadbalancing**
+    - Dans chaque microservice qui utilisais un service d'enregistrement via **eureka-clent dependency**, on remplace cette pendance par la dépendance Kubernetes ***spring-cloud-starter-kubernetes-client-all***. Cette dernière permet le discovrey et le loadbalancing des microservices.
 - La nouvelle architecture de l'application **Bank Account** devient comme suit:
     ![k8s-application-archi](./assets/exalt-bank-account-archi-2.png)  
 
@@ -173,7 +173,7 @@ l'**api operation** verifie que:
 - L'adresse url de la gateway : **```http://localhost:8101/path/endpoint```**, est desormais remplacée par le DNS de la gateway défini dans le **Ingress Controller**: **```http://gateway.com/path/endpoint```**
     - exemple: **```http://gateway.com/api-bank-account/accounts/```** renvoie la liste de tous les comptes associés avec leur customers
 
-![accounts](./assets/ingress-controller-2.png)
+![accounts](./assets/ingress-controller-2.png)   ![accounts](./assets/ingress-controller-3.png) 
 
 # Frontend
 Le frontend est une ***application en Angular*** (V16) utilisant le pattern ***observeur de RxJs***
