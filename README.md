@@ -171,8 +171,8 @@ l'**api operation** verifie que:
     - Je définis **gateway.com**   comme DNS lié au Service K8s de la gateway   
 ![ingress-controller](./assets/ingress-controller.png)  
 - L'adresse url de la gateway : **```http://localhost:8101/path/endpoint```**, est desormais remplacée par le DNS de la gateway défini dans le **Ingress Controller**: **```http://gateway.com/path/endpoint```**. Par exemple:
-    - **```http://gateway.com/api-bank-account/accounts/```** renvoie la liste de tous les bank-accounts avec leur customers
-    - **```http://gateway.com/api-operation/operations```** renvoie la liste des opérations effectuées sur un bank-account avec le bank-account concerné et le customer associé à ce bank-account
+    - **```http://gateway.com/api-bank-account/accounts/```**: renvoie la liste de tous les bank-accounts avec leur customers
+    - **```http://gateway.com/api-operation/operations```**: renvoie liste des opérations effectuées avec le bank-account concerné et le customer associé à ce bank-account
 
 ![accounts](./assets/ingress-controller-2.png)   ![operations](./assets/ingress-controller-3.png) 
 
