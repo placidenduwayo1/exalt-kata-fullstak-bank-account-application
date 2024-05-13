@@ -1,8 +1,8 @@
 # 💰 **Bank Account** 💰
 - ***assets*** contient les images utilisées dans cette documentation
-- ***backend*** contient 2 types de microservices de l'application Bank Account: ***microservices métiers*** et **microservices utils**
+- ***kata-backend*** contient 2 types de microservices de l'application Bank Account: ***microservices métiers*** et **microservices utils**
 - ***configuration-center*** est un dossier externe contenant les fichiers de configuration des microservices
-- ***frontend-app*** est l'application angular à développer
+- ***kata-frontend*** est l'application angular à développer
 - ***docker-compose-images-template.yml*** est un template de lancement de tous les containers de l'application Kata
 - ***kubernetes*** contient tous les fichiers de deploiement des containers docker de l'application **Bank Account** dans un cluster **Kubernetes**
 
@@ -36,22 +36,22 @@ L'application orientée microservice **Bank Account** est dimensionnée comme su
 ## Business microservices
 
 - ***business-microservice-customer***
-    - *backend/business-micorservices/business-microservice-customer*
+    - *kata-backend/business-micorservices/business-microservice-customer*
 - ***business-microservice-bankaccount***
-    - *backend/business-micorservices/business-microservice-bankaccount*
+    - *kata-backend/business-micorservices/business-microservice-bankaccount*
 - ***business-microservice-operation***
-    - *backend/business-micorservices/business-microservice-operation*
+    - *kata-backend/business-micorservices/business-microservice-operation*
 
 ## Utils microservices
 
-- ***microservices-config-server***: *backend/utils-microservices/microservices-configuration-server*
+- ***microservices-config-server***: *kata-backend/utils-microservices/microservices-configuration-server*
     - au démarrage, les microservices demandent leur configurations au serveur **microservices-config-server**
     - le serveur de configuration récupère les config depuis le git repo dans le dossier ***configurations-center*** et les distribuent aux microservices
-- ***microservices-registration-server***: *backend/utils-microservices/microservices-registration-server*
+- ***microservices-registration-server***: *kata-backend/utils-microservices/microservices-registration-server*
     - enregistrement des microservices dans l'annuaire
     - loadbalancer les microservices
     - les services enregistrés dans l'annuaire sont visionnés ici: ```http://localhost:8761```
-- ***gateway-service-proxy***: *backend/utils-microservices/gateway-service-proxy*
+- ***gateway-service-proxy***: *kata-backend/utils-microservices/gateway-service-proxy*
     - le service gateway route les requêtes http dans les deux sens entre le frontend et la backend
     - voir la configuration ***bootstrap-dev.yml*** du microservice 
 
@@ -142,7 +142,7 @@ l'**api operation** verifie que:
 
 # Deploiement en containers docker
 - J'utilise l'environnement **dev**: **application-dev.yml**, **bootstrap-dev.yml** pour lancer tous les microservices du **BankAccount** en local:
-    - ***http://localhost:gateway-port/backend-api/endpoint***, gateway port: ***8101***
+    - ***http://localhost:gateway-port/api-backend/endpoint***, gateway port: ***8101***
 - Après je déploie tous les microservices de **Bank Account** dans des **containers docker**
     - J'utilise pour cela l'environement **integ**: **application-integ.yml**, **bootstrap-integ.yml**
     - le fichier ***docker-compose-images-template.yml*** est un template de deploiement de tous les containers docker composant **Bank Account**

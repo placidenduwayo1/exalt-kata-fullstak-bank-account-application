@@ -24,7 +24,7 @@ services:
     image: placidenduwayo1/microservices-configuration-server:1.0.0
     container_name: microservices-configuration-server
     build:
-      context: ./backend/utils-microservices/microservices-configuration-server
+      context: ./kata-backend/utils-microservices/microservices-configuration-server
       dockerfile: Dockerfile
     ports:
       - 8100:8100
@@ -42,7 +42,7 @@ services:
     image: placidenduwayo1/microservices-registration-server:1.0.0
     container_name: microservices-registration-server
     build:
-      context: ./backend/utils-microservices/microservices-registration-server
+      context: ./kata-backend/utils-microservices/microservices-registration-server
       dockerfile: Dockerfile
     depends_on:
       microservices-configuration-server:
@@ -63,7 +63,7 @@ services:
     image: placidenduwayo1/gateway-service-proxy:1.0.0
     container_name: gateway-service-proxy
     build:
-      context: ./backend/utils-microservices/gateway-service-proxy
+      context: ./kata-backend/utils-microservices/gateway-service-proxy
       dockerfile: Dockerfile
     ports:
       - 8101:8101
@@ -79,7 +79,7 @@ services:
     image: placidenduwayo1/business-microservice-customer:1.0.0
     container_name: business-microservice-customer
     build:
-      context: ./backend/business-microservices/business-microservice-customer
+      context: ./kata-backend/business-microservices/business-microservice-customer
       dockerfile: Dockerfile
     ports:
       - 8102:8102
@@ -96,7 +96,7 @@ services:
     image: placidenduwayo1/business-microservice-bank-account:1.0.0
     container_name: business-microservice-bank-account
     build:
-      context: ./backend/business-microservices/business-microservice-bankaccount
+      context: ./kata-backend/business-microservices/business-microservice-bankaccount
       dockerfile: Dockerfile
     ports:
       - 8103:8103
@@ -113,7 +113,7 @@ services:
     image: placidenduwayo1/business-microservice-operation:1.0.0
     container_name: business-microservice-operation
     build:
-      context: ./backend/business-microservices/business-microservice-operation
+      context: ./kata-backend/business-microservices/business-microservice-operation
       dockerfile: Dockerfile
     ports:
       - 8104:8104
