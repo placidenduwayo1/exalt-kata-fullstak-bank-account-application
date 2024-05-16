@@ -19,7 +19,7 @@
         <tr>
             <td>{{operation.accountId}}</td>
             <td> <p-tag [value]="operation.type" [severity]="getOperationTypeSeverity(operation.type)"></p-tag></td>
-            <td> {{operation.mount}} </td>
+            <td> {{operation.mount | currency:'EUR'}} </td>
             <td> {{operation.createdAt | date:'yyyy-MM-dd: hh:mm:ss'}}</td>
             <td>
                 <ul>
