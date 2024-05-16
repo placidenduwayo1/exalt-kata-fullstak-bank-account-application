@@ -1,0 +1,10 @@
+ul {
+    list-style: disc;
+    padding: 0.98em;
+    margin-left: .3cm;
+  }
+  ul ul {
+    list-style: circle;
+    padding: .98em;
+    margin-left: .3cm;
+  }

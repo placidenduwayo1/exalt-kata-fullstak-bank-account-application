@@ -21,5 +21,5 @@ public interface OutputCustomerService {
     Collection<Address> getAllAddresses();
     Request updateCustomer(Customer customer, Address address);
     Address updateAddress(Address address);
-    Customer archiveCustomer(Customer customer);
+    Customer switchCustomerBetweenActiveArchive(Customer customer) throws CustomerNotFoundException;
 }

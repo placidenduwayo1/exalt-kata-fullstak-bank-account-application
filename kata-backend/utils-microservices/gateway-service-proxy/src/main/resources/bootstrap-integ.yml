@@ -22,3 +22,11 @@ spring:
           uri: http://business-microservice-operation:8104
           predicates:
             - Path=/api-operation/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowed-headers: "*"
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin

@@ -1,0 +1,43 @@
+<div style="width:80%">
+    <h1 style="color: green; text-align: center;">
+        Bank accounts and their customers
+    </h1>
+</div>
+<p-table [value]="accountsList" [paginator]="true" [rows]="4" [rowsPerPageOptions]="[4, 8, 10]"
+    [tableStyle]="{ 'min-width': 'fit-content' }">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Account ID</th>
+            <th>Type</th>
+            <th>State</th>
+            <th>Balance</th>
+            <th>Created At</th>
+            <th>Customer</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-account>
+        <tr>
+            <td>{{account.accountId}}</td>
+
+            <td> <p-tag [value]="account.type" [severity]="getAccountTypeSeverity(account.type)"> </p-tag></td>
+            <td><p-tag [value]="account.state" [severity]="getAccountStateSeverity(account.state)" /></td>
+            <td>{{account.balance | currency:'EUR'}}</td>
+            <td>{{account.createdAt | date:'yyyy-MM-dd: hh:mm:ss'}}</td>
+            <td>
+                <ul>
+                    <li>ID: {{account.customer.customerId}} </li>
+                    <li>Name: {{account.customer.firstname}} {{account.customer.lastname}}</li>
+                    <li>Email: {{account.customer.email}}</li>
+                    <li>State: <p-tag [value]="account.customer.state"
+                            [severity]="getCustomerStateSeverity(account.customer.state)"></p-tag></li>
+                </ul>
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            {{accountsList ? accountsList.length : 0 }} Bank Accounts
+        </div>
+    </ng-template>
+</p-table>

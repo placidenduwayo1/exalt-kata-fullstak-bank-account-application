@@ -7,7 +7,7 @@ import fr.exalt.businessmicroservicecustomer.domain.ports.input.InputCustomerSer
 import fr.exalt.businessmicroservicecustomer.domain.ports.output.OutputCustomerService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mapper.MapperService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerArchiveDto;
+import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerSwitchActiveArchiveDto;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
 
 import java.sql.Timestamp;
@@ -24,8 +24,8 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     @Override
-    public Customer createCustomer(RequestDto requestDto) throws CustomerStateInvalidException,
-            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException, CustomerEmailInvalidException {
+    public Customer createCustomer(RequestDto requestDto) throws CustomerOneOrMoreFieldsInvalidException,
+            CustomerAlreadyExistsException, CustomerEmailInvalidException {
 
         validateCustomer(requestDto);
         Address mappedAddress = MapperService.fromTo(requestDto.getAddressDto());
@@ -71,8 +71,8 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     @Override
-    public Customer updateCustomer(String customerId, RequestDto requestDto) throws CustomerStateInvalidException,
-            CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException, CustomerNotFoundException, CustomerEmailInvalidException {
+    public Customer updateCustomer(String customerId, RequestDto requestDto) throws CustomerOneOrMoreFieldsInvalidException,
+            CustomerAlreadyExistsException, CustomerNotFoundException, CustomerEmailInvalidException {
 
         validateCustomer(requestDto);
         Customer customer = getCustomer(customerId);
@@ -107,17 +107,20 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     @Override
-    public Customer archiveCustomer(CustomerArchiveDto dto) throws CustomerNotFoundException, CustomerStateInvalidException, CustomerAlreadyArchivedException {
+    public Customer switchCustomerBetweenActiveArchive(CustomerSwitchActiveArchiveDto dto) throws CustomerNotFoundException,
+            CustomerStateInvalidException, CustomerSameStateException {
         if(!CustomerValidators.isValidCustomerState(dto.getState())){
             throw new CustomerStateInvalidException(ExceptionMsg.CUSTOMER_STATE_INVALID);
         }
-
         Customer customer = getCustomer(dto.getCustomerId());
-        if(customer.getState().equals("archive"))
-            throw new CustomerAlreadyArchivedException(ExceptionMsg.CUSTOMER_ALREADY_ARCHIVED);
+        if(customer.getState().equals(dto.getState()))
+            throw new CustomerSameStateException(ExceptionMsg.CUSTOMER_ALREADY_IN_STATE);
         customer.setState(dto.getState());
-        return outputCustomerService.archiveCustomer(customer);
+        customer.setAddress(customer.getAddress());
+        outputCustomerService.switchCustomerBetweenActiveArchive(customer);
+        return customer;
     }
+
 
     private void validateCustomer(RequestDto requestDto) throws
             CustomerOneOrMoreFieldsInvalidException, CustomerAlreadyExistsException, CustomerEmailInvalidException {

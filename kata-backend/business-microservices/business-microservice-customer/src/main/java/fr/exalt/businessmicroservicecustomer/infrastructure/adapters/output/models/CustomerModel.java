@@ -22,6 +22,6 @@ public class CustomerModel {
     private String email;
     private String createdAt;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id" )
     private AddressModel address;
 }

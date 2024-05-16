@@ -120,8 +120,12 @@ public class OutputCustomerServiceImpl implements OutputCustomerService {
     }
 
     @Override
-    public Customer archiveCustomer(Customer customer) {
+    public Customer switchCustomerBetweenActiveArchive(Customer customer) throws CustomerNotFoundException {
+        CustomerModel savedCustomer = customerRepository.findById(customer.getCustomerId()).orElseThrow(
+                ()-> new CustomerNotFoundException(ExceptionMsg.CUSTOMER_NOT_FOUND));
+        AddressModel savedAddress = savedCustomer.getAddress();
         CustomerModel model = customerRepository.save(MapperService.fromTo(customer));
+        model.setAddress(savedAddress);
         return MapperService.fromTo(model);
     }
 }

@@ -199,9 +199,9 @@ class InputCustomerImplTest {
     }
 
     @Test
-    void archiveCustomer() throws CustomerStateInvalidException, CustomerNotFoundException, CustomerAlreadyArchivedException {
+    void archiveCustomer() throws CustomerStateInvalidException, CustomerNotFoundException, CustomerSameStateException, AddressNotFoundException {
         //PREPARE
-        final CustomerArchiveDto dto = CustomerArchiveDto.builder()
+        final CustomerSwitchActiveArchiveDto dto = CustomerSwitchActiveArchiveDto.builder()
                 .customerId("id")
                 .state("archive")
                 .build();
@@ -216,12 +216,12 @@ class InputCustomerImplTest {
                 .build();;
         //EXECUTE
         when(mock.getCustomer("id")).thenReturn(customer);
-        when(mock.archiveCustomer(customer)).thenReturn(c);
-        Customer actual = underTest.archiveCustomer(dto);
+        when(mock.switchCustomerBetweenActiveArchive(customer)).thenReturn(c);
+        Customer actual = underTest.switchCustomerBetweenActiveArchive(dto);
         //VERIFY
         assertAll("", () -> {
             verify(mock, atLeast(1)).getCustomer("id");
-            verify(mock, atLeast(1)).archiveCustomer(any(Customer.class));
+            verify(mock, atLeast(1)).switchCustomerBetweenActiveArchive(any(Customer.class));
             assertNotNull(actual);
             assertEquals("archive", actual.getState());
         });
@@ -278,13 +278,13 @@ class InputCustomerImplTest {
             inputCustomerBusinessExceptions.updateAddress(address.getAddressId(), dto4.getAddressDto());
         });
 
-        final CustomerArchiveDto dto5 = CustomerArchiveDto.builder()
+        final CustomerSwitchActiveArchiveDto dto5 = CustomerSwitchActiveArchiveDto.builder()
                 .state("unknown")
                 .customerId("id")
                 .build();
         Exception exception5 = assertThrows(CustomerStateInvalidException.class, ()->{
             when(mock.getCustomer(dto5.getCustomerId())).thenReturn(customer);
-            inputCustomerBusinessExceptions.archiveCustomer(dto5);
+            inputCustomerBusinessExceptions.switchCustomerBetweenActiveArchive(dto5);
         });
 
         final Customer customer1 = new Customer.CustomerBuilder()
@@ -296,13 +296,13 @@ class InputCustomerImplTest {
                 .address(customer.getAddress())
                 .email(customer.getEmail())
                 .build();
-        final CustomerArchiveDto dto6 = CustomerArchiveDto.builder()
+        final CustomerSwitchActiveArchiveDto dto6 = CustomerSwitchActiveArchiveDto.builder()
                 .state("archive")
                 .customerId("id")
                 .build();
-        Exception exception6 = assertThrows(CustomerAlreadyArchivedException.class, ()->{
+        Exception exception6 = assertThrows(CustomerSameStateException.class, ()->{
            when(mock.getCustomer(dto6.getCustomerId())).thenReturn(customer1);
-           inputCustomerBusinessExceptions.archiveCustomer(dto6);
+           inputCustomerBusinessExceptions.switchCustomerBetweenActiveArchive(dto6);
         });
 
         assertAll("exceptions", () -> {

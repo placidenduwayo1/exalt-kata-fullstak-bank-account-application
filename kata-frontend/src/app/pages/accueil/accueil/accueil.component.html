@@ -1,0 +1,46 @@
+<div style="width:80%"> 
+    <h1 style="color: green; text-align: center;" > 
+        Bank Account application base microservices  
+    </h1> 
+</div>
+<p-splitter 
+    [panelSizes]="[38, 62]" 
+    styleClass="mb-5">
+    <ng-template pTemplate>
+        <ul>
+            <li><span style="color: #0000ff;">microservices based applications</span> are attractive compared with <span style="color: #0000ff;">monolithic</span> ones</li>
+            <li> here are the microservices based application demo with business microservices apis:
+              <ul>
+                <li><span style="color: #0000ff;">api-customer</span>: to manage customers</li>
+                <li><span style="color: #0000ff;">api-bank-account</span>: to manage bank-accounts </li>
+                <li><span style="color: #0000ff;">api-operation</span>: to manage operations carried out on bank-account</li>
+              </ul>
+            </li>
+            <li>in this demo, each business microservice api has its own dependencies: db, configurations, etc</li>
+            <li>each business microservice api is implemented in <span style="color: #0000ff;">architecture hexagonale</span></li>
+            <li>elements in each couples: (<span style="color: #0000ff;">customer, bank-account</span>), (<span
+                style="color: #0000ff;">bank-account, operation</span>) communicates:
+              <ul>
+                <li>to manage a <span style="font-weight: bold;"></span> bank-account, <span style="font-weight: bold;">api-bank-account</span> gets
+                    customer from <span style="font-weight: bold;">api-customer</span></li>
+                <li>to manage a operation, <span style="font-weight: bold;">api-operation</span> gets bank-account from 
+                    <span style="font-weight: bold;">api-bank-account</span></li>
+              </ul>
+            </li>
+            <li><span
+              style="color: #0000ff;">api-configuration-server</span>: on start up each backend microservice api gets 
+              its configurations from a configuration server
+            </li>
+            <li><span style="color: #0000ff;">api-gatway-service</span>: we created and configured  a gateway to route angular application requests
+            </li>
+            <li> all backend microservices are deployed into <span style="color: #0000ff;"> docker images</span> using docker engine</li>
+            <li> all docker containers of bancked microservices are orchestrated into a <span style="color: #0000ff;">minikube cluster</span> 
+                using <span style="color: #0000ff;">Kubernetes</span> </li>
+            <li>we created our fronted application with angular </li>
+          </ul>
+    </ng-template>
+    
+    <ng-template pTemplate>
+        <img ngSrc="assets/exalt-bank-account-archi.png" width="1150" height="700" alt="microservices base application demo">
+    </ng-template>
+</p-splitter>

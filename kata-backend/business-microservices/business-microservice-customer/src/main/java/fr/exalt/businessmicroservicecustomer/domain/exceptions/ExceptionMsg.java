@@ -9,5 +9,5 @@ public class ExceptionMsg {
     public static final String ADDRESS_FIELDS = "Address one or more fields invalid Exception";
     public static final String ADDRESS_NOT_FOUND = "Address not found Exception";
     public static final String CUSTOMER_EMAIL_INVALID = "Customer Email invalid Exception";
-    public static final String CUSTOMER_ALREADY_ARCHIVED = "Customer already archived Exception";
+    public static final String CUSTOMER_ALREADY_IN_STATE = "Customer is already in that state Exception";
 }
