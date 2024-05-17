@@ -68,7 +68,7 @@ request payload -> ![customer-post](./assets/customer-post.png)    request respo
 - **[GET]**: ```http://localhost:8101/api-customer/customers```: **consulter** tous les customers  
 - **[GET]**: ```http://localhost:8101/api-customer/addresses```: **consulter** les adresses des customers  
 - **[POST]**: ```http://localhost:8101/api-customer/customers/switch-state```: **archive** ou **active** un customer  
-request payload -> ![customer-switch-state](./assets/customer-switch-state.png)  request response -> ![customer-switch-state-return](./assets/customer-switch-state-return.png)  
+payload -> ![customer-switch-state](./assets/customer-switch-state.png)  response -> ![customer-switch-state-return](./assets/customer-switch-state-return.png)  
 les conditions à être remplies pour que la request réussisse:
     - le customer existe
     - le state fourni dans la request est valide (**active** ou **archive**)
