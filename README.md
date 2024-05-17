@@ -72,9 +72,8 @@ payload :
 ```{
     customerId:string
     state: string
-}```
-
-
+}
+```
 
 ### business-microservice-account
 
