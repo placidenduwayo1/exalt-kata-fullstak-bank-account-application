@@ -69,11 +69,7 @@ request payload -> ![customer-post](./assets/customer-post.png)    request respo
 - **[GET]**: ```http://localhost:8101/api-customer/addresses```: **consulter** les adresses des customers  
 - **[POST]**: ```http://localhost:8101/api-customer/customers/switch-state```: **archive** ou **active** un customer  
 payload :  
-```{
-    customerId:string
-    state: string
-}
-```
+![customer-switch-state](./assets/customer-switch-state.png)  
 
 ### business-microservice-account
 
