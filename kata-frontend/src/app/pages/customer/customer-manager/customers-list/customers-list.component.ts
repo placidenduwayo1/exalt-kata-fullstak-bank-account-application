@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { Customer } from 'src/app/shared/models/customer/customer.model';
 
 @Component({
@@ -7,7 +8,8 @@ import { Customer } from 'src/app/shared/models/customer/customer.model';
   styleUrls: ['./customers-list.component.css']
 })
 export class CustomersListComponent {
-  @Input() customers!: Customer[]
+  @Input() customers!: Customer[];
+  router = inject(Router);
 
   getCustomerStateServerity(state: string): string {
     if(state=='archive'){
@@ -19,5 +21,9 @@ export class CustomersListComponent {
     else {
       return 'danger'
     }
+  }
+
+  onCreateCustomerAccount(customer: Customer){
+    this.router.navigateByUrl(`session/accounts/create-account/${customer.customerId}`)
   }
 }

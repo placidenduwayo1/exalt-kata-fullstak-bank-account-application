@@ -3,14 +3,14 @@
     <h4 style="color: green; text-align: center;">account underwent the operations and Customer related Account</h4>
 </div>
 <p-card [style]="{ width: 'fit-content' }">
-<p-table [value]="opartionsList" [paginator]="true" [rows]="4" [rowsPerPageOptions]="[4, 8, 10]"
-    [tableStyle]="{ 'min-width': 'fit-content' }">
+<p-table [value]="opartionsList" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]"
+    [tableStyle]="{ 'min-width': 'fit-content' }" [globalFilterFields]="['createdAt']">
     <ng-template pTemplate="header">
         <tr>
             <th>Operation ID</th>
             <th>Type</th>
             <th>Operation mount</th>
-            <th>Operation date</th>
+            <th pSortableColumn="createdAt">Operation date <p-sortIcon field="createdAt"></p-sortIcon></th>
             <th>Concerned Account</th>
             <th>Customer Account</th>
         </tr>
@@ -20,7 +20,7 @@
             <td>{{operation.accountId}}</td>
             <td> <p-tag [value]="operation.type" [severity]="getOperationTypeSeverity(operation.type)"></p-tag></td>
             <td> {{operation.mount | currency:'EUR'}} </td>
-            <td> {{operation.createdAt | date:'yyyy-MM-dd: hh:mm:ss'}}</td>
+            <td> {{operation.createdAt | date:'medium'}}</td>
             <td>
                 <ul>
                     <li><span style="font-weight: bold;">ID</span>: {{operation.bankAccount.accountId}} </li>

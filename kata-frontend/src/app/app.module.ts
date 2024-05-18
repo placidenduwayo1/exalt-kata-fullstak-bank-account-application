@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenubarModule } from 'primeng/menubar';
 import { CardModule } from 'primeng/card';
-import { NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage, registerLocaleData } from '@angular/common';
 import { SplitterModule } from "primeng/splitter";
 import { ButtonModule } from 'primeng/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,8 +16,8 @@ import { LoginComponent } from './login/login.component';
 import { SessionComponent } from './pages/session/session.component';
 import { KataMenuComponent } from './pages/menu/kata-menu.component';
 import { HttpClientModule } from '@angular/common/http';
-
-
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr);
 
 @NgModule({
   declarations: [
@@ -41,7 +41,7 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers:[{ provide: LOCALE_ID,useValue: 'fr-FR'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

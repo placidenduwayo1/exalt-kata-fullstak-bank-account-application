@@ -16,7 +16,7 @@ export class OperationsListComponent {
       return 'success'
     }
     else if(type=='retrait'){
-      return 'danger'
+      return 'warning'
     }
     else {
       return 'danger'

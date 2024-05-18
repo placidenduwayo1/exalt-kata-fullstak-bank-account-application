@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { Customer } from "../models/customer/customer.model";
 import { Request } from "../models/customer/request.model";
 import { GetApisService } from "./getaway.apis";
+import { bankAccountAppHeader } from "./header";
 
 
 @Injectable({ providedIn: "root" })
@@ -15,6 +16,9 @@ export class CustomerService {
         return this.httpClient.get<Customer[]>(`${this.customerApi}/customers`);
     }
     create(request: Request): Observable<Customer> {
-        return this.httpClient.post<Customer>(`${this.customerApi}/customers`, request);
+        return this.httpClient.post<Customer>(`${this.customerApi}/customers`, request, { headers: bankAccountAppHeader });
+    }
+    getCustomer(customerId: string): Observable<Customer>{
+        return this.httpClient.get<Customer>(`${this.customerApi}/customers/${customerId}`)
     }
 }

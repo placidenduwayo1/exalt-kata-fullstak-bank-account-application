@@ -13,6 +13,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import { SplitterModule } from 'primeng/splitter';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessagesModule } from 'primeng/messages';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 
@@ -33,7 +38,12 @@ import { TagModule } from 'primeng/tag';
     InputTextModule,
     PanelModule,
     ButtonModule,
-    TagModule
-  ]
+    TagModule,
+    SplitterModule,
+    MessagesModule,
+    ConfirmDialogModule,
+    TooltipModule
+  ],
+  providers: [ConfirmationService, MessageService]
 })
 export class CustomerModule { }

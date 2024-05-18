@@ -41,9 +41,6 @@ export class KataMenuComponent {
           {
             label: 'bank-accounts', icon: 'pi pi-list',
             command: ()=> this.router.navigateByUrl("session/accounts")
-          },
-          {
-            label: 'create', icon: 'pi pi-plus-circle',
           }
         ]
       },
@@ -53,11 +50,12 @@ export class KataMenuComponent {
           {
             label: 'operations', icon: 'pi pi-list',
             command:()=>this.router.navigateByUrl('session/operations')
-          },
-          {
-            label: 'create', icon: 'pi pi-plus-circle',
           }
         ]
+      },
+      {
+        label:'', icon:'pi pi-power-off',
+        command:()=>this.router.navigateByUrl('login')
       }
     ];
 

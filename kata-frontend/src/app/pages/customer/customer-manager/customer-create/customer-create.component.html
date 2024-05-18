@@ -1,50 +1,71 @@
-<p-card [style]="{ width: 'fit-content'}" header="Create a customer">
-    <form [formGroup]="customerFg">
-        <p-panel header="customer">
-            <div class="p-float-label">
-                <input pInputText type="text" id="firstname" class="form-control" formControlName="firstname">
-                <label for="firstname">Firstname</label>
-            </div>
-            <div class="p-float-label">
-                <input pInputText type="text" id="lastname" class="form-control" formControlName="lastname">
-                <label for="lastname">Lastname</label>
-            </div>
-            <div class="p-float-label ">
-                <input pInputText type="text" id="email" class="form-control" formControlName="email">
-                <label for="email">Email</label>
-            </div>
-        </p-panel>
+<p-card header="Create a new customer" [style]="{ 
+    width: 'fit-content', 
+}">
+    <p-messages key="key1"/><p-messages key="key2"/>
+    <form [formGroup]="customerRequest">
+            <p-confirmDialog [style]="{width: '20vw'}" />
+        <p-splitter [style]="{ height: 'fit-content' }" styleClass="mb-5">
+            <ng-template pTemplate>
+                <p-card header="customer">
+                    <div class="col flex align-items-center justify-content-center">
+                        <div formGroupName="customer">
+                            <div class="p-float-label">
+                                <input pInputText type="text" id="firstname" class="form-control"
+                                    formControlName="firstname">
+                                <label for="firstname">Firstname</label>
+                            </div>
+                            <div class="p-float-label">
+                                <input pInputText type="text" id="lastname" class="form-control"
+                                    formControlName="lastname">
+                                <label for="lastname">Lastname</label>
+                            </div>
+                            <div class="p-float-label ">
+                                <input pInputText type="text" id="email" class="form-control" formControlName="email">
+                                <label for="email">Email</label>
+                            </div>
+                        </div>
+                    </div>
+                </p-card>
+            </ng-template>
+            <ng-template pTemplate>
+                <p-card header="address">
+                    <div class="col flex align-items-center justify-content-center">
+                        <div formGroupName="address">
+                            <div class="p-float-label">
+                                <input pInputText type="number" class="form-control" id="streetNum"
+                                    formControlName="streetNum">
+                                <label for="streetNum">street number</label>
+                            </div>
 
-        <p-panel header="Address">
-            <div formGroupName="address">
-                <div class="p-float-label">
-                    <input pInputText type="number" class="form-control" id="streetNum" formControlName="streetNum">
-                    <label for="streetNum">street number</label>
-                </div>
+                            <div class="p-float-label">
+                                <input pInputText type="text" class="form-control" id="streetName"
+                                    formControlName="streetName">
+                                <label for="streetName">street name</label>
+                            </div>
 
-                <div class="p-float-label">
-                    <input pInputText type="text" class="form-control" id="streetName" formControlName="streetName">
-                    <label for="streetName">street name</label>
-                </div>
+                            <div class="p-float-label">
+                                <input pInputText type="number" class="form-control" id="poBox" formControlName="poBox">
+                                <label for="poBox">po box</label>
+                            </div>
 
-                <div class="p-float-label">
-                    <input pInputText type="number" class="form-control" id="poBox" formControlName="poBox">
-                    <label for="poBox">po box</label>
-                </div>
+                            <div class="p-float-label">
+                                <input pInputText type="text" class="form-control" id="city" formControlName="city">
+                                <label for="city">city name</label>
+                            </div>
 
-                <div class="p-float-label">
-                    <input pInputText type="text" class="form-control" id="city" formControlName="city">
-                    <label for="city">city name</label>
-                </div>
+                            <div class="p-float-label">
+                                <input pInputText type="text" class="form-control" id="country"
+                                    formControlName="country">
+                                <label for="country">country name</label>
+                            </div>
+                        </div>
+                    </div>
+                </p-card>
+            </ng-template>
+        </p-splitter>
 
-                <div class="p-float-label">
-                    <input pInputText type="text" class="form-control" id="country" formControlName="country">
-                    <label for="country">country name</label>
-                </div>
-            </div>
-        </p-panel>
-
-        <p-button label="Create" [text]="true" [raised]="true" severity="primary" (onClick)="createCustomer()" [disabled]="customerFg.invalid" />&nbsp;
+        <p-button label="Create" [text]="true" [raised]="true" severity="primary" (onClick)="createCustomer()"
+            [disabled]="customerRequest.invalid" />&nbsp;
         <p-button label="Cancel" [text]="true" [raised]="true" severity="danger" />
 
     </form>

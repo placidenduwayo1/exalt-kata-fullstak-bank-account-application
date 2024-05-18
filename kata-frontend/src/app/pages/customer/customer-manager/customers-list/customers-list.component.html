@@ -4,32 +4,45 @@
     </h1>
 </div>
 <p-card [style]="{ width: 'fit-content' }">
-    <p-table [value]="customers" [paginator]="true" [rows]="8" [rowsPerPageOptions]="[8, 15,20, 50]">
+    <p-table [value]="customers" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[10, 20,30, 50]"
+    [globalFilterFields]="['lastname','firstname']"
+    >
         <ng-template pTemplate="header">
             <tr>
                 <th>Customer Id</th>
-                <th>Name</th>
+                <th pSortableColumn="firstname">Firstname <p-sortIcon field="firstname"/></th>
+                <th pSortableColumn="lastname">Lastname<p-sortIcon field="lastname"/></th>
                 <th>Email</th>
                 <th>State</th>
-                <th>Created At</th>
+                <th>Creation date</th>
                 <th>Address</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-customer>
             <tr>
-                <td>{{ customer.customerId }}</td>
-                <td>{{ customer.firstname }}
-                    {{ customer.lastname }}</td>
+                <td [style]="{width:'15%'}">{{ customer.customerId }}</td>
+                <td>{{ customer.firstname }}</td>
+                   <td> {{ customer.lastname }}</td>
                 <td>{{ customer.email }}</td>
                 <td><p-tag [value]="customer.state" [severity]="getCustomerStateServerity(customer.state)"></p-tag></td>
-                <td>{{ customer.createdAt | date:'yyyy-MM-dd: hh:mm:ss'}}</td>
-                <td>{{ customer.address.streetNum }}
+                <td>{{ customer.createdAt | date:'medium'}}</td>
+                <td [style]="{width:'15%'}">{{ customer.address.streetNum }}
                     {{ customer.address.streetName }},
                     {{ customer.address.poBox }}
                     {{ customer.address.city }},
                     {{ customer.address.country }}
                 </td>
+                <td>
+                    <p-button icon="pi pi-plus" size="small" [rounded]="true" [text]="true" severity="danger" pTooltip="create account" tooltipPosition="left"
+                    (onClick)="onCreateCustomerAccount(customer)"/> 
+                    <p-button icon="pi pi-pencil" size="small" [rounded]="true" [text]="true" severity="info" pTooltip="edit customer" tooltipPosition="left"/> 
+                </td>
             </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                {{customers ? customers.length : 0 }} customers
+            </div>
         </ng-template>
     </p-table>
 </p-card>

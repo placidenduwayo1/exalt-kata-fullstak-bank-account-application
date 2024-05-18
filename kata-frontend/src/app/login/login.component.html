@@ -1,18 +1,19 @@
-<p-card header="Login-In UI" [style]="{borderRadius: '15px',  width: '450px'}">
+<p-card header="Login-In UI" [style]="{borderRadius: '15px',  width: 'fit-content'}" >
     <form [formGroup]="loginForm">
         <div class="p-float-label">
-            <input pInputText type="text" id="login" formControlName="login" />
+            <input pInputText type="text" id="login" formControlName="login"/>
             <label for="login">input your username</label>
             <div *ngIf="loginForm.get('login')">
             </div>
+            <br/>
         </div>
         <div class="p-float-label">
-            <p-password id="pwd" formControlName="pwd" [toggleMask]="true" />
+            <p-password id="pwd" formControlName="pwd" [toggleMask]="true"/>
             <label for="login">input your password</label>
         </div>
+        <br/>
         <div class="text-center">
             <p-button label="login" (onClick)="onLogin()" [disabled]="loginForm.invalid" />
         </div>
     </form>
-
 </p-card>

@@ -1,6 +1,6 @@
 import { Observable, Subject } from "rxjs";
 import { Injectable } from "@angular/core";
-import { BankAccountEvent, CustomerEvent, OperationEvent } from "../models/events/event.model";
+import { BankAccountEvent, CustomerEvent, OperationEvent } from "../models/event.model";
 @Injectable({providedIn: "root"})
 export class CustomerEventService {
     private customerEventSubject: Subject<CustomerEvent> = new Subject<CustomerEvent>();

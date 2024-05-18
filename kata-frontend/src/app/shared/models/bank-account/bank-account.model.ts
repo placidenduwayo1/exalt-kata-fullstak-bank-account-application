@@ -6,5 +6,5 @@ export class BankAccount {
     state!: string;
     balance!: number;
     createdAt!: Date;
-    customer!: Customer;
+    customerId!: string;
 }

@@ -1,0 +1,1 @@
+export const bankAccountAppHeader = { 'Content-Type': 'application/json' }

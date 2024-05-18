@@ -8,6 +8,8 @@ import lombok.*;
 @Getter
 @Builder
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Request {
     private Customer customer;
     private Address address;

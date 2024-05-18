@@ -7,19 +7,34 @@ import { OperationsListComponent } from './operation-manager/operations-list/ope
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
+import { OperationCreateComponent } from './operation-manager/operation-create/operation-create.component';
+import { MessagesModule } from 'primeng/messages';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Dropdown, DropdownModule } from 'primeng/dropdown';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { InputTextModule } from 'primeng/inputtext';
 
 
 @NgModule({
   declarations: [
     OperationManagerComponent,
-    OperationsListComponent
+    OperationsListComponent,
+    OperationCreateComponent
   ],
   imports: [
     CommonModule,
     OperationRoutingModule,
     TableModule,
     CardModule,
-    TagModule
-  ]
+    TagModule,
+    MessagesModule,
+    ConfirmDialogModule,
+    ReactiveFormsModule,
+    DropdownModule,
+    FormsModule,
+    InputTextModule
+  ],
+  providers:[ConfirmationService, MessageService]
 })
 export class OperationModule { }
