@@ -13,7 +13,7 @@ Le projet Kata: **Application Bank Account**:
 - J'ai déployé ces microservices dans des containers docker
 - J'ai orchestré ces containers docker dans un cluster Minikube avec Kubernetes
 
-**Partie Frontend**:
+**Partie Frontend**:  
 **Application angular version 16**:
 - Pattern observable avec **RxJs**
 - Gestion observable liés aux événements de click
