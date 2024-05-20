@@ -1,5 +1,5 @@
-# Résumé de ce qui a été fait dans le Kata
-Le projet Kata: **Application Bank Account**:    
+# Résumé
+Le projet Kata: **Application Bank Account** est fait comme suit:    
 **Partie Backend**
 - 3 api microservices métiers:
     - business-microservice-customer, 
