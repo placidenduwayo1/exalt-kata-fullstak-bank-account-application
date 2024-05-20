@@ -1,3 +1,25 @@
+# Résumé de ce qui a été fait dans le Kata
+Le projet Kata: **Application Bank Account**:    
+**Partie Backend**
+- 3 api microservices métiers:
+    - business-microservice-customer, 
+    - business-microservice-bank-account,
+    - business-microservice-operation
+    - Test unitaires pour chaque microservice métier
+    - **Architecture hexagonale** pour chaque microservice métier
+- 2 api services transverses: 
+    - microservices-configuration-server,
+    - gateway-service-proxy
+- J'ai déployé ces microservices dans des containers docker
+- J'ai orchestré ces containers docker dans un cluster Minikube avec Kubernetes
+
+**Partie Frontend**:
+**Application angular version 16**:
+- Pattern observable avec **RxJs**
+- Gestion observable liés aux événements de click
+- Design graphique avec **PrimeNG**
+
+
 # 💰 **Bank Account** 💰
 - ***assets*** contient les images utilisées dans cette documentation
 - ***kata-backend*** contient 2 types de microservices de l'application Bank Account: ***microservices métiers*** et **microservices utils**
