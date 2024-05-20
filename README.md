@@ -185,6 +185,6 @@ l'**api operation** verifie que:
 
 # Frontend
 **Application angular version 16**:
-    - Pattern observable avec la librairie **RxJs**
-    - Gestion observable liés aux événements de click
-    - Design graphique avec **PrimeNG**
+- Pattern observable avec la librairie **RxJs**
+- Gestion observable liés aux événements de click
+- Design graphique avec **PrimeNG**
