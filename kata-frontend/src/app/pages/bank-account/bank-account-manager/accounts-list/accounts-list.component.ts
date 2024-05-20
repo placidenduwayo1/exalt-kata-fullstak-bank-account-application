@@ -106,4 +106,8 @@ export class AccountsListComponent {
       }
     });
   }
+
+  changeAccountOverdraft(account: BankAccount){
+
+  }
 }

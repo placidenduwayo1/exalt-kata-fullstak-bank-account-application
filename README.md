@@ -184,4 +184,7 @@ l'**api operation** verifie que:
 
 
 # Frontend
-Le frontend est une ***application en Angular*** (V16) utilisant le pattern ***observeur de RxJs***
+**Application angular version 16**:
+    - Pattern observable avec la librairie **RxJs**
+    - Gestion observable liés aux événements de click
+    - Design graphique avec **PrimeNG**

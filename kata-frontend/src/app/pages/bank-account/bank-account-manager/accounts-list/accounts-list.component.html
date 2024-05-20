@@ -43,6 +43,10 @@
 
                     <p-button icon="pi pi-pencil" size="small" [rounded]="true" [text]="true" severity="info" pTooltip="switch account state active/suspend" tooltipPosition="left"
                     (onClick)="onSwitchStateAccount(account)"/> 
+
+                    <p-button icon="pi pi-pencil" size="small" [rounded]="true" [text]="true" severity="info" 
+                    pTooltip="change bank account overdraft" tooltipPosition="left" *ngIf="account.type=='current'"
+                    (onClick)="onSwitchStateAccount(account)"/> 
                 </td>
             </tr>
         </ng-template>
