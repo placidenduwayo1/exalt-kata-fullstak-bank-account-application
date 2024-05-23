@@ -14,7 +14,7 @@ public interface InputOperationService {
     Operation createOperation(OperationDto dto) throws OperationRequestFieldsInvalidException,
             OperationTypeInvalidException, RemoteBankAccountApiUnreachableException,
             RemoteBankAccountBalanceException, RemoteBankAccountTypeInaccessibleFromOutsideException,
-            RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException;
+            RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException, RemoteBankAccountSuspendedException;
 
     Collection<Operation> getAllOperations();
 

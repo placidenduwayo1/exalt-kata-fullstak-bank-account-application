@@ -7,30 +7,35 @@
     <p-messages key="key1" /><p-messages key="key2" />
     <p-confirmDialog [style]="{width: '20vw'}" />
     <p-table [value]="accountsList" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]"
-        [tableStyle]="{ 'min-width': 'fit-content' }" [globalFilterFields]="['balance','customer.lastname','createdAt']">
+        [tableStyle]="{ 'min-width': 'fit-content' }"
+        [globalFilterFields]="['balance','customer.lastname','createdAt']">
         <ng-template pTemplate="header">
             <tr>
                 <th>Account ID</th>
                 <th>Type</th>
                 <th>State</th>
-                <th pSortableColumn="balance">Balance<p-sortIcon field="balance"/></th>
-                <th pSortableColumn="createdAt">Creation date<p-sortIcon field="createdAt"/> </th>
+                <th pSortableColumn="balance">Balance<p-sortIcon field="balance" /></th>
+                <th>Overdraft / I Rate</th>
+                <th pSortableColumn="createdAt">Creation date<p-sortIcon field="createdAt" /> </th>
                 <th>Customer</th>
-                <th pSortableColumn="customer.lastname">Customer name <p-sortIcon field="customer.lastname"/></th>
+                <th pSortableColumn="customer.lastname">Customer name <p-sortIcon field="customer.lastname" /></th>
+
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-account>
             <tr>
-                <td>{{account.accountId}}</td>
+                <td [style]="{width:'10%'}">{{account.accountId}}</td>
 
                 <td> <p-tag [value]="account.type" [severity]="getAccountTypeSeverity(account.type)"> </p-tag></td>
                 <td><p-tag [value]="account.state" [severity]="getAccountStateSeverity(account.state)" /></td>
                 <td>{{account.balance | currency:'EUR':true}}</td>
+                <td> {{account.overdraft | currency:'EUR'}} {{account.interestRate}} </td>
                 <td>{{account.createdAt | date:'medium'}}</td>
                 <td>
                     <ul>
                         <li><span style="font-weight: bold;">ID</span>: {{account.customer.customerId}} </li>
-                        <li><span style="font-weight: bold;">Name</span>: {{account.customer.firstname}} {{account.customer.lastname}}</li>
+                        <li><span style="font-weight: bold;">Name</span>: {{account.customer.firstname}}
+                            {{account.customer.lastname}}</li>
                         <li><span style="font-weight: bold;">Email</span>: {{account.customer.email}}</li>
                         <li><span style="font-weight: bold;">State</span>: <p-tag [value]="account.customer.state"
                                 [severity]="getCustomerStateSeverity(account.customer.state)"></p-tag></li>
@@ -38,15 +43,30 @@
                 </td>
                 <td><span style="font-weight: bold;"></span>{{account.customer.lastname}}</td>
                 <td>
-                    <p-button icon="pi pi-plus" size="small" [rounded]="true" [text]="true" severity="danger" pTooltip="create operation" tooltipPosition="left"
-                    (onClick)="onCreateOperation(account)" *ngIf="account.type=='current'"/> 
+                    <p-button icon="pi pi-window-maximize" size="small" [rounded]="true" [text]="true"
+                        severity="warning" pTooltip="create operation" tooltipPosition="top"
+                        (onClick)="sidebarVisible3=true; loadAccount(account)"
+                        *ngIf="account.type=='current' && account.state=='active' && account.customer.state=='active'" />
 
-                    <p-button icon="pi pi-pencil" size="small" [rounded]="true" [text]="true" severity="info" pTooltip="switch account state active/suspend" tooltipPosition="left"
-                    (onClick)="onSwitchStateAccount(account)"/> 
+                    <p-button icon="pi pi-pencil" size="small" [rounded]="true" [text]="true" severity="danger"
+                        pTooltip="active/suspend" tooltipPosition="top" (onClick)="onSwitchStateAccount(account)" />
 
-                    <p-button icon="pi pi-pencil" size="small" [rounded]="true" [text]="true" severity="info" 
-                    pTooltip="change bank account overdraft" tooltipPosition="left" *ngIf="account.type=='current'"
-                    (onClick)="onSwitchStateAccount(account)"/> 
+                    <p-button icon="pi pi-window-maximize" size="small" [rounded]="true" [text]="true" severity="info"
+                        pTooltip="change overdraft" tooltipPosition="top"
+                        *ngIf="account.type=='current' && account.state=='active' && account.customer.state=='active'"
+                        (onClick)="sidebarVisible1=true; loadAccount(account)" />
+
+                    <p-button icon="pi pi-window-maximize" size="small" [rounded]="true" [text]="true" severity="info"
+                        pTooltip="change interest rate" tooltipPosition="top"
+                        *ngIf="account.type=='saving' && account.state=='active' && account.customer.state=='active'"
+                        (onClick)="sidebarVisible2=true; loadAccount(account)" />
+
+
+                    <p-button icon="pi pi-window-maximize" size="small" [rounded]="false" [text]="true"
+                        (onClick)="sidebarVisible4=true; loadAccount(account)" pTooltip="tranfer money op"
+                        tooltipPosition="top" severity="warning"
+                        *ngIf="account.state=='active' && account.customer.state=='active'" />
+
                 </td>
             </tr>
         </ng-template>
@@ -58,3 +78,104 @@
         </ng-template>
     </p-table>
 </p-card>
+
+<!-- side bar for createing operation -->
+<p-sidebar [(visible)]="sidebarVisible3" position="right" [style]="{width:'fit-content'}" *ngIf="selectedAccount">
+    <p-card header="Create new Operation">
+        <form [formGroup]="operationFormRequest">
+            <div>
+                <label for="account"><span style="font-weight: bold;">Account ID</span></label><br>
+                <input type="text" formControlName="account" id="account" pInputText
+                    [(ngModel)]="selectedAccount.accountId">
+            </div><br>
+            <div class="p-float-label">
+                <p-dropdown [options]="operationTypes" optionLabel="type" placeholder="Select a operation type"
+                    formControlName="type" />
+                <label for="type">select operation type</label>
+            </div>
+            <br />
+            <div class="p-float-label">
+                <input type="number" formControlName="mount" id="mount" pInputText>
+                <label for="mount">input operation mount</label>
+            </div>
+            <br>
+            <div class="buttons">
+                <p-button label="Create" [text]="true" [raised]="true" [disabled]="operationFormRequest.invalid"
+                    (click)="onCreateNewOperation()" />&nbsp;
+                <p-button label="Cancel" [text]="true" [raised]="true" severity="danger" />
+            </div>
+        </form>
+    </p-card>
+</p-sidebar>
+
+<!-- side bar for changing overdraft of account -->
+<p-sidebar [(visible)]="sidebarVisible1" position="right" [style]="{width:'fit-content'}" *ngIf="selectedAccount">
+    <h3>New Account Overdraft</h3>
+
+    <form [formGroup]="overdraftForm">
+        <div>
+            <label for="account"><span style="font-weight: bold;">Account ID</span></label><br>
+            <input type="text" formControlName="account" id="account" pInputText
+                [(ngModel)]="selectedAccount.accountId">
+        </div><br>
+        <div class="p-float-label">
+            <input type="number" pInputText formControlName="overdraft" id="overdraft">
+            <label for="overdraft">new overdraft</label>
+        </div><br>
+        <div class="buttons">
+            <p-button label="change" [text]="true" [raised]="true" severity="primary"
+                (onClick)="changeAccountOverdraft()" [disabled]="overdraftForm.invalid" />&nbsp;
+            <p-button label="Cancel" [text]="true" [raised]="true" severity="danger" />
+        </div>
+    </form>
+</p-sidebar>
+
+<!-- side bar for changing interest rate of account -->
+<p-sidebar [(visible)]="sidebarVisible2" position="right" [style]="{width:'fit-content'}" *ngIf="selectedAccount">
+    <h3>Change Account Interest Rate </h3>
+    <form [formGroup]="iRateForm">
+        <div>
+            <label for="account"><span style="font-weight: bold;">Account ID</span></label><br>
+            <input type="text" formControlName="account" id="account" pInputText
+                [(ngModel)]="selectedAccount.accountId">
+        </div><br>
+        <div class="p-float-label">
+            <input type="number" pInputText formControlName="interestRate" id="interestRate">
+            <label for="interestRate">Input New Interest Rate </label>
+        </div>
+        <div class="buttons">
+            <p-button label="change" [text]="true" [raised]="true" severity="primary"
+                (onClick)="changeAccountInterestRate()" [disabled]="iRateForm.invalid" />&nbsp;
+            <p-button label="Cancel" [text]="true" [raised]="true" severity="danger" />
+        </div>
+    </form>
+</p-sidebar>
+
+<!-- side bar for tranfer money operation -->
+<p-sidebar [(visible)]="sidebarVisible4" position="right" *ngIf="selectedAccount" [style]="{width:'fit-content'}">
+    <p-card header="Create transfer money Operation">
+        <form [formGroup]="transferFormRequest">
+            <div>
+                <label for="origin">Origin account</label><br>
+                <input type="text" formControlName="origin" id="origin" pInputText
+                    [(ngModel)]="selectedAccount.accountId">
+            </div>
+            <br />
+            <div class="p-float-label">
+                <input type="text" formControlName="destination" id="destination" pInputText>
+                <label for="destination">input destination account ID</label>
+            </div><br>
+            <div class="p-float-label">
+                <input type="number" formControlName="mount" id="mount" pInputText>
+                <label for="mount">input tranfer mount</label>
+            </div>
+            <br>
+            <div class="buttons">
+                <p-button label="Transfer" [text]="true" [raised]="true" [disabled]="transferFormRequest.invalid"
+                    (click)="onTransferOperation()" />&nbsp;
+                <p-button label="Cancel" [text]="true" [raised]="true" severity="danger" />
+
+            </div>
+        </form>
+    </p-card>
+</p-sidebar>

@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Operation } from 'src/app/shared/models/operation.model';
+import { Operation } from 'src/app/shared/models/operation/operation.model';
 
 @Component({
   selector: 'app-operation-manager',
@@ -18,7 +18,6 @@ export class OperationManagerComponent implements OnInit{
         this.operations = allOperations;
         console.log(this.operations)
       }
-    })
+    });
   }
-
 }

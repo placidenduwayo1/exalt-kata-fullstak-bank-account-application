@@ -11,9 +11,9 @@ public class AccountExceptionsHandler {
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<String> handleBusinessExceptions(Exception exception) {
 
-        return switch (exception) {
+       return switch (exception) {
             case BankAccountBalanceInvalidException e ->
-                    new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+                   new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             case BankAccountFieldsInvalidException e ->
                     new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
             case BankAccountTypeInvalidException e ->

@@ -4,7 +4,7 @@ import fr.exalt.businessmicroservicecustomer.domain.entities.Address;
 import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.*;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerSwitchActiveArchiveDto;
+import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerSwitchStateDto;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
 
 import java.util.Collection;
@@ -27,6 +27,6 @@ public interface InputCustomerService {
 
     Address updateAddress(String addressId, AddressDto addressDto) throws AddressFieldsInvalidException, AddressNotFoundException;
 
-    Customer switchCustomerBetweenActiveArchive(CustomerSwitchActiveArchiveDto dto) throws CustomerNotFoundException, CustomerStateInvalidException,
+    Customer switchCustomerBetweenActiveArchive(CustomerSwitchStateDto dto) throws CustomerNotFoundException, CustomerStateInvalidException,
             CustomerSameStateException, AddressNotFoundException;
 }

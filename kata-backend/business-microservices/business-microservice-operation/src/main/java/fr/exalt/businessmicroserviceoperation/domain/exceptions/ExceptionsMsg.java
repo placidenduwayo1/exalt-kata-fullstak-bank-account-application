@@ -11,4 +11,5 @@ public class ExceptionsMsg {
             "from outside Exception";
     public static final String REMOTE_CUSTOMER_STATE ="Remote customer state Invalid Exception";
     public static final String REMOTE_BANK_ACCOUNT_SUSPENDED = "Remote bank account suspended Exception";
+    public static final String REMOTE_ACCOUNT_SUSPENDED = "Remote Bank Account is suspended Exception";
 }

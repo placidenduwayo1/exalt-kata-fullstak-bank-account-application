@@ -72,7 +72,7 @@ class InputOperationServiceImplTest {
     void createOperationDepot() throws OperationTypeInvalidException, RemoteCustomerStateInvalidException,
             OperationRequestFieldsInvalidException, RemoteCustomerApiUnreachableException,
             RemoteBankAccountTypeInaccessibleFromOutsideException, RemoteBankAccountBalanceException,
-            RemoteBankAccountApiUnreachableException {
+            RemoteBankAccountApiUnreachableException, RemoteBankAccountSuspendedException {
         //PREPARE
         operationDepot.setOperationId(ID);
         operationDepot.setCreatedAt(CREATED_AT);
@@ -101,7 +101,7 @@ class InputOperationServiceImplTest {
     void createOperationRetrait() throws OperationTypeInvalidException, RemoteCustomerStateInvalidException,
             OperationRequestFieldsInvalidException, RemoteCustomerApiUnreachableException,
             RemoteBankAccountTypeInaccessibleFromOutsideException, RemoteBankAccountBalanceException,
-            RemoteBankAccountApiUnreachableException {
+            RemoteBankAccountApiUnreachableException, RemoteBankAccountSuspendedException {
         //PREPARE
         final Operation operationRetrait = MapperService.fromTo(dtoRetrait);
         operationRetrait.setCreatedAt(CREATED_AT);

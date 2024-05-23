@@ -4,7 +4,7 @@ import { inject } from "@angular/core";
 import { BankAccountService } from "./bank-account.service";
 import { Customer } from "../models/customer/customer.model";
 import { CustomerService } from "./customer.service";
-import { Operation } from "../models/operation.model";
+import { Operation } from "../models/operation/operation.model";
 import { OperationService } from "./operation.service";
 
 export const getAllBankAccountsResolve: ResolveFn<BankAccount[]> = ()=>{

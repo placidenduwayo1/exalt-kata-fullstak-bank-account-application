@@ -45,15 +45,17 @@ public class InputOperationServiceImpl implements InputOperationService {
     @Override
     public Operation createOperation(OperationDto operationDto) throws OperationRequestFieldsInvalidException,
             OperationTypeInvalidException, RemoteBankAccountApiUnreachableException, RemoteBankAccountBalanceException,
-            RemoteBankAccountTypeInaccessibleFromOutsideException, RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException {
+            RemoteBankAccountTypeInaccessibleFromOutsideException, RemoteCustomerStateInvalidException, RemoteCustomerApiUnreachableException, RemoteBankAccountSuspendedException {
 
         validateOperation(operationDto);
         BankAccount bankAccount = outputOperationService.loadRemoteAccount(operationDto.getAccountId());
         Customer customer = outputOperationService.loadRemoteCustomer(bankAccount.getCustomerId());
-        if (bankAccount.getAccountId().equals(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)
-                || bankAccount.getState().equals(BANK_ACCOUNT_STATE_SUSPEND)) {
+        if (bankAccount.getAccountId().equals(ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE)) {
             throw new RemoteBankAccountApiUnreachableException(String.format(FORMATTER,
                     ExceptionsMsg.REMOTE_ACCOUNT_UNREACHABLE, bankAccount));
+        }
+        else if( bankAccount.getState().equals(BANK_ACCOUNT_STATE_SUSPEND)){
+            throw new RemoteBankAccountSuspendedException(ExceptionsMsg.REMOTE_ACCOUNT_SUSPENDED);
         }
         if (customer.getCustomerId().equals(ExceptionsMsg.REMOTE_CUSTOMER_UNREACHABLE)) {
             throw new RemoteCustomerApiUnreachableException(String.format(FORMATTER,
@@ -76,7 +78,6 @@ public class InputOperationServiceImpl implements InputOperationService {
             throw new RemoteBankAccountBalanceException(ExceptionsMsg.REMOTE_ACCOUNT_BALANCE);
         } else if (operationDto.getType().equals(OPERATION_TYPE_RETRAIT) &&
                 (OperationValidators.enoughBalance(bankAccount, operationDto.getMount()))) {
-
             bankAccount.setBalance(-operationDto.getMount());
             BankAccountDto bankAccountDto = MapperService.fromTo(bankAccount);
             BankAccount updatedBankAccount = outputOperationService.updateRemoteAccount(bankAccount.getAccountId(), bankAccountDto);

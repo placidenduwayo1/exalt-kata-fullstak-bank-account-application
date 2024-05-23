@@ -5,6 +5,8 @@ import { BankAccount } from "../models/bank-account/bank-account.model";
 import { GetApisService } from "./getaway.apis";
 import { bankAccountAppHeader } from "./header";
 import { AccountSwitchStateDto } from "../models/bank-account/account-swithstate-dto.model";
+import { BankAccountOverdraftDto } from "../models/bank-account/account-overdraft-dto.model";
+import { BankAccountInterestRateDto } from "../models/bank-account/account-interest-rate-dto.model";
 
 @Injectable({ providedIn: "root" })
 export class BankAccountService {
@@ -29,5 +31,13 @@ export class BankAccountService {
         return this.httpClient.post<BankAccount>(`${this.bankAccountApi}/accounts/switch-state`,accountSwitchStateDto,
             {headers: bankAccountAppHeader}
          )
+    }
+    changeOverdraft(overdraftDto: BankAccountOverdraftDto): Observable<BankAccount>{
+        return this.httpClient.post<BankAccount>(`${this.bankAccountApi}/accounts/overdraft`,overdraftDto,
+            {headers: bankAccountAppHeader});
+    }
+    changeInterestate(iRateDto: BankAccountInterestRateDto): Observable<BankAccount>{
+        return this.httpClient.post<BankAccount>(`${this.bankAccountApi}/accounts/interest-rate`,iRateDto,
+            {headers: bankAccountAppHeader});
     }
 }

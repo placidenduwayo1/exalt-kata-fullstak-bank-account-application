@@ -3,46 +3,50 @@
     <h4 style="color: green; text-align: center;">account underwent the operations and Customer related Account</h4>
 </div>
 <p-card [style]="{ width: 'fit-content' }">
-<p-table [value]="opartionsList" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]"
-    [tableStyle]="{ 'min-width': 'fit-content' }" [globalFilterFields]="['createdAt']">
-    <ng-template pTemplate="header">
-        <tr>
-            <th>Operation ID</th>
-            <th>Type</th>
-            <th>Operation mount</th>
-            <th pSortableColumn="createdAt">Operation date <p-sortIcon field="createdAt"></p-sortIcon></th>
-            <th>Concerned Account</th>
-            <th>Customer Account</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-operation>
-        <tr>
-            <td>{{operation.accountId}}</td>
-            <td> <p-tag [value]="operation.type" [severity]="getOperationTypeSeverity(operation.type)"></p-tag></td>
-            <td> {{operation.mount | currency:'EUR'}} </td>
-            <td> {{operation.createdAt | date:'medium'}}</td>
-            <td>
-                <ul>
-                    <li><span style="font-weight: bold;">ID</span>: {{operation.bankAccount.accountId}} </li>
-                    <li><span style="font-weight: bold;">Type</span>: {{operation.bankAccount.type}} </li>
-                    <li><span style="font-weight: bold;">Balance</span>: {{operation.bankAccount.balance | currency:'EUR'}} </li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li><span style="font-weight: bold;">ID</span>:{{operation.bankAccount.customer.customerId}} </li>
-                    <li><span style="font-weight: bold;">Name</span>: {{operation.bankAccount.customer.firstname}}
-                    {{operation.bankAccount.customer.lastname}} </li>
-                    <li><span style="font-weight: bold;">Email</span>: {{operation.bankAccount.customer.email}} </li>
-                    <li><span style="font-weight: bold;">State</span>:: {{operation.bankAccount.customer.state}} </li>
-                </ul>
-            </td>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="summary">
-        <div class="flex align-items-center justify-content-between">
-            {{opartionsList ? opartionsList.length : 0 }} Operations
-        </div>
-    </ng-template>
-</p-table>
+    <p-table [value]="opartionsList" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]"
+        [tableStyle]="{ 'min-width': 'fit-content' }" [globalFilterFields]="['createdAt']">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Operation ID</th>
+                <th>Type</th>
+                <th>Operation mount</th>
+                <th pSortableColumn="createdAt">Operation date <p-sortIcon field="createdAt"></p-sortIcon></th>
+                <th>Concerned Account</th>
+                <th>Customer Account</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-operation>
+            <tr>
+                <td>{{operation.accountId}}</td>
+                <td> <p-tag [value]="operation.type" [severity]="getOperationTypeSeverity(operation.type)"></p-tag></td>
+                <td> {{operation.mount | currency:'EUR'}} </td>
+                <td> {{operation.createdAt | date:'medium'}}</td>
+                <td>
+                    <ul>
+                        <li><span style="font-weight: bold;">ID</span>: {{operation.bankAccount.accountId}} </li>
+                        <li><span style="font-weight: bold;">Type</span>: {{operation.bankAccount.type}} </li>
+                        <li><span style="font-weight: bold;">Balance</span>: {{operation.bankAccount.balance |
+                            currency:'EUR'}} </li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li><span style="font-weight: bold;">ID</span>:{{operation.bankAccount.customer.customerId}}
+                        </li>
+                        <li><span style="font-weight: bold;">Name</span>: {{operation.bankAccount.customer.firstname}}
+                            {{operation.bankAccount.customer.lastname}} </li>
+                        <li><span style="font-weight: bold;">Email</span>: {{operation.bankAccount.customer.email}}
+                        </li>
+                        <li><span style="font-weight: bold;">State</span>:: {{operation.bankAccount.customer.state}}
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                {{opartionsList ? opartionsList.length : 0 }} Operations
+            </div>
+        </ng-template>
+    </p-table>
 </p-card>

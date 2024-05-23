@@ -18,6 +18,8 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { MessagesModule } from 'primeng/messages';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
+import { SidebarModule } from 'primeng/sidebar';
+import { DropdownModule } from 'primeng/dropdown';
 
 
 
@@ -42,7 +44,9 @@ import { TooltipModule } from 'primeng/tooltip';
     SplitterModule,
     MessagesModule,
     ConfirmDialogModule,
-    TooltipModule
+    TooltipModule,
+    SidebarModule,
+    DropdownModule
   ],
   providers: [ConfirmationService, MessageService]
 })

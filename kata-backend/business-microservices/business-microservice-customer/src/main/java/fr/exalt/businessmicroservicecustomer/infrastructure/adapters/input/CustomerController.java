@@ -5,7 +5,7 @@ import fr.exalt.businessmicroservicecustomer.domain.entities.Customer;
 import fr.exalt.businessmicroservicecustomer.domain.exceptions.*;
 import fr.exalt.businessmicroservicecustomer.domain.ports.input.InputCustomerService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerSwitchActiveArchiveDto;
+import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerSwitchStateDto;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +53,7 @@ public class CustomerController {
     }
 
     @PostMapping(value = "/customers/switch-state")
-    public Customer switchCustomerBetweenActiveArchive(@RequestBody CustomerSwitchActiveArchiveDto dto) throws CustomerStateInvalidException, CustomerNotFoundException,
+    public Customer switchCustomerBetweenActiveArchive(@RequestBody CustomerSwitchStateDto dto) throws CustomerStateInvalidException, CustomerNotFoundException,
             CustomerSameStateException, AddressNotFoundException {
         return inputCustomerService.switchCustomerBetweenActiveArchive(dto);
     }

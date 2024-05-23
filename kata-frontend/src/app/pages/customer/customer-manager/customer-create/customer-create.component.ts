@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { acceptLabel, confirmMsg, detailMsg1, detailMsg2, rejectLabel, severity1, severity2 } from 'src/app/pages/confirmation.message';
+import { acceptLabel, confirmMsg, detailMsg1, detailMsg2, rejectLabel, severity1, severity2 } from 'src/app/pages/enum';
 import { Customer } from 'src/app/shared/models/customer/customer.model';
 import { Request } from 'src/app/shared/models/customer/request.model';
 import { CustomerEvent } from 'src/app/shared/models/event.model';

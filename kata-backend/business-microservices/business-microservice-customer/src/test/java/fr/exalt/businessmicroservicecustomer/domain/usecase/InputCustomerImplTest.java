@@ -201,7 +201,7 @@ class InputCustomerImplTest {
     @Test
     void archiveCustomer() throws CustomerStateInvalidException, CustomerNotFoundException, CustomerSameStateException, AddressNotFoundException {
         //PREPARE
-        final CustomerSwitchActiveArchiveDto dto = CustomerSwitchActiveArchiveDto.builder()
+        final CustomerSwitchStateDto dto = CustomerSwitchStateDto.builder()
                 .customerId("id")
                 .state("archive")
                 .build();
@@ -278,7 +278,7 @@ class InputCustomerImplTest {
             inputCustomerBusinessExceptions.updateAddress(address.getAddressId(), dto4.getAddressDto());
         });
 
-        final CustomerSwitchActiveArchiveDto dto5 = CustomerSwitchActiveArchiveDto.builder()
+        final CustomerSwitchStateDto dto5 = CustomerSwitchStateDto.builder()
                 .state("unknown")
                 .customerId("id")
                 .build();
@@ -296,7 +296,7 @@ class InputCustomerImplTest {
                 .address(customer.getAddress())
                 .email(customer.getEmail())
                 .build();
-        final CustomerSwitchActiveArchiveDto dto6 = CustomerSwitchActiveArchiveDto.builder()
+        final CustomerSwitchStateDto dto6 = CustomerSwitchStateDto.builder()
                 .state("archive")
                 .customerId("id")
                 .build();

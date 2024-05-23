@@ -5,6 +5,7 @@ import { Customer } from "../models/customer/customer.model";
 import { Request } from "../models/customer/request.model";
 import { GetApisService } from "./getaway.apis";
 import { bankAccountAppHeader } from "./header";
+import { CustomerSwitchStateDto } from "../models/customer/customer-switch-state-dto.model";
 
 
 @Injectable({ providedIn: "root" })
@@ -18,7 +19,10 @@ export class CustomerService {
     create(request: Request): Observable<Customer> {
         return this.httpClient.post<Customer>(`${this.customerApi}/customers`, request, { headers: bankAccountAppHeader });
     }
-    getCustomer(customerId: string): Observable<Customer>{
+    getCustomer(customerId: string): Observable<Customer> {
         return this.httpClient.get<Customer>(`${this.customerApi}/customers/${customerId}`)
+    }
+    switchState(switchStateDto: CustomerSwitchStateDto): Observable<Customer> {
+        return this.httpClient.post<Customer>(`${this.customerApi}/customers/switch-state`, switchStateDto, { headers: bankAccountAppHeader });
     }
 }

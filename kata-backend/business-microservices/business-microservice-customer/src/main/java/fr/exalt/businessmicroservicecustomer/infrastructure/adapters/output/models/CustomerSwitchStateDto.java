@@ -7,7 +7,7 @@ import lombok.Setter;
 @Builder
 @Setter
 @Getter
-public class CustomerSwitchActiveArchiveDto {
+public class CustomerSwitchStateDto {
     private String customerId;
     private String state;
 }

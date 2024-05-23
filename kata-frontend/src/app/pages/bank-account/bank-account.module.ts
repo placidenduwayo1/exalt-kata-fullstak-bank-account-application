@@ -7,7 +7,6 @@ import { AccountsListComponent } from './bank-account-manager/accounts-list/acco
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { CardModule } from 'primeng/card';
-import { AccountCreateComponent } from './bank-account-manager/account-create/account-create.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
@@ -16,14 +15,14 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessagesModule } from 'primeng/messages';
 import { TooltipModule } from 'primeng/tooltip';
+import { SidebarModule } from 'primeng/sidebar';
 
 
 
 @NgModule({
   declarations: [
     BankAccountManagerComponent,
-    AccountsListComponent,
-    AccountCreateComponent,
+    AccountsListComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +37,8 @@ import { TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     ConfirmDialogModule,
     MessagesModule,
-    TooltipModule
+    TooltipModule,
+    SidebarModule
   ],
   providers:[ConfirmationService, MessageService]
 })

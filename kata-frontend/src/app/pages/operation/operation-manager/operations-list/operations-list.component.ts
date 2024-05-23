@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { retry } from 'rxjs';
-import { Operation } from 'src/app/shared/models/operation.model';
+import { Component, Input, inject } from '@angular/core';
+import { Operation } from 'src/app/shared/models/operation/operation.model';
 
 @Component({
   selector: 'app-operations-list',

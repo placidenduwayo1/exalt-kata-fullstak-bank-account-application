@@ -7,7 +7,7 @@ import fr.exalt.businessmicroservicecustomer.domain.ports.input.InputCustomerSer
 import fr.exalt.businessmicroservicecustomer.domain.ports.output.OutputCustomerService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.mapper.MapperService;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.AddressDto;
-import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerSwitchActiveArchiveDto;
+import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.CustomerSwitchStateDto;
 import fr.exalt.businessmicroservicecustomer.infrastructure.adapters.output.models.RequestDto;
 
 import java.sql.Timestamp;
@@ -107,7 +107,7 @@ public class InputCustomerImpl implements InputCustomerService {
     }
 
     @Override
-    public Customer switchCustomerBetweenActiveArchive(CustomerSwitchActiveArchiveDto dto) throws CustomerNotFoundException,
+    public Customer switchCustomerBetweenActiveArchive(CustomerSwitchStateDto dto) throws CustomerNotFoundException,
             CustomerStateInvalidException, CustomerSameStateException {
         if(!CustomerValidators.isValidCustomerState(dto.getState())){
             throw new CustomerStateInvalidException(ExceptionMsg.CUSTOMER_STATE_INVALID);

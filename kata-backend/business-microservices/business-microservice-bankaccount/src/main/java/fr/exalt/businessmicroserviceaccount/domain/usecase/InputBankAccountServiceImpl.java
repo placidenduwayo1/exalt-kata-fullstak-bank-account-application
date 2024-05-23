@@ -100,12 +100,12 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
         validateAccount(dto);
 
         BankAccount bankAccount = getAccount(accountId);
+
         if (dto.getType().equals(BANK_ACCOUNT_SAVING)) {
             SavingBankAccount savingBankAccount = new SavingBankAccount.SavingAccountBuilder().build();
             savingBankAccount.setAccountId(bankAccount.getAccountId());
             savingBankAccount.setState(bankAccount.getState());
             savingBankAccount.setBalance(dto.getBalance() + bankAccount.getBalance());
-            savingBankAccount.setInterestRate(INITIAL_INTEREST);
             savingBankAccount.setCustomerId(dto.getCustomerId());
             savingBankAccount.setCreatedAt(bankAccount.getCreatedAt());
             // call to output adapter to save updated account in db
@@ -119,7 +119,6 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
             currentAccount.setAccountId(bankAccount.getAccountId());
             currentAccount.setState(bankAccount.getState());
             currentAccount.setBalance(dto.getBalance() + bankAccount.getBalance());
-            currentAccount.setOverdraft(INITIAL_OVERDRAFT);
             currentAccount.setCustomerId(dto.getCustomerId());
             currentAccount.setCreatedAt(bankAccount.getCreatedAt());
             // call to output adapter to save updated account in db
@@ -180,8 +179,9 @@ public class InputBankAccountServiceImpl implements InputBankAccountService {
             current.setState(bankAccount.getState());
             current.setBalance(bankAccount.getBalance());
             current.setCreatedAt(bankAccount.getCreatedAt());
-           BankAccount savedCurrent = outputAccountService.changeOverdraft(current);
-           savedCurrent.setCustomer(customer);
+            current.setCustomerId(bankAccount.getCustomerId());
+            BankAccount savedCurrent = outputAccountService.changeOverdraft(current);
+            savedCurrent.setCustomer(customer);
             return savedCurrent;
         }
 

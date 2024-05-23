@@ -24,7 +24,7 @@ public class OperationController {
             OperationTypeInvalidException, OperationRequestFieldsInvalidException,
             RemoteBankAccountApiUnreachableException, RemoteBankAccountBalanceException,
             RemoteBankAccountTypeInaccessibleFromOutsideException, RemoteCustomerStateInvalidException,
-            RemoteCustomerApiUnreachableException {
+            RemoteCustomerApiUnreachableException, RemoteBankAccountSuspendedException {
         return inputOperationService.createOperation(dto);
     }
 
