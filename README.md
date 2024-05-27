@@ -86,7 +86,7 @@ Pour accéder au business microservices en backend on passe par la ***gateway-se
 ### business-microservice-customer
 
 - **[POST]** / **[PUT]**: ```http://localhost:8101/api-customer/customers```: **créer** / **éditer** un customer  
-request payload -------------------------------------------------> response  
+request payload                                                                    response  
 ![customer-post](./assets/customer-post.png)   ![customer-post-return](/assets/customer-post-return.png)  
     - si adresse existe déjà (c-à-d un customer est déja enregistré à cette adresse), enregistrer le nouveau customer à cette même adresse
     - si adresse n'existe pas, créer la nouvelle adresse et enregistrer le customer à cette adresse
