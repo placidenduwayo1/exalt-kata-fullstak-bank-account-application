@@ -10,7 +10,7 @@ import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feig
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.proxies.RemoteCustomerServiceProxy;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.mapper.MapperService;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models.OperationModel;
-import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.repository.OperationRepository;
+import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.repositories.OperationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

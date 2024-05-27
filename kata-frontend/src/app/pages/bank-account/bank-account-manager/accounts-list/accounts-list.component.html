@@ -8,11 +8,11 @@
     <p-confirmDialog [style]="{width: '20vw'}" />
     <p-table [value]="accountsList" [paginator]="true" [rows]="5" [rowsPerPageOptions]="[5, 10, 20]"
         [tableStyle]="{ 'min-width': 'fit-content' }"
-        [globalFilterFields]="['balance','customer.lastname','createdAt']">
+        [globalFilterFields]="['balance','type','customer.lastname','createdAt']">
         <ng-template pTemplate="header">
             <tr>
                 <th>Account ID</th>
-                <th>Type</th>
+                <th pSortableColumn="type">Type<p-sortIcon field="type" /></th>
                 <th>State</th>
                 <th pSortableColumn="balance">Balance<p-sortIcon field="balance" /></th>
                 <th>Overdraft / I Rate</th>
@@ -28,20 +28,20 @@
 
                 <td> <p-tag [value]="account.type" [severity]="getAccountTypeSeverity(account.type)"> </p-tag></td>
                 <td><p-tag [value]="account.state" [severity]="getAccountStateSeverity(account.state)" /></td>
-                <td>{{account.balance | currency:'EUR':true}}</td>
-                <td> {{account.overdraft | currency:'EUR'}} {{account.interestRate}} </td>
+                <td> <p-tag [value]="account.balance" [severity]="getAccountBalanceSeverity(account)"> </p-tag></td>
+                <td> {{account.overdraft | currency:'EUR'}} {{account.interestRate | number:'1.2-2'}} </td>
                 <td>{{account.createdAt | date:'medium'}}</td>
                 <td>
                     <ul>
-                        <li><span style="font-weight: bold;">ID</span>: {{account.customer.customerId}} </li>
-                        <li><span style="font-weight: bold;">Name</span>: {{account.customer.firstname}}
+                        <li><span>ID</span>: {{account.customer.customerId}} </li>
+                        <li><span>Name</span>: {{account.customer.firstname}}
                             {{account.customer.lastname}}</li>
-                        <li><span style="font-weight: bold;">Email</span>: {{account.customer.email}}</li>
-                        <li><span style="font-weight: bold;">State</span>: <p-tag [value]="account.customer.state"
+                        <li><span>Email</span>: {{account.customer.email}}</li>
+                        <li><span>State</span>: <p-tag [value]="account.customer.state"
                                 [severity]="getCustomerStateSeverity(account.customer.state)"></p-tag></li>
                     </ul>
                 </td>
-                <td><span style="font-weight: bold;"></span>{{account.customer.lastname}}</td>
+                <td>{{account.customer.lastname}}</td>
                 <td>
                     <p-button icon="pi pi-window-maximize" size="small" [rounded]="true" [text]="true"
                         severity="warning" pTooltip="create operation" tooltipPosition="top"

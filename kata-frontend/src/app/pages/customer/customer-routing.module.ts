@@ -14,6 +14,7 @@ const routes: Routes = [
   {
     path:'create', component: CustomerCreateComponent
   }
+
 ];
 
 @NgModule({

@@ -1,5 +1,5 @@
 <div style="width:80%">
-    <h1 style="color: green; text-align: center;">Operations carried out </h1>
+    <h1 style="color: green; text-align: center;">Deposit and withdraw Operations carried out </h1>
     <h4 style="color: green; text-align: center;">account underwent the operations and Customer related Account</h4>
 </div>
 <p-card [style]="{ width: 'fit-content' }">
@@ -23,21 +23,21 @@
                 <td> {{operation.createdAt | date:'medium'}}</td>
                 <td>
                     <ul>
-                        <li><span style="font-weight: bold;">ID</span>: {{operation.bankAccount.accountId}} </li>
-                        <li><span style="font-weight: bold;">Type</span>: {{operation.bankAccount.type}} </li>
-                        <li><span style="font-weight: bold;">Balance</span>: {{operation.bankAccount.balance |
+                        <li><span>ID</span>: {{operation.bankAccount.accountId}} </li>
+                        <li><span>Type</span>: {{operation.bankAccount.type}} </li>
+                        <li><span>Balance</span>: {{operation.bankAccount.balance |
                             currency:'EUR'}} </li>
                     </ul>
                 </td>
                 <td>
                     <ul>
-                        <li><span style="font-weight: bold;">ID</span>:{{operation.bankAccount.customer.customerId}}
+                        <li><span>ID</span>:{{operation.bankAccount.customer.customerId}}
                         </li>
-                        <li><span style="font-weight: bold;">Name</span>: {{operation.bankAccount.customer.firstname}}
+                        <li><span>Name</span>: {{operation.bankAccount.customer.firstname}}
                             {{operation.bankAccount.customer.lastname}} </li>
-                        <li><span style="font-weight: bold;">Email</span>: {{operation.bankAccount.customer.email}}
+                        <li><span>Email</span>: {{operation.bankAccount.customer.email}}
                         </li>
-                        <li><span style="font-weight: bold;">State</span>:: {{operation.bankAccount.customer.state}}
+                        <li><span>State</span>:: {{operation.bankAccount.customer.state}}
                         </li>
                     </ul>
                 </td>

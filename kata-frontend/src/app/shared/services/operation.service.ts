@@ -12,7 +12,7 @@ export class OperationService {
     httpClient = inject(HttpClient);
     operationApi = new GetApisService().getOperationApi();
 
-    getAll(): Observable<Operation[]> {
+    getAllOperations(): Observable<Operation[]> {
         return this.httpClient.get<Operation[]>(`${this.operationApi}/operations`);
     }
 
@@ -24,5 +24,8 @@ export class OperationService {
         return this.httpClient.post<Map<string, BankAccount>>(`${this.operationApi}/operations/transfer`,transferDto,
             {headers:bankAccountAppHeader}
         );
+    }
+    getAllTransfers(): Observable<any[]>{
+        return this.httpClient.get<any[]>(`${this.operationApi}/transfers`);
     }
 }

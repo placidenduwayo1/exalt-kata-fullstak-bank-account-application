@@ -3,6 +3,7 @@ package fr.exalt.businessmicroserviceoperation.domain.usecase;
 import fr.exalt.businessmicroserviceoperation.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceoperation.domain.entities.Customer;
 import fr.exalt.businessmicroserviceoperation.domain.entities.Operation;
+import fr.exalt.businessmicroserviceoperation.domain.entities.TransferOperation;
 import fr.exalt.businessmicroserviceoperation.domain.exceptions.*;
 import fr.exalt.businessmicroserviceoperation.domain.ports.input.InputOperationService;
 import fr.exalt.businessmicroserviceoperation.domain.ports.output.OutputOperationService;
@@ -172,8 +173,31 @@ public class InputOperationServiceImpl implements InputOperationService {
         BankAccount updatedDestination = outputOperationService.updateRemoteAccount(destination.getAccountId(), mappedDestination);
         updatedDestination.setCustomer(customer2);
 
-        return Map.of("origin", origin, "destination", destination);
+        TransferOperation operation = MapperService.fromTo(dto);
+        operation.setTransferId(UUID.randomUUID().toString());
+        operation.setCreatedAt(Instant.now().toString());
 
+        outputOperationService.transfer(operation);
+        return Map.of("origin", updatedOrigin, "destination", updatedDestination);
+
+    }
+
+    @Override
+    public Collection<TransferOperation> getAllTransfer() {
+        Collection<TransferOperation> transfers = outputOperationService.getAllTransfer();
+        transfers.stream().map(transfer->{
+            BankAccount origin = outputOperationService.loadRemoteAccount(transfer.getOrigin());
+            Customer customerOrigin = outputOperationService.loadRemoteCustomer(origin.getCustomerId());
+            origin.setCustomer(customerOrigin);
+            BankAccount destination = outputOperationService.loadRemoteAccount(transfer.getDestination());
+            Customer customerDestination = outputOperationService.loadRemoteCustomer(destination.getCustomerId());
+            destination.setCustomer(customerDestination);
+            transfer.setAccountOrigin(origin);
+            transfer.setAccountDestination(destination);
+            return transfer;
+        }).toList();
+
+        return transfers;
     }
 
     private Collection<Operation> setOperationDependencies(Collection<Operation> operations) {

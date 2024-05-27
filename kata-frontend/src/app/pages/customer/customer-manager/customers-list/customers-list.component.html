@@ -36,9 +36,10 @@
                 <td>
                     <p-button icon="pi pi-window-maximize" size="small" [rounded]="true" [text]="true"
                         severity="warning" pTooltip="create account" tooltipPosition="left"
-                        (onClick)="sidebarVisible=true; loadCustomer(customer)" *ngIf="customer.state=='active'" />
-                    <p-button icon="pi pi-pencil" size="small" [rounded]="true" [text]="true" severity="info"
-                        pTooltip="edit customer" tooltipPosition="left" />
+                        (onClick)="sidebarVisible1=true; loadCustomer(customer)" *ngIf="customer.state=='active'" />
+                    <p-button icon="pi pi-window-maximize" size="small" [rounded]="true" [text]="true" severity="info"
+                        pTooltip="edit customer" tooltipPosition="left" *ngIf="customer.state=='active'"
+                        (onClick)="sidebarVisible2=true; loadCustomer(customer)"/>
                     <p-button icon="pi pi-pencil" size="small" [rounded]="true" [text]="true" severity="danger"
                         pTooltip="active/archive" tooltipPosition="left" (onClick)="onCustomerSwitchState(customer)" />
                 </td>
@@ -53,8 +54,8 @@
     </p-table>
 </p-card>
 
-<!-- side bar for creating bank account -->
-<p-sidebar [(visible)]="sidebarVisible" position="right" *ngIf="selectedCustomer" [style]="{width:'fit-content'}">
+<!-- side bar for creating a customer bank account -->
+<p-sidebar [(visible)]="sidebarVisible1" [position]="sidebarPosition" *ngIf="selectedCustomer" [style]="{width:'fit-content'}">
     <p-card header="Create Bank Account" *ngIf="selectedCustomer">
         <form [formGroup]="accountFormRequest">
             <div>
@@ -82,4 +83,82 @@
             </div>
         </form>
     </p-card>
+</p-sidebar>
+
+<!-- side bar for editing a customer -->
+<p-sidebar [(visible)]="sidebarVisible2" [style]="{width:'fit-content'}" [position]="sidebarPosition" *ngIf="selectedCustomer">
+    <p-card header="Edit customer">
+        <form [formGroup]="customerRequest">
+        <p-splitter [style]="{ height: 'fit-content' }" styleClass="mb-5">
+            <ng-template pTemplate>
+                <p-card header="customer">
+                    <div class="col flex align-items-center justify-content-center">
+                        <div formGroupName="customer">
+                            <div>
+                                <label for="firstname">Firstname</label><br>
+                                <input pInputText type="text" id="firstname" class="form-control"
+                                    formControlName="firstname" [(ngModel)]="selectedCustomer.firstname">
+                            </div>
+                            <div>
+                                <label for="lastname">Lastname</label><br>
+                                <input pInputText type="text" id="lastname" class="form-control"
+                                    formControlName="lastname" [(ngModel)]="selectedCustomer.lastname">
+                            </div>
+                            <div>
+                                <label for="email">Email</label><br>
+                                <input pInputText type="text" id="email" class="form-control" formControlName="email" 
+                                [(ngModel)]="selectedCustomer.email">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </p-card>
+            </ng-template>
+            <ng-template pTemplate>
+                <p-card header="address">
+                    <div class="col flex align-items-center justify-content-center">
+                        <div formGroupName="address">
+                            <div>
+                                <label for="streetNum">street number</label><br>
+                                <input pInputText type="number" class="form-control" id="streetNum"
+                                    formControlName="streetNum" [(ngModel)]="selectedCustomer.address.streetNum">
+                            </div>
+
+                            <div>
+                                <label for="streetName">street name</label><br>
+                                <input pInputText type="text" class="form-control" id="streetName"
+                                    formControlName="streetName" [(ngModel)]="selectedCustomer.address.streetName">
+                            </div>
+                            <div>
+                                <label for="poBox">po box</label><br>
+                                <input pInputText type="number" class="form-control" id="poBox" formControlName="poBox"
+                                [(ngModel)]="selectedCustomer.address.poBox">
+                            </div>
+
+                            <div>
+                                <label for="city">city name</label><br>
+                                <input pInputText type="text" class="form-control" id="city" formControlName="city"
+                                [(ngModel)]="selectedCustomer.address.city">                                
+                            </div>
+
+                            <div>
+                                <label for="country">country name</label><br>
+                                <input pInputText type="text" class="form-control" id="country"
+                                    formControlName="country" [(ngModel)]="selectedCustomer.address.country">
+                            </div>
+                        </div>
+                    </div>
+                </p-card>
+            </ng-template>
+        </p-splitter>
+        <div style="margin-left: 30%; margin-top: 2%;">
+            <p-button label="Save" [text]="true" [raised]="true" severity="primary" (onClick)="onUpdateCustomer()"
+            [disabled]="customerRequest.invalid" />&nbsp;
+        <p-button label="Cancel" [text]="true" [raised]="true" severity="danger" />
+        </div>
+
+    </form>
+
+    </p-card>
+
 </p-sidebar>

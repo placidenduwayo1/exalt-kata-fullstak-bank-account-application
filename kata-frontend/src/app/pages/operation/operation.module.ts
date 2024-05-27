@@ -14,12 +14,14 @@ import { Dropdown, DropdownModule } from 'primeng/dropdown';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { SidebarModule } from 'primeng/sidebar';
+import { TransferListComponent } from './operation-manager/transfer-list/transfer-list.component';
 
 
 @NgModule({
   declarations: [
     OperationManagerComponent,
-    OperationsListComponent
+    OperationsListComponent,
+    TransferListComponent
   ],
   imports: [
     CommonModule,

@@ -3,11 +3,14 @@ package fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.ma
 import fr.exalt.businessmicroserviceoperation.domain.entities.BankAccount;
 import fr.exalt.businessmicroserviceoperation.domain.entities.Customer;
 import fr.exalt.businessmicroserviceoperation.domain.entities.Operation;
+import fr.exalt.businessmicroserviceoperation.domain.entities.TransferOperation;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.BankAccountDto;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.BankAccountModel;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.input.feignclient.models.CustomerModel;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models.OperationDto;
 import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models.OperationModel;
+import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models.TransferDto;
+import fr.exalt.businessmicroserviceoperation.infrastructure.adapters.output.models.TransferModel;
 import org.springframework.beans.BeanUtils;
 
 public class MapperService {
@@ -46,5 +49,23 @@ public class MapperService {
         Customer customer = new Customer.CustomerBuilder().build();
         BeanUtils.copyProperties(model, customer);
         return customer;
+    }
+
+    public static TransferModel fromTo(TransferOperation operation){
+        TransferModel model = TransferModel.builder().build();
+        BeanUtils.copyProperties(operation, model);
+        return model;
+    }
+
+    public static  TransferOperation fromTo(TransferDto dto){
+        TransferOperation operation = new TransferOperation.TransferBuilder().build();
+        BeanUtils.copyProperties(dto, operation);
+        return operation;
+    }
+
+    public static TransferOperation fromTo(TransferModel model){
+        TransferOperation operation = new TransferOperation.TransferBuilder().build();
+        BeanUtils.copyProperties(model, operation);
+        return operation;
     }
 }

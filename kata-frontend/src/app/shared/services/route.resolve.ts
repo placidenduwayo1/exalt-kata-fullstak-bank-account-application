@@ -1,4 +1,4 @@
-import { ResolveFn } from "@angular/router";
+import { ActivatedRoute, ActivatedRouteSnapshot, ResolveFn } from "@angular/router";
 import { BankAccount } from "../models/bank-account/bank-account.model";
 import { inject } from "@angular/core";
 import { BankAccountService } from "./bank-account.service";
@@ -15,5 +15,12 @@ export const getAllCustomersResolve: ResolveFn<Customer[]> = ()=>{
     return inject(CustomerService).getAll();
 }
 export const getAllOperationsResolve: ResolveFn<Operation[]> = ()=>{
-    return inject(OperationService).getAll();
+    return inject(OperationService).getAllOperations();
+}
+
+export const getCustomerResolve : ResolveFn<Customer> =(route: ActivatedRouteSnapshot) =>{
+    return inject(CustomerService).getCustomer(route.paramMap.get('customerId'));
+}
+export const getAllTransferResolve: ResolveFn<any[]> = ()=>{
+    return inject(OperationService).getAllTransfers();
 }

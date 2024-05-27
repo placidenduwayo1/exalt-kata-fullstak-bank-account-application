@@ -1,0 +1,62 @@
+<div style="width:80%">
+    <h1 style="color: green; text-align: center;">Transfer Operations carried out </h1>
+    <h4 style="color: green; text-align: center;">account underwent the transfer and Customer related Account</h4>
+</div>
+<p-card [style]="{width:'fit-content'}">
+    <p-table [value]="transfers" [paginator]="true" [rows]="2" [rowsPerPageOptions]="[2, 5, 10, 15]">
+        <ng-template pTemplate="header">
+            <th>Tranfer ID</th>
+            <th>Origin Account</th>
+            <th>Destination Account</th>
+            <th>Tranfer Date</th>
+            <th>Tranfer Mount</th>
+        </ng-template>
+        <ng-template pTemplate="body" let-transfer>
+            <tr>
+                <td>{{transfer.transferId}}</td>
+                <td>
+                    <ul>
+                        <li> <span>Acc ID</span>: {{transfer.accountOrigin.accountId}} </li>
+                        <li> <span>Acc type</span>:<p-tag [value]="transfer.accountOrigin.type" 
+                            [severity]="getAccountTypeSeverity(transfer.accountOrigin.type)"/> </li>
+                        <li> <span>Balance</span>: {{transfer.accountOrigin.balance}} </li>
+                        <li> <span>Acc State</span>:{{transfer.accountOrigin.state}} </li>
+                        <li> <span>Customer info</span> </li>
+                        <ul>
+                            <li><span>ID</span>: {{transfer.accountOrigin.customer.customerId}} </li>
+                            <li><span>Name</span>: {{transfer.accountOrigin.customer.firstname}} 
+                                {{transfer.accountOrigin.customer.lastname}} </li>
+                            <li><span>Email</span>: {{transfer.accountOrigin.customer.email}} </li>
+                            <li><span>State</span>: {{transfer.accountOrigin.customer.state}} </li>
+                        </ul>
+                    </ul>
+                </td>
+
+                <td>
+                    <ul>
+                        <li> <span>Acc ID</span>: {{transfer.accountDestination.accountId}} </li>
+                        <li> <span>Acc type</span>:<p-tag [value]="transfer.accountDestination.type" 
+                            [severity]="getAccountTypeSeverity(transfer.accountDestination.type)"/></li>
+                        <li> <span>Balance</span>: {{transfer.accountDestination.balance}} </li>
+                        <li> <span>Acc State</span>:{{transfer.accountDestination.state}} </li>
+                        <li> <span>Customer info</span> </li>
+                        <ul>
+                            <li><span>ID</span>: {{transfer.accountDestination.customer.customerId}} </li>
+                            <li><span>Name</span>: {{transfer.accountDestination.customer.firstname}} 
+                                {{transfer.accountDestination.customer.lastname}}</li>
+                            <li><span>Email</span>: {{transfer.accountDestination.customer.email}} </li>
+                            <li><span>State</span>: {{transfer.accountDestination.customer.state}} </li>
+                        </ul>
+                    </ul>
+                </td>
+                <td>{{transfer.createdAt | date:'medium'}}</td>
+                <td>{{transfer.mount | currency:'EUR'}}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                {{transfers ? transfers.length : 0 }} transfers operations
+            </div>
+        </ng-template>
+    </p-table>
+</p-card>

@@ -19,10 +19,14 @@ export class CustomerService {
     create(request: Request): Observable<Customer> {
         return this.httpClient.post<Customer>(`${this.customerApi}/customers`, request, { headers: bankAccountAppHeader });
     }
-    getCustomer(customerId: string): Observable<Customer> {
+    getCustomer(customerId: string | any): Observable<Customer> {
         return this.httpClient.get<Customer>(`${this.customerApi}/customers/${customerId}`)
     }
     switchState(switchStateDto: CustomerSwitchStateDto): Observable<Customer> {
         return this.httpClient.post<Customer>(`${this.customerApi}/customers/switch-state`, switchStateDto, { headers: bankAccountAppHeader });
+    }
+
+    updateCustomer(custmerId: string, request: Request): Observable<Customer> {
+        return this.httpClient.put<Customer>(`${this.customerApi}/customers/${custmerId}`,request,{headers: bankAccountAppHeader});
     }
 }

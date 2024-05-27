@@ -71,6 +71,22 @@ export class AccountsListComponent implements OnInit {
     }
   }
 
+  getAccountBalanceSeverity(account: BankAccount): string {
+    if(account.balance>99999){
+      return 'success';
+    }
+    else if (account.balance <99999 && account.balance>50000){
+      return 'primary'
+    }
+    else if (account.balance <50000 && account.balance>=10000){
+      return 'primary'
+    }
+    else if (account.balance <9999 && account.balance>=1000){
+      return 'warning'
+    }
+    else return 'danger'
+  }
+
   fb = inject(FormBuilder);
   operationFormRequest!: FormGroup;
   overdraftForm!: FormGroup;
@@ -83,24 +99,24 @@ export class AccountsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.operationFormRequest = this.fb.group({
-      account:[{value:'', disabled: true}],
+      account: [{ value: '', disabled: true }],
       type: ['', Validators.required],
       mount: ['', Validators.required],
     });
     this.overdraftForm = this.fb.group({
-      account:[{value:'', disabled: true}],
+      account: [{ value: '', disabled: true }],
       overdraft: [, Validators.required]
     });
 
     this.iRateForm = this.fb.group({
-      account:[{value:'', disabled: true}],
+      account: [{ value: '', disabled: true }],
       interestRate: ['', Validators.required]
     });
 
     this.transferFormRequest = this.fb.group({
-      origin:[{value:'', disabled:true}],
-      destination:['', Validators.required],
-      mount:['', Validators.required]
+      origin: [{ value: '', disabled: true }],
+      destination: ['', Validators.required],
+      mount: ['', Validators.required]
     })
   }
 
@@ -287,15 +303,15 @@ export class AccountsListComponent implements OnInit {
     });
   }
 
-  onTransferOperation(){
-    let transferDto : TransferDto = this.transferFormRequest.getRawValue();
+  onTransferOperation() {
+    let transferDto: TransferDto = this.transferFormRequest.getRawValue();
     this.confirmService.confirm({
       acceptLabel: acceptLabel,
       rejectLabel: rejectLabel,
       message: confirmMsg,
       accept: () => {
         this.operationService.createTransfer(transferDto).subscribe({
-          next: (value: Map<string,BankAccount>) => {
+          next: (value: Map<string, BankAccount>) => {
             this.messageService.add({
               key: "key1",
               severity: severity1,

@@ -48,8 +48,12 @@ export class KataMenuComponent {
         label: 'api-operations',
         items: [
           {
-            label: 'operations', icon: 'pi pi-list',
+            label: 'depot/retrait', icon: 'pi pi-list',
             command:()=>this.router.navigateByUrl('session/operations')
+          },
+          {
+            label: 'transfert', icon: 'pi pi-list',
+            command:()=>this.router.navigateByUrl('session/operations/transfers')
           }
         ]
       },
